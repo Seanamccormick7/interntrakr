@@ -1,0 +1,22 @@
+#!/bin/sh
+
+set -e
+
+APP_BASE_DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+WRAPPER_JAR="$APP_BASE_DIR/gradle/wrapper/gradle-wrapper.jar"
+WRAPPER_PROPERTIES="$APP_BASE_DIR/gradle/wrapper/gradle-wrapper.properties"
+
+if [ ! -f "$WRAPPER_JAR" ]; then
+  echo "Wrapper JAR not found. Please run: gradle wrapper" >&2
+  exit 1
+fi
+
+DIST_URL=$(grep distributionUrl "$WRAPPER_PROPERTIES" | sed -e 's/^distributionUrl=//')
+
+TMP_DIR=$(mktemp -d)
+trap 'rm -rf -- "$TMP_DIR"' EXIT
+
+JAVA_EXEC="java"
+exec "$JAVA_EXEC" -Dorg.gradle.appname=gradlew -classpath "$WRAPPER_JAR" org.gradle.wrapper.GradleWrapperMain "$@"
+
+
