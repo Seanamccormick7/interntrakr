@@ -1,0 +1,40 @@
+apps/api/node_modules/@types/express-serve-static-core/index.d.ts:391: *     app.get('/user/:id', (req, res) => res.send(req.params.id)); // implicitly `ParamsDictionary`
+apps/api/node_modules/@types/express-serve-static-core/index.d.ts:392: *     app.get<ParamsArray>(/user\/(.*)/, (req, res) => res.send(req.params[0]));
+apps/api/node_modules/@types/express-serve-static-core/index.d.ts:393: *     app.get<ParamsArray>('/user/*', (req, res) => res.send(req.params[0]));
+apps/api/node_modules/@types/express-serve-static-core/index.d.ts:779:     *     app.get('/user/:uid/photos/:file', function(req, res){
+apps/api/node_modules/@types/express-serve-static-core/index.d.ts:1104:     *    app.get('foo');
+apps/api/node_modules/@types/express-serve-static-core/index.d.ts:1107:     *    app.get('foo');
+apps/api/node_modules/@types/express/index.d.ts:66:         * Preserve the req.params values from the parent router.
+apps/api/node_modules/express/lib/response.js:166:  var etagFn = app.get('etag fn')
+apps/api/node_modules/express/lib/response.js:240:  var escape = app.get('json escape')
+apps/api/node_modules/express/lib/response.js:241:  var replacer = app.get('json replacer');
+apps/api/node_modules/express/lib/response.js:242:  var spaces = app.get('json spaces');
+apps/api/node_modules/express/lib/response.js:268:  var escape = app.get('json escape')
+apps/api/node_modules/express/lib/response.js:269:  var replacer = app.get('json replacer');
+apps/api/node_modules/express/lib/response.js:270:  var spaces = app.get('json spaces');
+apps/api/node_modules/express/lib/response.js:272:  var callback = this.req.query[app.get('jsonp callback name')];
+apps/api/node_modules/express/lib/response.js:360: *     app.get('/user/:uid/photos/:file', function(req, res){
+apps/api/node_modules/express/lib/request.js:219:  var queryparse = this.app.get('query parser fn');
+apps/api/node_modules/express/lib/request.js:289:  var trust = this.app.get('trust proxy fn');
+apps/api/node_modules/express/lib/request.js:329:  var trust = this.app.get('trust proxy fn');
+apps/api/node_modules/express/lib/request.js:346:  var trust = this.app.get('trust proxy fn');
+apps/api/node_modules/express/lib/request.js:376:  var offset = this.app.get('subdomain offset');
+apps/api/node_modules/express/lib/request.js:407:  var trust = this.app.get('trust proxy fn');
+apps/api/node_modules/express/lib/application.js:177:  this.router.handle(req, res, done);
+apps/api/node_modules/express/lib/application.js:181: * Proxy `Router#use()` to add middleware to the app router.
+apps/api/node_modules/express/lib/application.js:222:      return router.use(path, fn);
+apps/api/node_modules/express/lib/application.js:230:    router.use(path, function mounted_app(req, res, next) {
+apps/api/node_modules/express/lib/application.js:257:  return this.router.route(path);
+apps/api/node_modules/express/lib/application.js:331:  this.router.param(name, fn);
+apps/api/node_modules/express/lib/application.js:353:    // app.get(setting)
+apps/api/node_modules/express/lib/application.js:468: * Delegate `.VERB(...)` calls to `router.VERB(...)`.
+apps/api/node_modules/express/lib/application.js:474:      // app.get(setting)
+apps/api/node_modules/router/index.js:60:    router.handle(req, res, next)
+apps/api/node_modules/router/index.js:66:  router.caseSensitive = opts.caseSensitive
+apps/api/node_modules/router/index.js:67:  router.mergeParams = opts.mergeParams
+apps/api/node_modules/router/index.js:68:  router.params = {}
+apps/api/node_modules/router/index.js:69:  router.strict = opts.strict
+apps/api/node_modules/router/index.js:70:  router.stack = []
+apps/api/node_modules/router/index.js:98: *  router.param('user_id', function(req, res, next, id){
+apps/api/node_modules/router/index.js:144: * Dispatch a req, res into the router.
+apps/api/node_modules/router/index.js:367:  // disambiguate router.use([handler])

@@ -1,0 +1,945 @@
+apps/web/node_modules/.vite/deps/react-router-dom.js:704:var RouterContextProvider = class {
+apps/web/node_modules/.vite/deps/react-router-dom.js:706:   * Create a new `RouterContextProvider` instance
+apps/web/node_modules/.vite/deps/react-router-dom.js:747:var unsupportedLazyRouteObjectKeys = /* @__PURE__ */ new Set([
+apps/web/node_modules/.vite/deps/react-router-dom.js:755:function isUnsupportedLazyRouteObjectKey(key) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:756:  return unsupportedLazyRouteObjectKeys.has(
+apps/web/node_modules/.vite/deps/react-router-dom.js:760:var unsupportedLazyRouteFunctionKeys = /* @__PURE__ */ new Set([
+apps/web/node_modules/.vite/deps/react-router-dom.js:769:function isUnsupportedLazyRouteFunctionKey(key) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:770:  return unsupportedLazyRouteFunctionKeys.has(
+apps/web/node_modules/.vite/deps/react-router-dom.js:774:function isIndexRoute(route) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:777:function convertRoutesToDataRoutes(routes, mapRouteProperties2, parentPath = [], manifest = {}, allowInPlaceMutations = false) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:787:      `Found a route id collision on id "${id}".  Route id's must be globally unique within Data Router usages`
+apps/web/node_modules/.vite/deps/react-router-dom.js:789:    if (isIndexRoute(route)) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:790:      let indexRoute = {
+apps/web/node_modules/.vite/deps/react-router-dom.js:792:        ...mapRouteProperties2(route),
+apps/web/node_modules/.vite/deps/react-router-dom.js:795:      manifest[id] = indexRoute;
+apps/web/node_modules/.vite/deps/react-router-dom.js:796:      return indexRoute;
+apps/web/node_modules/.vite/deps/react-router-dom.js:798:      let pathOrLayoutRoute = {
+apps/web/node_modules/.vite/deps/react-router-dom.js:800:        ...mapRouteProperties2(route),
+apps/web/node_modules/.vite/deps/react-router-dom.js:804:      manifest[id] = pathOrLayoutRoute;
+apps/web/node_modules/.vite/deps/react-router-dom.js:806:        pathOrLayoutRoute.children = convertRoutesToDataRoutes(
+apps/web/node_modules/.vite/deps/react-router-dom.js:808:          mapRouteProperties2,
+apps/web/node_modules/.vite/deps/react-router-dom.js:814:      return pathOrLayoutRoute;
+apps/web/node_modules/.vite/deps/react-router-dom.js:818:function matchRoutes(routes, locationArg, basename = "/") {
+apps/web/node_modules/.vite/deps/react-router-dom.js:819:  return matchRoutesImpl(routes, locationArg, basename, false);
+apps/web/node_modules/.vite/deps/react-router-dom.js:821:function matchRoutesImpl(routes, locationArg, basename, allowPartial) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:827:  let branches = flattenRoutes(routes);
+apps/web/node_modules/.vite/deps/react-router-dom.js:828:  rankRouteBranches(branches);
+apps/web/node_modules/.vite/deps/react-router-dom.js:832:    matches = matchRouteBranch(
+apps/web/node_modules/.vite/deps/react-router-dom.js:840:function convertRouteMatchToUiMatch(match, loaderData) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:851:function flattenRoutes(routes, branches = [], parentsMeta = [], parentPath = "", _hasParentOptionalSegments = false) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:852:  let flattenRoute = (route, index, hasParentOptionalSegments = _hasParentOptionalSegments, relativePath) => {
+apps/web/node_modules/.vite/deps/react-router-dom.js:878:      flattenRoutes(
+apps/web/node_modules/.vite/deps/react-router-dom.js:897:      flattenRoute(route, index);
+apps/web/node_modules/.vite/deps/react-router-dom.js:900:        flattenRoute(route, index, true, exploded);
+apps/web/node_modules/.vite/deps/react-router-dom.js:929:function rankRouteBranches(branches) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:939:var indexRouteValue = 2;
+apps/web/node_modules/.vite/deps/react-router-dom.js:951:    initialScore += indexRouteValue;
+apps/web/node_modules/.vite/deps/react-router-dom.js:972:function matchRouteBranch(branch, pathname, allowPartial = false) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:1020:      `Route path "${path}" will be treated as if it were "${path.replace(/\*$/, "/*")}" because the \`*\` character must always follow a \`/\` in the pattern. To get rid of this warning, please change the route path to "${path.replace(/\*$/, "/*")}".`
+apps/web/node_modules/.vite/deps/react-router-dom.js:1083:    `Route path "${path}" will be treated as if it were "${path.replace(/\*$/, "/*")}" because the \`*\` character must always follow a \`/\` in the pattern. To get rid of this warning, please change the route path to "${path.replace(/\*$/, "/*")}".`
+apps/web/node_modules/.vite/deps/react-router-dom.js:1270:function isRouteErrorResponse(error) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:1317:var defaultMapRouteProperties = (route) => ({
+apps/web/node_modules/.vite/deps/react-router-dom.js:1322:function createRouter(init) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:1327:    "You must provide a non-empty routes array to createRouter"
+apps/web/node_modules/.vite/deps/react-router-dom.js:1329:  let hydrationRouteProperties2 = init.hydrationRouteProperties || [];
+apps/web/node_modules/.vite/deps/react-router-dom.js:1330:  let mapRouteProperties2 = init.mapRouteProperties || defaultMapRouteProperties;
+apps/web/node_modules/.vite/deps/react-router-dom.js:1332:  let dataRoutes = convertRoutesToDataRoutes(
+apps/web/node_modules/.vite/deps/react-router-dom.js:1334:    mapRouteProperties2,
+apps/web/node_modules/.vite/deps/react-router-dom.js:1338:  let inFlightDataRoutes;
+apps/web/node_modules/.vite/deps/react-router-dom.js:1353:  let initialMatches = matchRoutes(dataRoutes, init.history.location, basename);
+apps/web/node_modules/.vite/deps/react-router-dom.js:1357:  if (initialMatches == null && !init.patchRoutesOnNavigation) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:1358:    let error = getInternalRouterError(404, {
+apps/web/node_modules/.vite/deps/react-router-dom.js:1361:    let { matches, route } = getShortCircuitMatches(dataRoutes);
+apps/web/node_modules/.vite/deps/react-router-dom.js:1369:        dataRoutes,
+apps/web/node_modules/.vite/deps/react-router-dom.js:1381:        dataRoutes,
+apps/web/node_modules/.vite/deps/react-router-dom.js:1400:          (m) => !shouldLoadRouteOnHydration(m.route, loaderData, errors)
+apps/web/node_modules/.vite/deps/react-router-dom.js:1404:          (m) => !shouldLoadRouteOnHydration(m.route, loaderData, errors)
+apps/web/node_modules/.vite/deps/react-router-dom.js:1456:          "You are trying to use a blocker on a POP navigation to a location that was not created by @remix-run/router. This will fail silently in production. This can happen if you are navigating outside the router via `window.history.pushState`/`window.location.hash` instead of using router navigation APIs.  This can also happen if you are using createHashRouter and the user manually changes the URL."
+apps/web/node_modules/.vite/deps/react-router-dom.js:1524:        let matchRoute = m.route;
+apps/web/node_modules/.vite/deps/react-router-dom.js:1525:        if (matchRoute.element !== route.element || matchRoute.errorElement !== route.errorElement || matchRoute.hydrateFallbackElement !== route.hydrateFallbackElement) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:1591:    if (inFlightDataRoutes) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:1592:      dataRoutes = inFlightDataRoutes;
+apps/web/node_modules/.vite/deps/react-router-dom.js:1593:      inFlightDataRoutes = void 0;
+apps/web/node_modules/.vite/deps/react-router-dom.js:1667:      opts?.fromRouteId,
+apps/web/node_modules/.vite/deps/react-router-dom.js:1763:    let routesToUse = inFlightDataRoutes || dataRoutes;
+apps/web/node_modules/.vite/deps/react-router-dom.js:1766:      // `matchRoutes()` has already been called if we're in here via `router.initialize()`
+apps/web/node_modules/.vite/deps/react-router-dom.js:1768:    ) : matchRoutes(routesToUse, location2, basename);
+apps/web/node_modules/.vite/deps/react-router-dom.js:1802:    let scopedContext = init.getContext ? await init.getContext() : new RouterContextProvider();
+apps/web/node_modules/.vite/deps/react-router-dom.js:1825:        if (isErrorResult(result) && isRouteErrorResponse(result.error) && result.error.status === 404) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:1883:      let discoverResult = await discoverRoutes(
+apps/web/node_modules/.vite/deps/react-router-dom.js:1892:          let { matches: matches2, route } = getShortCircuitMatches(dataRoutes);
+apps/web/node_modules/.vite/deps/react-router-dom.js:1938:        error: getInternalRouterError(405, {
+apps/web/node_modules/.vite/deps/react-router-dom.js:1946:        mapRouteProperties2,
+apps/web/node_modules/.vite/deps/react-router-dom.js:1951:        initialHydration ? [] : hydrationRouteProperties2,
+apps/web/node_modules/.vite/deps/react-router-dom.js:2027:      let discoverResult = await discoverRoutes(
+apps/web/node_modules/.vite/deps/react-router-dom.js:2036:          let { matches: matches2, route } = getShortCircuitMatches(dataRoutes);
+apps/web/node_modules/.vite/deps/react-router-dom.js:2068:    let routesToUse = inFlightDataRoutes || dataRoutes;
+apps/web/node_modules/.vite/deps/react-router-dom.js:2072:      mapRouteProperties2,
+apps/web/node_modules/.vite/deps/react-router-dom.js:2079:      initialHydration ? [] : hydrationRouteProperties2,
+apps/web/node_modules/.vite/deps/react-router-dom.js:2088:      init.patchRoutesOnNavigation != null,
+apps/web/node_modules/.vite/deps/react-router-dom.js:2216:    let routesToUse = inFlightDataRoutes || dataRoutes;
+apps/web/node_modules/.vite/deps/react-router-dom.js:2225:    let matches = matchRoutes(routesToUse, normalizedPath, basename);
+apps/web/node_modules/.vite/deps/react-router-dom.js:2234:        getInternalRouterError(404, { pathname: normalizedPath }),
+apps/web/node_modules/.vite/deps/react-router-dom.js:2248:    let scopedContext = init.getContext ? await init.getContext() : new RouterContextProvider();
+apps/web/node_modules/.vite/deps/react-router-dom.js:2292:      let discoverResult = await discoverRoutes(
+apps/web/node_modules/.vite/deps/react-router-dom.js:2307:          getInternalRouterError(404, { pathname: path }),
+apps/web/node_modules/.vite/deps/react-router-dom.js:2317:      let error = getInternalRouterError(405, {
+apps/web/node_modules/.vite/deps/react-router-dom.js:2328:      mapRouteProperties2,
+apps/web/node_modules/.vite/deps/react-router-dom.js:2333:      hydrationRouteProperties2,
+apps/web/node_modules/.vite/deps/react-router-dom.js:2380:    let routesToUse = inFlightDataRoutes || dataRoutes;
+apps/web/node_modules/.vite/deps/react-router-dom.js:2381:    let matches = state.navigation.state !== "idle" ? matchRoutes(routesToUse, state.navigation.location, basename) : state.matches;
+apps/web/node_modules/.vite/deps/react-router-dom.js:2390:      mapRouteProperties2,
+apps/web/node_modules/.vite/deps/react-router-dom.js:2397:      hydrationRouteProperties2,
+apps/web/node_modules/.vite/deps/react-router-dom.js:2406:      init.patchRoutesOnNavigation != null,
+apps/web/node_modules/.vite/deps/react-router-dom.js:2516:      let discoverResult = await discoverRoutes(
+apps/web/node_modules/.vite/deps/react-router-dom.js:2531:          getInternalRouterError(404, { pathname: path }),
+apps/web/node_modules/.vite/deps/react-router-dom.js:2543:      mapRouteProperties2,
+apps/web/node_modules/.vite/deps/react-router-dom.js:2548:      hydrationRouteProperties2,
+apps/web/node_modules/.vite/deps/react-router-dom.js:2721:              error: getInternalRouterError(404, {
+apps/web/node_modules/.vite/deps/react-router-dom.js:2889:    let error = getInternalRouterError(404, { pathname });
+apps/web/node_modules/.vite/deps/react-router-dom.js:2890:    let routesToUse = inFlightDataRoutes || dataRoutes;
+apps/web/node_modules/.vite/deps/react-router-dom.js:2915:        matches.map((m) => convertRouteMatchToUiMatch(m, state.loaderData))
+apps/web/node_modules/.vite/deps/react-router-dom.js:2938:    if (init.patchRoutesOnNavigation) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:2940:        let fogMatches = matchRoutesImpl(
+apps/web/node_modules/.vite/deps/react-router-dom.js:2949:          let partialMatches = matchRoutesImpl(
+apps/web/node_modules/.vite/deps/react-router-dom.js:2961:  async function discoverRoutes(matches, pathname, signal, fetcherKey) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:2962:    if (!init.patchRoutesOnNavigation) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:2967:      let isNonHMR = inFlightDataRoutes == null;
+apps/web/node_modules/.vite/deps/react-router-dom.js:2968:      let routesToUse = inFlightDataRoutes || dataRoutes;
+apps/web/node_modules/.vite/deps/react-router-dom.js:2971:        await init.patchRoutesOnNavigation({
+apps/web/node_modules/.vite/deps/react-router-dom.js:2978:            patchRoutesImpl(
+apps/web/node_modules/.vite/deps/react-router-dom.js:2983:              mapRouteProperties2,
+apps/web/node_modules/.vite/deps/react-router-dom.js:2992:          dataRoutes = [...dataRoutes];
+apps/web/node_modules/.vite/deps/react-router-dom.js:2998:      let newMatches = matchRoutes(routesToUse, pathname, basename);
+apps/web/node_modules/.vite/deps/react-router-dom.js:3002:      let newPartialMatches = matchRoutesImpl(
+apps/web/node_modules/.vite/deps/react-router-dom.js:3016:  function _internalSetRoutes(newRoutes) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:3018:    inFlightDataRoutes = convertRoutesToDataRoutes(
+apps/web/node_modules/.vite/deps/react-router-dom.js:3019:      newRoutes,
+apps/web/node_modules/.vite/deps/react-router-dom.js:3020:      mapRouteProperties2,
+apps/web/node_modules/.vite/deps/react-router-dom.js:3025:  function patchRoutes(routeId, children, unstable_allowElementMutations = false) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:3026:    let isNonHMR = inFlightDataRoutes == null;
+apps/web/node_modules/.vite/deps/react-router-dom.js:3027:    let routesToUse = inFlightDataRoutes || dataRoutes;
+apps/web/node_modules/.vite/deps/react-router-dom.js:3028:    patchRoutesImpl(
+apps/web/node_modules/.vite/deps/react-router-dom.js:3033:      mapRouteProperties2,
+apps/web/node_modules/.vite/deps/react-router-dom.js:3037:      dataRoutes = [...dataRoutes];
+apps/web/node_modules/.vite/deps/react-router-dom.js:3052:      return dataRoutes;
+apps/web/node_modules/.vite/deps/react-router-dom.js:3073:    patchRoutes,
+apps/web/node_modules/.vite/deps/react-router-dom.js:3075:    // TODO: Remove setRoutes, it's temporary to avoid dealing with
+apps/web/node_modules/.vite/deps/react-router-dom.js:3077:    _internalSetRoutes,
+apps/web/node_modules/.vite/deps/react-router-dom.js:3091:  let mapRouteProperties2 = opts?.mapRouteProperties || defaultMapRouteProperties;
+apps/web/node_modules/.vite/deps/react-router-dom.js:3092:  let dataRoutes = convertRoutesToDataRoutes(
+apps/web/node_modules/.vite/deps/react-router-dom.js:3094:    mapRouteProperties2,
+apps/web/node_modules/.vite/deps/react-router-dom.js:3109:    let matches = matchRoutes(dataRoutes, location2, basename);
+apps/web/node_modules/.vite/deps/react-router-dom.js:3110:    requestContext = requestContext != null ? requestContext : new RouterContextProvider();
+apps/web/node_modules/.vite/deps/react-router-dom.js:3112:      let error = getInternalRouterError(405, { method });
+apps/web/node_modules/.vite/deps/react-router-dom.js:3113:      let { matches: methodNotAllowedMatches, route } = getShortCircuitMatches(dataRoutes);
+apps/web/node_modules/.vite/deps/react-router-dom.js:3129:      let error = getInternalRouterError(404, { pathname: location2.pathname });
+apps/web/node_modules/.vite/deps/react-router-dom.js:3130:      let { matches: notFoundMatches, route } = getShortCircuitMatches(dataRoutes);
+apps/web/node_modules/.vite/deps/react-router-dom.js:3148:        requestContext instanceof RouterContextProvider,
+apps/web/node_modules/.vite/deps/react-router-dom.js:3149:        "When using middleware in `staticHandler.query()`, any provided `requestContext` must be an instance of `RouterContextProvider`"
+apps/web/node_modules/.vite/deps/react-router-dom.js:3155:          mapRouteProperties2
+apps/web/node_modules/.vite/deps/react-router-dom.js:3213:                dataRoutes,
+apps/web/node_modules/.vite/deps/react-router-dom.js:3222:              let boundaryRouteId = skipLoaderErrorBubbling ? routeId : findNearestBoundary(
+apps/web/node_modules/.vite/deps/react-router-dom.js:3235:                  [boundaryRouteId]: error
+apps/web/node_modules/.vite/deps/react-router-dom.js:3237:                statusCode: isRouteErrorResponse(error) ? error.status : 500,
+apps/web/node_modules/.vite/deps/react-router-dom.js:3272:  async function queryRoute(request, {
+apps/web/node_modules/.vite/deps/react-router-dom.js:3281:    let matches = matchRoutes(dataRoutes, location2, basename);
+apps/web/node_modules/.vite/deps/react-router-dom.js:3282:    requestContext = requestContext != null ? requestContext : new RouterContextProvider();
+apps/web/node_modules/.vite/deps/react-router-dom.js:3284:      throw getInternalRouterError(405, { method });
+apps/web/node_modules/.vite/deps/react-router-dom.js:3286:      throw getInternalRouterError(404, { pathname: location2.pathname });
+apps/web/node_modules/.vite/deps/react-router-dom.js:3290:      throw getInternalRouterError(403, {
+apps/web/node_modules/.vite/deps/react-router-dom.js:3295:      throw getInternalRouterError(404, { pathname: location2.pathname });
+apps/web/node_modules/.vite/deps/react-router-dom.js:3299:        requestContext instanceof RouterContextProvider,
+apps/web/node_modules/.vite/deps/react-router-dom.js:3300:        "When using middleware in `staticHandler.queryRoute()`, any provided `requestContext` must be an instance of `RouterContextProvider`"
+apps/web/node_modules/.vite/deps/react-router-dom.js:3302:      await loadLazyMiddlewareForMatches(matches, manifest, mapRouteProperties2);
+apps/web/node_modules/.vite/deps/react-router-dom.js:3376:      "query()/queryRoute() requests must contain an AbortController signal"
+apps/web/node_modules/.vite/deps/react-router-dom.js:3393:      let result = await loadRouteData(
+apps/web/node_modules/.vite/deps/react-router-dom.js:3420:  async function submit(request, matches, actionMatch, requestContext, dataStrategy, skipLoaderErrorBubbling, isRouteRequest, filterMatchesToLoad, skipRevalidation) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:3423:      let error = getInternalRouterError(405, {
+apps/web/node_modules/.vite/deps/react-router-dom.js:3428:      if (isRouteRequest) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:3437:        mapRouteProperties2,
+apps/web/node_modules/.vite/deps/react-router-dom.js:3448:        isRouteRequest,
+apps/web/node_modules/.vite/deps/react-router-dom.js:3454:        throwStaticHandlerAbortedError(request, isRouteRequest);
+apps/web/node_modules/.vite/deps/react-router-dom.js:3465:    if (isRouteRequest) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:3474:        // Note: statusCode + headers are unused here since queryRoute will
+apps/web/node_modules/.vite/deps/react-router-dom.js:3485:          statusCode: isRouteErrorResponse(result.error) ? result.error.status : result.statusCode != null ? result.statusCode : 500,
+apps/web/node_modules/.vite/deps/react-router-dom.js:3518:      let handlerContext2 = await loadRouteData(
+apps/web/node_modules/.vite/deps/react-router-dom.js:3530:        statusCode: isRouteErrorResponse(result.error) ? result.error.status : result.statusCode != null ? result.statusCode : 500,
+apps/web/node_modules/.vite/deps/react-router-dom.js:3537:    let handlerContext = await loadRouteData(
+apps/web/node_modules/.vite/deps/react-router-dom.js:3556:  async function loadRouteData(request, matches, requestContext, dataStrategy, skipLoaderErrorBubbling, routeMatch, filterMatchesToLoad, pendingActionResult) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:3557:    let isRouteRequest = routeMatch != null;
+apps/web/node_modules/.vite/deps/react-router-dom.js:3558:    if (isRouteRequest && !routeMatch?.route.loader && !routeMatch?.route.lazy) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:3559:      throw getInternalRouterError(400, {
+apps/web/node_modules/.vite/deps/react-router-dom.js:3568:        mapRouteProperties2,
+apps/web/node_modules/.vite/deps/react-router-dom.js:3584:            mapRouteProperties2,
+apps/web/node_modules/.vite/deps/react-router-dom.js:3594:          mapRouteProperties2,
+apps/web/node_modules/.vite/deps/react-router-dom.js:3618:      isRouteRequest,
+apps/web/node_modules/.vite/deps/react-router-dom.js:3623:      throwStaticHandlerAbortedError(request, isRouteRequest);
+apps/web/node_modules/.vite/deps/react-router-dom.js:3625:    let handlerContext = processRouteLoaderData(
+apps/web/node_modules/.vite/deps/react-router-dom.js:3637:  async function callDataStrategy(request, matches, isRouteRequest, requestContext, dataStrategy) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:3663:        if (isRouteRequest) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:3676:    dataRoutes,
+apps/web/node_modules/.vite/deps/react-router-dom.js:3678:    queryRoute
+apps/web/node_modules/.vite/deps/react-router-dom.js:3685:    statusCode: isRouteErrorResponse(error) ? error.status : 500,
+apps/web/node_modules/.vite/deps/react-router-dom.js:3691:function throwStaticHandlerAbortedError(request, isRouteRequest) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:3695:  let method = isRouteRequest ? "queryRoute" : "query";
+apps/web/node_modules/.vite/deps/react-router-dom.js:3703:function normalizeTo(location2, matches, basename, to, fromRouteId, relative) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:3705:  let activeRouteMatch;
+apps/web/node_modules/.vite/deps/react-router-dom.js:3706:  if (fromRouteId) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:3710:      if (match.route.id === fromRouteId) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:3711:        activeRouteMatch = match;
+apps/web/node_modules/.vite/deps/react-router-dom.js:3717:    activeRouteMatch = matches[matches.length - 1];
+apps/web/node_modules/.vite/deps/react-router-dom.js:3729:  if ((to == null || to === "" || to === ".") && activeRouteMatch) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:3731:    if (activeRouteMatch.route.index && !nakedIndex) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:3733:    } else if (!activeRouteMatch.route.index && nakedIndex) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:3754:      error: getInternalRouterError(405, { method: opts.formMethod })
+apps/web/node_modules/.vite/deps/react-router-dom.js:3759:    error: getInternalRouterError(400, { type: "invalid-body" })
+apps/web/node_modules/.vite/deps/react-router-dom.js:3854:function getMatchesToLoad(request, scopedContext, mapRouteProperties2, manifest, history, state, matches, submission, location2, lazyRoutePropertiesToSkip, initialHydration, isRevalidationRequired, cancelledFetcherLoads, fetchersQueuedForDeletion, fetchLoadMatches, fetchRedirectIds, routesToUse, basename, hasPatchRoutesOnNavigation, pendingActionResult) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:3887:      forceShouldLoad = shouldLoadRouteOnHydration(
+apps/web/node_modules/.vite/deps/react-router-dom.js:3897:        mapRouteProperties2,
+apps/web/node_modules/.vite/deps/react-router-dom.js:3901:        lazyRoutePropertiesToSkip,
+apps/web/node_modules/.vite/deps/react-router-dom.js:3909:      currentUrl.search !== nextUrl.search || isNewRouteInstance(state.matches[index], match)
+apps/web/node_modules/.vite/deps/react-router-dom.js:3917:      mapRouteProperties2,
+apps/web/node_modules/.vite/deps/react-router-dom.js:3921:      lazyRoutePropertiesToSkip,
+apps/web/node_modules/.vite/deps/react-router-dom.js:3934:    let fetcherMatches = matchRoutes(routesToUse, f.path, basename);
+apps/web/node_modules/.vite/deps/react-router-dom.js:3936:      if (hasPatchRoutesOnNavigation && isMidInitialLoad) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:3964:        mapRouteProperties2,
+apps/web/node_modules/.vite/deps/react-router-dom.js:3969:        lazyRoutePropertiesToSkip,
+apps/web/node_modules/.vite/deps/react-router-dom.js:3975:          mapRouteProperties2,
+apps/web/node_modules/.vite/deps/react-router-dom.js:3980:          lazyRoutePropertiesToSkip,
+apps/web/node_modules/.vite/deps/react-router-dom.js:3991:          mapRouteProperties2,
+apps/web/node_modules/.vite/deps/react-router-dom.js:3996:          lazyRoutePropertiesToSkip,
+apps/web/node_modules/.vite/deps/react-router-dom.js:4019:function shouldLoadRouteOnHydration(route, loaderData, errors) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:4045:function isNewRouteInstance(currentMatch, match) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:4063:function patchRoutesImpl(routeId, children, routesToUse, manifest, mapRouteProperties2, allowElementMutations) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:4080:  children.forEach((newRoute) => {
+apps/web/node_modules/.vite/deps/react-router-dom.js:4081:    let existingRoute = childrenToPatch.find(
+apps/web/node_modules/.vite/deps/react-router-dom.js:4082:      (existingRoute2) => isSameRoute(newRoute, existingRoute2)
+apps/web/node_modules/.vite/deps/react-router-dom.js:4084:    if (existingRoute) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:4085:      existingChildren.push({ existingRoute, newRoute });
+apps/web/node_modules/.vite/deps/react-router-dom.js:4087:      uniqueChildren.push(newRoute);
+apps/web/node_modules/.vite/deps/react-router-dom.js:4091:    let newRoutes = convertRoutesToDataRoutes(
+apps/web/node_modules/.vite/deps/react-router-dom.js:4093:      mapRouteProperties2,
+apps/web/node_modules/.vite/deps/react-router-dom.js:4097:    childrenToPatch.push(...newRoutes);
+apps/web/node_modules/.vite/deps/react-router-dom.js:4101:      let { existingRoute, newRoute } = existingChildren[i];
+apps/web/node_modules/.vite/deps/react-router-dom.js:4102:      let existingRouteTyped = existingRoute;
+apps/web/node_modules/.vite/deps/react-router-dom.js:4103:      let [newRouteTyped] = convertRoutesToDataRoutes(
+apps/web/node_modules/.vite/deps/react-router-dom.js:4104:        [newRoute],
+apps/web/node_modules/.vite/deps/react-router-dom.js:4105:        mapRouteProperties2,
+apps/web/node_modules/.vite/deps/react-router-dom.js:4112:      Object.assign(existingRouteTyped, {
+apps/web/node_modules/.vite/deps/react-router-dom.js:4113:        element: newRouteTyped.element ? newRouteTyped.element : existingRouteTyped.element,
+apps/web/node_modules/.vite/deps/react-router-dom.js:4114:        errorElement: newRouteTyped.errorElement ? newRouteTyped.errorElement : existingRouteTyped.errorElement,
+apps/web/node_modules/.vite/deps/react-router-dom.js:4115:        hydrateFallbackElement: newRouteTyped.hydrateFallbackElement ? newRouteTyped.hydrateFallbackElement : existingRouteTyped.hydrateFallbackElement
+apps/web/node_modules/.vite/deps/react-router-dom.js:4120:function isSameRoute(newRoute, existingRoute) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:4121:  if ("id" in newRoute && "id" in existingRoute && newRoute.id === existingRoute.id) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:4124:  if (!(newRoute.index === existingRoute.index && newRoute.path === existingRoute.path && newRoute.caseSensitive === existingRoute.caseSensitive)) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:4127:  if ((!newRoute.children || newRoute.children.length === 0) && (!existingRoute.children || existingRoute.children.length === 0)) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:4130:  return newRoute.children.every(
+apps/web/node_modules/.vite/deps/react-router-dom.js:4131:    (aChild, i) => existingRoute.children?.some((bChild) => isSameRoute(aChild, bChild))
+apps/web/node_modules/.vite/deps/react-router-dom.js:4134:var lazyRoutePropertyCache = /* @__PURE__ */ new WeakMap();
+apps/web/node_modules/.vite/deps/react-router-dom.js:4135:var loadLazyRouteProperty = ({
+apps/web/node_modules/.vite/deps/react-router-dom.js:4139:  mapRouteProperties: mapRouteProperties2
+apps/web/node_modules/.vite/deps/react-router-dom.js:4150:  let cache = lazyRoutePropertyCache.get(routeToUpdate);
+apps/web/node_modules/.vite/deps/react-router-dom.js:4153:    lazyRoutePropertyCache.set(routeToUpdate, cache);
+apps/web/node_modules/.vite/deps/react-router-dom.js:4160:    let isUnsupported = isUnsupportedLazyRouteObjectKey(key);
+apps/web/node_modules/.vite/deps/react-router-dom.js:4161:    let staticRouteValue = routeToUpdate[key];
+apps/web/node_modules/.vite/deps/react-router-dom.js:4162:    let isStaticallyDefined = staticRouteValue !== void 0 && key !== "hasErrorBoundary";
+apps/web/node_modules/.vite/deps/react-router-dom.js:4166:        "Route property " + key + " is not a supported lazy route property. This property will be ignored."
+apps/web/node_modules/.vite/deps/react-router-dom.js:4172:        `Route "${routeToUpdate.id}" has a static property "${key}" defined. The lazy property will be ignored.`
+apps/web/node_modules/.vite/deps/react-router-dom.js:4178:        Object.assign(routeToUpdate, mapRouteProperties2(routeToUpdate));
+apps/web/node_modules/.vite/deps/react-router-dom.js:4191:var lazyRouteFunctionCache = /* @__PURE__ */ new WeakMap();
+apps/web/node_modules/.vite/deps/react-router-dom.js:4192:function loadLazyRoute(route, type, manifest, mapRouteProperties2, lazyRoutePropertiesToSkip) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:4197:      lazyRoutePromise: void 0,
+apps/web/node_modules/.vite/deps/react-router-dom.js:4202:    let cachedPromise = lazyRouteFunctionCache.get(routeToUpdate);
+apps/web/node_modules/.vite/deps/react-router-dom.js:4205:        lazyRoutePromise: cachedPromise,
+apps/web/node_modules/.vite/deps/react-router-dom.js:4209:    let lazyRoutePromise2 = (async () => {
+apps/web/node_modules/.vite/deps/react-router-dom.js:4214:      let lazyRoute = await route.lazy();
+apps/web/node_modules/.vite/deps/react-router-dom.js:4216:      for (let lazyRouteProperty in lazyRoute) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:4217:        let lazyValue = lazyRoute[lazyRouteProperty];
+apps/web/node_modules/.vite/deps/react-router-dom.js:4221:        let isUnsupported = isUnsupportedLazyRouteFunctionKey(lazyRouteProperty);
+apps/web/node_modules/.vite/deps/react-router-dom.js:4222:        let staticRouteValue = routeToUpdate[lazyRouteProperty];
+apps/web/node_modules/.vite/deps/react-router-dom.js:4223:        let isStaticallyDefined = staticRouteValue !== void 0 && // This property isn't static since it should always be updated based
+apps/web/node_modules/.vite/deps/react-router-dom.js:4225:        lazyRouteProperty !== "hasErrorBoundary";
+apps/web/node_modules/.vite/deps/react-router-dom.js:4229:            "Route property " + lazyRouteProperty + " is not a supported property to be returned from a lazy route function. This property will be ignored."
+apps/web/node_modules/.vite/deps/react-router-dom.js:4234:            `Route "${routeToUpdate.id}" has a static property "${lazyRouteProperty}" defined but its lazy function is also returning a value for this property. The lazy route property "${lazyRouteProperty}" will be ignored.`
+apps/web/node_modules/.vite/deps/react-router-dom.js:4237:          routeUpdates[lazyRouteProperty] = lazyValue;
+apps/web/node_modules/.vite/deps/react-router-dom.js:4242:        // To keep things framework agnostic, we use the provided `mapRouteProperties`
+apps/web/node_modules/.vite/deps/react-router-dom.js:4245:        ...mapRouteProperties2(routeToUpdate),
+apps/web/node_modules/.vite/deps/react-router-dom.js:4249:    lazyRouteFunctionCache.set(routeToUpdate, lazyRoutePromise2);
+apps/web/node_modules/.vite/deps/react-router-dom.js:4250:    lazyRoutePromise2.catch(() => {
+apps/web/node_modules/.vite/deps/react-router-dom.js:4253:      lazyRoutePromise: lazyRoutePromise2,
+apps/web/node_modules/.vite/deps/react-router-dom.js:4254:      lazyHandlerPromise: lazyRoutePromise2
+apps/web/node_modules/.vite/deps/react-router-dom.js:4261:    if (lazyRoutePropertiesToSkip && lazyRoutePropertiesToSkip.includes(key)) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:4264:    let promise = loadLazyRouteProperty({
+apps/web/node_modules/.vite/deps/react-router-dom.js:4268:      mapRouteProperties: mapRouteProperties2
+apps/web/node_modules/.vite/deps/react-router-dom.js:4277:  let lazyRoutePromise = lazyPropertyPromises.length > 0 ? Promise.all(lazyPropertyPromises).then(() => {
+apps/web/node_modules/.vite/deps/react-router-dom.js:4279:  lazyRoutePromise?.catch(() => {
+apps/web/node_modules/.vite/deps/react-router-dom.js:4284:    lazyRoutePromise,
+apps/web/node_modules/.vite/deps/react-router-dom.js:4291:function loadLazyMiddlewareForMatches(matches, manifest, mapRouteProperties2) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:4296:    return loadLazyRouteProperty({
+apps/web/node_modules/.vite/deps/react-router-dom.js:4300:      mapRouteProperties: mapRouteProperties2
+apps/web/node_modules/.vite/deps/react-router-dom.js:4362:      let boundaryRouteId = findNearestBoundary(
+apps/web/node_modules/.vite/deps/react-router-dom.js:4367:        [boundaryRouteId]: { type: "error", result: error }
+apps/web/node_modules/.vite/deps/react-router-dom.js:4377:  let result = await callRouteMiddleware(
+apps/web/node_modules/.vite/deps/react-router-dom.js:4387:async function callRouteMiddleware(args, middlewares, handler, processResult, isResult, errorHandler, idx = 0) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:4404:      let result = await callRouteMiddleware(
+apps/web/node_modules/.vite/deps/react-router-dom.js:4436:function getDataStrategyMatchLazyPromises(mapRouteProperties2, manifest, request, match, lazyRoutePropertiesToSkip) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:4437:  let lazyMiddlewarePromise = loadLazyRouteProperty({
+apps/web/node_modules/.vite/deps/react-router-dom.js:4441:    mapRouteProperties: mapRouteProperties2
+apps/web/node_modules/.vite/deps/react-router-dom.js:4443:  let lazyRoutePromises = loadLazyRoute(
+apps/web/node_modules/.vite/deps/react-router-dom.js:4447:    mapRouteProperties2,
+apps/web/node_modules/.vite/deps/react-router-dom.js:4448:    lazyRoutePropertiesToSkip
+apps/web/node_modules/.vite/deps/react-router-dom.js:4452:    route: lazyRoutePromises.lazyRoutePromise,
+apps/web/node_modules/.vite/deps/react-router-dom.js:4453:    handler: lazyRoutePromises.lazyHandlerPromise
+apps/web/node_modules/.vite/deps/react-router-dom.js:4456:function getDataStrategyMatch(mapRouteProperties2, manifest, request, match, lazyRoutePropertiesToSkip, scopedContext, shouldLoad, unstable_shouldRevalidateArgs = null) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:4459:    mapRouteProperties2,
+apps/web/node_modules/.vite/deps/react-router-dom.js:4463:    lazyRoutePropertiesToSkip
+apps/web/node_modules/.vite/deps/react-router-dom.js:4486:      let isMiddlewareOnlyRoute = middleware && middleware.length > 0 && !loader && !lazy;
+apps/web/node_modules/.vite/deps/react-router-dom.js:4487:      if (callHandler && !isMiddlewareOnlyRoute) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:4492:          lazyRoutePromise: _lazyPromises?.route,
+apps/web/node_modules/.vite/deps/react-router-dom.js:4501:function getTargetedDataStrategyMatches(mapRouteProperties2, manifest, request, matches, targetMatch, lazyRoutePropertiesToSkip, scopedContext, shouldRevalidateArgs = null) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:4510:          mapRouteProperties2,
+apps/web/node_modules/.vite/deps/react-router-dom.js:4514:          lazyRoutePropertiesToSkip
+apps/web/node_modules/.vite/deps/react-router-dom.js:4520:      mapRouteProperties2,
+apps/web/node_modules/.vite/deps/react-router-dom.js:4524:      lazyRoutePropertiesToSkip,
+apps/web/node_modules/.vite/deps/react-router-dom.js:4543:      "You cannot call `runClientMiddleware()` from a static handler `dataStrategy`. Middleware is run outside of `dataStrategy` during SSR in order to bubble up the Response.  You can enable middleware via the `respond` API in `query`/`queryRoute`"
+apps/web/node_modules/.vite/deps/react-router-dom.js:4579:  lazyRoutePromise,
+apps/web/node_modules/.vite/deps/react-router-dom.js:4621:    if (lazyHandlerPromise || lazyRoutePromise) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:4633:          lazyRoutePromise
+apps/web/node_modules/.vite/deps/react-router-dom.js:4643:          [result] = await Promise.all([runHandler(handler2), lazyRoutePromise]);
+apps/web/node_modules/.vite/deps/react-router-dom.js:4647:          throw getInternalRouterError(405, {
+apps/web/node_modules/.vite/deps/react-router-dom.js:4659:      throw getInternalRouterError(404, {
+apps/web/node_modules/.vite/deps/react-router-dom.js:4722:        statusCode: isRouteErrorResponse(result) ? result.status : void 0,
+apps/web/node_modules/.vite/deps/react-router-dom.js:4729:      statusCode: isRouteErrorResponse(result) ? result.status : void 0
+apps/web/node_modules/.vite/deps/react-router-dom.js:4807:function processRouteLoaderData(matches, results, pendingActionResult, isStaticHandler = false, skipLoaderErrorBubbling = false) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:4844:        statusCode = isRouteErrorResponse(result.error) ? result.error.status : 500;
+apps/web/node_modules/.vite/deps/react-router-dom.js:4873:  let { loaderData, errors } = processRouteLoaderData(
+apps/web/node_modules/.vite/deps/react-router-dom.js:4952:function getInternalRouterError(status, {
+apps/web/node_modules/.vite/deps/react-router-dom.js:4970:    errorMessage = `Route "${routeId}" does not match URL "${pathname}"`;
+apps/web/node_modules/.vite/deps/react-router-dom.js:5260:var DataRouterContext = React.createContext(null);
+apps/web/node_modules/.vite/deps/react-router-dom.js:5261:DataRouterContext.displayName = "DataRouter";
+apps/web/node_modules/.vite/deps/react-router-dom.js:5262:var DataRouterStateContext = React.createContext(null);
+apps/web/node_modules/.vite/deps/react-router-dom.js:5263:DataRouterStateContext.displayName = "DataRouterState";
+apps/web/node_modules/.vite/deps/react-router-dom.js:5264:var RSCRouterContext = React.createContext(false);
+apps/web/node_modules/.vite/deps/react-router-dom.js:5265:function useIsRSCRouterContext() {
+apps/web/node_modules/.vite/deps/react-router-dom.js:5266:  return React.useContext(RSCRouterContext);
+apps/web/node_modules/.vite/deps/react-router-dom.js:5287:var RouteContext = React.createContext({
+apps/web/node_modules/.vite/deps/react-router-dom.js:5290:  isDataRoute: false
+apps/web/node_modules/.vite/deps/react-router-dom.js:5292:RouteContext.displayName = "Route";
+apps/web/node_modules/.vite/deps/react-router-dom.js:5293:var RouteErrorContext = React.createContext(null);
+apps/web/node_modules/.vite/deps/react-router-dom.js:5294:RouteErrorContext.displayName = "RouteError";
+apps/web/node_modules/.vite/deps/react-router-dom.js:5298:    useInRouterContext(),
+apps/web/node_modules/.vite/deps/react-router-dom.js:5301:    `useHref() may be used only in the context of a <Router> component.`
+apps/web/node_modules/.vite/deps/react-router-dom.js:5311:function useInRouterContext() {
+apps/web/node_modules/.vite/deps/react-router-dom.js:5316:    useInRouterContext(),
+apps/web/node_modules/.vite/deps/react-router-dom.js:5319:    `useLocation() may be used only in the context of a <Router> component.`
+apps/web/node_modules/.vite/deps/react-router-dom.js:5328:    useInRouterContext(),
+apps/web/node_modules/.vite/deps/react-router-dom.js:5331:    `useMatch() may be used only in the context of a <Router> component.`
+apps/web/node_modules/.vite/deps/react-router-dom.js:5347:  let { isDataRoute } = React2.useContext(RouteContext);
+apps/web/node_modules/.vite/deps/react-router-dom.js:5348:  return isDataRoute ? useNavigateStable() : useNavigateUnstable();
+apps/web/node_modules/.vite/deps/react-router-dom.js:5352:    useInRouterContext(),
+apps/web/node_modules/.vite/deps/react-router-dom.js:5355:    `useNavigate() may be used only in the context of a <Router> component.`
+apps/web/node_modules/.vite/deps/react-router-dom.js:5357:  let dataRouterContext = React2.useContext(DataRouterContext);
+apps/web/node_modules/.vite/deps/react-router-dom.js:5359:  let { matches } = React2.useContext(RouteContext);
+apps/web/node_modules/.vite/deps/react-router-dom.js:5380:      if (dataRouterContext == null && basename !== "/") {
+apps/web/node_modules/.vite/deps/react-router-dom.js:5394:      dataRouterContext
+apps/web/node_modules/.vite/deps/react-router-dom.js:5404:  let outlet = React2.useContext(RouteContext).outlet;
+apps/web/node_modules/.vite/deps/react-router-dom.js:5411:  let { matches } = React2.useContext(RouteContext);
+apps/web/node_modules/.vite/deps/react-router-dom.js:5416:  let { matches } = React2.useContext(RouteContext);
+apps/web/node_modules/.vite/deps/react-router-dom.js:5429:function useRoutes(routes, locationArg) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:5430:  return useRoutesImpl(routes, locationArg);
+apps/web/node_modules/.vite/deps/react-router-dom.js:5432:function useRoutesImpl(routes, locationArg, dataRouterState, unstable_onError, future) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:5434:    useInRouterContext(),
+apps/web/node_modules/.vite/deps/react-router-dom.js:5437:    `useRoutes() may be used only in the context of a <Router> component.`
+apps/web/node_modules/.vite/deps/react-router-dom.js:5440:  let { matches: parentMatches } = React2.useContext(RouteContext);
+apps/web/node_modules/.vite/deps/react-router-dom.js:5445:  let parentRoute = routeMatch && routeMatch.route;
+apps/web/node_modules/.vite/deps/react-router-dom.js:5447:    let parentPath = parentRoute && parentRoute.path || "";
+apps/web/node_modules/.vite/deps/react-router-dom.js:5450:      !parentRoute || parentPath.endsWith("*") || parentPath.endsWith("*?"),
+apps/web/node_modules/.vite/deps/react-router-dom.js:5451:      `You rendered descendant <Routes> (or called \`useRoutes()\`) at "${parentPathname}" (under <Route path="${parentPath}">) but the parent route path has no trailing "*". This means if you navigate deeper, the parent won't match anymore and therefore the child routes will never render.
+apps/web/node_modules/.vite/deps/react-router-dom.js:5453:Please change the parent <Route path="${parentPath}"> to <Route path="${parentPath === "/" ? "*" : `${parentPath}/*`}">.`
+apps/web/node_modules/.vite/deps/react-router-dom.js:5462:      `When overriding the location using \`<Routes location>\` or \`useRoutes(routes, location)\`, the location pathname must begin with the portion of the URL pathname that was matched by all parent routes. The current pathname base is "${parentPathnameBase}" but pathname "${parsedLocationArg.pathname}" was given in the \`location\` prop.`
+apps/web/node_modules/.vite/deps/react-router-dom.js:5475:  let matches = matchRoutes(routes, { pathname: remainingPathname });
+apps/web/node_modules/.vite/deps/react-router-dom.js:5478:      parentRoute || matches != null,
+apps/web/node_modules/.vite/deps/react-router-dom.js:5492:          // Re-encode pathnames that were decoded inside matchRoutes.
+apps/web/node_modules/.vite/deps/react-router-dom.js:5502:          // Re-encode pathnames that were decoded inside matchRoutes
+apps/web/node_modules/.vite/deps/react-router-dom.js:5513:    dataRouterState,
+apps/web/node_modules/.vite/deps/react-router-dom.js:5540:  let error = useRouteError();
+apps/web/node_modules/.vite/deps/react-router-dom.js:5541:  let message = isRouteErrorResponse(error) ? `${error.status} ${error.statusText}` : error instanceof Error ? error.message : JSON.stringify(error);
+apps/web/node_modules/.vite/deps/react-router-dom.js:5549:      "Error handled by React Router default ErrorBoundary:",
+apps/web/node_modules/.vite/deps/react-router-dom.js:5588:        "React Router caught the following error during render",
+apps/web/node_modules/.vite/deps/react-router-dom.js:5594:    return this.state.error !== void 0 ? React2.createElement(RouteContext.Provider, { value: this.props.routeContext }, React2.createElement(
+apps/web/node_modules/.vite/deps/react-router-dom.js:5595:      RouteErrorContext.Provider,
+apps/web/node_modules/.vite/deps/react-router-dom.js:5603:function RenderedRoute({ routeContext, match, children }) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:5604:  let dataRouterContext = React2.useContext(DataRouterContext);
+apps/web/node_modules/.vite/deps/react-router-dom.js:5605:  if (dataRouterContext && dataRouterContext.static && dataRouterContext.staticContext && (match.route.errorElement || match.route.ErrorBoundary)) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:5606:    dataRouterContext.staticContext._deepestRenderedBoundaryId = match.route.id;
+apps/web/node_modules/.vite/deps/react-router-dom.js:5608:  return React2.createElement(RouteContext.Provider, { value: routeContext }, children);
+apps/web/node_modules/.vite/deps/react-router-dom.js:5610:function _renderMatches(matches, parentMatches = [], dataRouterState = null, unstable_onError = null, future = null) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:5612:    if (!dataRouterState) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:5615:    if (dataRouterState.errors) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:5616:      matches = dataRouterState.matches;
+apps/web/node_modules/.vite/deps/react-router-dom.js:5617:    } else if (parentMatches.length === 0 && !dataRouterState.initialized && dataRouterState.matches.length > 0) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:5618:      matches = dataRouterState.matches;
+apps/web/node_modules/.vite/deps/react-router-dom.js:5624:  let errors = dataRouterState?.errors;
+apps/web/node_modules/.vite/deps/react-router-dom.js:5642:  if (dataRouterState) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:5649:        let { loaderData, errors: errors2 } = dataRouterState;
+apps/web/node_modules/.vite/deps/react-router-dom.js:5669:      if (dataRouterState) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:5702:          RenderedRoute,
+apps/web/node_modules/.vite/deps/react-router-dom.js:5708:              isDataRoute: dataRouterState != null
+apps/web/node_modules/.vite/deps/react-router-dom.js:5714:      return dataRouterState && (match.route.ErrorBoundary || match.route.errorElement || index === 0) ? React2.createElement(
+apps/web/node_modules/.vite/deps/react-router-dom.js:5717:          location: dataRouterState.location,
+apps/web/node_modules/.vite/deps/react-router-dom.js:5718:          revalidation: dataRouterState.revalidation,
+apps/web/node_modules/.vite/deps/react-router-dom.js:5722:          routeContext: { outlet: null, matches: matches2, isDataRoute: true },
+apps/web/node_modules/.vite/deps/react-router-dom.js:5730:function getDataRouterConsoleError(hookName) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:5733:function useDataRouterContext(hookName) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:5734:  let ctx = React2.useContext(DataRouterContext);
+apps/web/node_modules/.vite/deps/react-router-dom.js:5735:  invariant(ctx, getDataRouterConsoleError(hookName));
+apps/web/node_modules/.vite/deps/react-router-dom.js:5738:function useDataRouterState(hookName) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:5739:  let state = React2.useContext(DataRouterStateContext);
+apps/web/node_modules/.vite/deps/react-router-dom.js:5740:  invariant(state, getDataRouterConsoleError(hookName));
+apps/web/node_modules/.vite/deps/react-router-dom.js:5743:function useRouteContext(hookName) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:5744:  let route = React2.useContext(RouteContext);
+apps/web/node_modules/.vite/deps/react-router-dom.js:5745:  invariant(route, getDataRouterConsoleError(hookName));
+apps/web/node_modules/.vite/deps/react-router-dom.js:5748:function useCurrentRouteId(hookName) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:5749:  let route = useRouteContext(hookName);
+apps/web/node_modules/.vite/deps/react-router-dom.js:5750:  let thisRoute = route.matches[route.matches.length - 1];
+apps/web/node_modules/.vite/deps/react-router-dom.js:5752:    thisRoute.route.id,
+apps/web/node_modules/.vite/deps/react-router-dom.js:5755:  return thisRoute.route.id;
+apps/web/node_modules/.vite/deps/react-router-dom.js:5757:function useRouteId() {
+apps/web/node_modules/.vite/deps/react-router-dom.js:5758:  return useCurrentRouteId(
+apps/web/node_modules/.vite/deps/react-router-dom.js:5759:    "useRouteId"
+apps/web/node_modules/.vite/deps/react-router-dom.js:5760:    /* UseRouteId */
+apps/web/node_modules/.vite/deps/react-router-dom.js:5764:  let state = useDataRouterState(
+apps/web/node_modules/.vite/deps/react-router-dom.js:5771:  let dataRouterContext = useDataRouterContext(
+apps/web/node_modules/.vite/deps/react-router-dom.js:5775:  let state = useDataRouterState(
+apps/web/node_modules/.vite/deps/react-router-dom.js:5780:    await dataRouterContext.router.revalidate();
+apps/web/node_modules/.vite/deps/react-router-dom.js:5781:  }, [dataRouterContext.router]);
+apps/web/node_modules/.vite/deps/react-router-dom.js:5788:  let { matches, loaderData } = useDataRouterState(
+apps/web/node_modules/.vite/deps/react-router-dom.js:5793:    () => matches.map((m) => convertRouteMatchToUiMatch(m, loaderData)),
+apps/web/node_modules/.vite/deps/react-router-dom.js:5798:  let state = useDataRouterState(
+apps/web/node_modules/.vite/deps/react-router-dom.js:5802:  let routeId = useCurrentRouteId(
+apps/web/node_modules/.vite/deps/react-router-dom.js:5808:function useRouteLoaderData(routeId) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:5809:  let state = useDataRouterState(
+apps/web/node_modules/.vite/deps/react-router-dom.js:5810:    "useRouteLoaderData"
+apps/web/node_modules/.vite/deps/react-router-dom.js:5811:    /* UseRouteLoaderData */
+apps/web/node_modules/.vite/deps/react-router-dom.js:5816:  let state = useDataRouterState(
+apps/web/node_modules/.vite/deps/react-router-dom.js:5820:  let routeId = useCurrentRouteId(
+apps/web/node_modules/.vite/deps/react-router-dom.js:5826:function useRouteError() {
+apps/web/node_modules/.vite/deps/react-router-dom.js:5827:  let error = React2.useContext(RouteErrorContext);
+apps/web/node_modules/.vite/deps/react-router-dom.js:5828:  let state = useDataRouterState(
+apps/web/node_modules/.vite/deps/react-router-dom.js:5829:    "useRouteError"
+apps/web/node_modules/.vite/deps/react-router-dom.js:5830:    /* UseRouteError */
+apps/web/node_modules/.vite/deps/react-router-dom.js:5832:  let routeId = useCurrentRouteId(
+apps/web/node_modules/.vite/deps/react-router-dom.js:5833:    "useRouteError"
+apps/web/node_modules/.vite/deps/react-router-dom.js:5834:    /* UseRouteError */
+apps/web/node_modules/.vite/deps/react-router-dom.js:5851:  let { router: router2, basename } = useDataRouterContext(
+apps/web/node_modules/.vite/deps/react-router-dom.js:5855:  let state = useDataRouterState(
+apps/web/node_modules/.vite/deps/react-router-dom.js:5896:  let { router: router2 } = useDataRouterContext(
+apps/web/node_modules/.vite/deps/react-router-dom.js:5900:  let id = useCurrentRouteId(
+apps/web/node_modules/.vite/deps/react-router-dom.js:5915:        await router2.navigate(to, { fromRouteId: id, ...options });
+apps/web/node_modules/.vite/deps/react-router-dom.js:5936:function mapRouteProperties(route) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:5938:    // Note: this check also occurs in createRoutesFromChildren so update
+apps/web/node_modules/.vite/deps/react-router-dom.js:5986:var hydrationRouteProperties = [
+apps/web/node_modules/.vite/deps/react-router-dom.js:5990:function createMemoryRouter(routes, opts) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:5991:  return createRouter({
+apps/web/node_modules/.vite/deps/react-router-dom.js:6001:    hydrationRouteProperties,
+apps/web/node_modules/.vite/deps/react-router-dom.js:6002:    mapRouteProperties,
+apps/web/node_modules/.vite/deps/react-router-dom.js:6004:    patchRoutesOnNavigation: opts?.patchRoutesOnNavigation
+apps/web/node_modules/.vite/deps/react-router-dom.js:6042:function UNSTABLE_TransitionEnabledRouterProvider({
+apps/web/node_modules/.vite/deps/react-router-dom.js:6076:  let dataRouterContext = React3.useMemo(
+apps/web/node_modules/.vite/deps/react-router-dom.js:6111:  return React3.createElement(React3.Fragment, null, React3.createElement(DataRouterContext.Provider, { value: dataRouterContext }, React3.createElement(
+apps/web/node_modules/.vite/deps/react-router-dom.js:6112:    DataRouterStateContext.Provider,
+apps/web/node_modules/.vite/deps/react-router-dom.js:6120:      Router,
+apps/web/node_modules/.vite/deps/react-router-dom.js:6128:        MemoizedDataRoutes,
+apps/web/node_modules/.vite/deps/react-router-dom.js:6139:function RouterProvider({
+apps/web/node_modules/.vite/deps/react-router-dom.js:6178:        'You provided the `flushSync` option to a router update, but you are not using the `<RouterProvider>` from `react-router/dom` so `ReactDOM.flushSync()` is unavailable.  Please update your app to `import { RouterProvider } from "react-router/dom"` and ensure you have `react-dom` installed as a dependency to use the `flushSync` option.'
+apps/web/node_modules/.vite/deps/react-router-dom.js:6303:  let dataRouterContext = React3.useMemo(
+apps/web/node_modules/.vite/deps/react-router-dom.js:6313:  return React3.createElement(React3.Fragment, null, React3.createElement(DataRouterContext.Provider, { value: dataRouterContext }, React3.createElement(DataRouterStateContext.Provider, { value: state }, React3.createElement(FetchersContext.Provider, { value: fetcherData.current }, React3.createElement(ViewTransitionContext.Provider, { value: vtContext }, React3.createElement(
+apps/web/node_modules/.vite/deps/react-router-dom.js:6314:    Router,
+apps/web/node_modules/.vite/deps/react-router-dom.js:6322:      MemoizedDataRoutes,
+apps/web/node_modules/.vite/deps/react-router-dom.js:6332:var MemoizedDataRoutes = React3.memo(DataRoutes);
+apps/web/node_modules/.vite/deps/react-router-dom.js:6333:function DataRoutes({
+apps/web/node_modules/.vite/deps/react-router-dom.js:6339:  return useRoutesImpl(routes, void 0, state, unstable_onError, future);
+apps/web/node_modules/.vite/deps/react-router-dom.js:6341:function MemoryRouter({
+apps/web/node_modules/.vite/deps/react-router-dom.js:6368:    Router,
+apps/web/node_modules/.vite/deps/react-router-dom.js:6385:    useInRouterContext(),
+apps/web/node_modules/.vite/deps/react-router-dom.js:6388:    `<Navigate> may be used only in the context of a <Router> component.`
+apps/web/node_modules/.vite/deps/react-router-dom.js:6393:    `<Navigate> must not be used on the initial render in a <StaticRouter>. This is a no-op, but you should modify your code so the <Navigate> is only ever rendered in response to some user interaction or state change.`
+apps/web/node_modules/.vite/deps/react-router-dom.js:6395:  let { matches } = React3.useContext(RouteContext);
+apps/web/node_modules/.vite/deps/react-router-dom.js:6413:function Route(props) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:6416:    `A <Route> is only ever to be used as the child of <Routes> element, never rendered directly. Please wrap your <Route> in a <Routes>.`
+apps/web/node_modules/.vite/deps/react-router-dom.js:6419:function Router({
+apps/web/node_modules/.vite/deps/react-router-dom.js:6428:    !useInRouterContext(),
+apps/web/node_modules/.vite/deps/react-router-dom.js:6429:    `You cannot render a <Router> inside another <Router>. You should never have more than one in your app.`
+apps/web/node_modules/.vite/deps/react-router-dom.js:6469:    `<Router basename="${basename}"> is not able to match the URL "${pathname}${search}${hash}" because it does not start with the basename, so the <Router> won't render anything.`
+apps/web/node_modules/.vite/deps/react-router-dom.js:6476:function Routes({
+apps/web/node_modules/.vite/deps/react-router-dom.js:6480:  return useRoutes(createRoutesFromChildren(children), location2);
+apps/web/node_modules/.vite/deps/react-router-dom.js:6487:  let dataRouterContext = React3.useContext(DataRouterContext);
+apps/web/node_modules/.vite/deps/react-router-dom.js:6493:      unstable_onError: dataRouterContext?.unstable_onError
+apps/web/node_modules/.vite/deps/react-router-dom.js:6566:function createRoutesFromChildren(children, parentPath = []) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:6576:        createRoutesFromChildren(element.props.children, treePath)
+apps/web/node_modules/.vite/deps/react-router-dom.js:6581:      element.type === Route,
+apps/web/node_modules/.vite/deps/react-router-dom.js:6582:      `[${typeof element.type === "string" ? element.type : element.type.name}] is not a <Route> component. All component children of <Routes> must be a <Route> or <React.Fragment>`
+apps/web/node_modules/.vite/deps/react-router-dom.js:6608:      route.children = createRoutesFromChildren(
+apps/web/node_modules/.vite/deps/react-router-dom.js:6617:var createRoutesFromElements = createRoutesFromChildren;
+apps/web/node_modules/.vite/deps/react-router-dom.js:6621:function useRouteComponentProps() {
+apps/web/node_modules/.vite/deps/react-router-dom.js:6632:  const props = useRouteComponentProps();
+apps/web/node_modules/.vite/deps/react-router-dom.js:6637:    const props = useRouteComponentProps();
+apps/web/node_modules/.vite/deps/react-router-dom.js:6665:    error: useRouteError()
+apps/web/node_modules/.vite/deps/react-router-dom.js:7541:        __html: `window.__reactRouterContext.streamController.enqueue(${escapeHtml(
+apps/web/node_modules/.vite/deps/react-router-dom.js:7553:          __html: `window.__reactRouterContext.streamController.close();`
+apps/web/node_modules/.vite/deps/react-router-dom.js:7570:function getTurboStreamSingleFetchDataStrategy(getRouter, manifest, routeModules, ssr, basename) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:7572:    getRouter,
+apps/web/node_modules/.vite/deps/react-router-dom.js:7574:      let manifestRoute = manifest.routes[match.route.id];
+apps/web/node_modules/.vite/deps/react-router-dom.js:7575:      invariant2(manifestRoute, "Route not found in manifest");
+apps/web/node_modules/.vite/deps/react-router-dom.js:7578:        hasLoader: manifestRoute.hasLoader,
+apps/web/node_modules/.vite/deps/react-router-dom.js:7579:        hasClientLoader: manifestRoute.hasClientLoader,
+apps/web/node_modules/.vite/deps/react-router-dom.js:7589:function getSingleFetchDataStrategyImpl(getRouter, getRouteInfo, fetchAndDecode, ssr, basename, shouldAllowOptOut = () => true) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:7592:    let router2 = getRouter();
+apps/web/node_modules/.vite/deps/react-router-dom.js:7597:      let { hasLoader, hasClientLoader } = getRouteInfo(m);
+apps/web/node_modules/.vite/deps/react-router-dom.js:7601:      return nonSsrStrategy(args, getRouteInfo, fetchAndDecode, basename);
+apps/web/node_modules/.vite/deps/react-router-dom.js:7609:      getRouteInfo,
+apps/web/node_modules/.vite/deps/react-router-dom.js:7631:  if (isResponse(result.result) || isRouteErrorResponse(result.result) || isDataWithResponseInit(result.result)) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:7641:async function nonSsrStrategy(args, getRouteInfo, fetchAndDecode, basename) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:7650:          let { hasClientLoader } = getRouteInfo(m);
+apps/web/node_modules/.vite/deps/react-router-dom.js:7665:async function singleFetchLoaderNavigationStrategy(args, router2, getRouteInfo, fetchAndDecode, ssr, basename, shouldAllowOptOut = () => true) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:7667:  let foundOptOutRoute = false;
+apps/web/node_modules/.vite/deps/react-router-dom.js:7676:        let { hasLoader, hasClientLoader, hasShouldRevalidate } = getRouteInfo(m);
+apps/web/node_modules/.vite/deps/react-router-dom.js:7680:          foundOptOutRoute || (foundOptOutRoute = m.unstable_shouldRevalidateArgs != null && // This is a revalidation,
+apps/web/node_modules/.vite/deps/react-router-dom.js:7687:            foundOptOutRoute = true;
+apps/web/node_modules/.vite/deps/react-router-dom.js:7717:  if ((isInitialLoad || routesParams.size === 0) && !window.__reactRouterHdrActive) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:7720:    let targetRoutes = ssr && foundOptOutRoute && routesParams.size > 0 ? [...routesParams.keys()] : void 0;
+apps/web/node_modules/.vite/deps/react-router-dom.js:7722:      let data2 = await fetchAndDecode(args, basename, targetRoutes);
+apps/web/node_modules/.vite/deps/react-router-dom.js:7810:async function fetchAndDecodeViaTurboStream(args, basename, targetRoutes) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:7815:    if (targetRoutes) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:7816:      url.searchParams.set("_routes", targetRoutes.join(","));
+apps/web/node_modules/.vite/deps/react-router-dom.js:7839:    if (targetRoutes && request.method !== "GET") {
+apps/web/node_modules/.vite/deps/react-router-dom.js:7840:      routes[targetRoutes[0]] = { data: void 0 };
+apps/web/node_modules/.vite/deps/react-router-dom.js:7860:      let routeId = targetRoutes?.[0];
+apps/web/node_modules/.vite/deps/react-router-dom.js:7965:async function loadRouteModule(route, routeModulesCache) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:7982:    if (window.__reactRouterContext && window.__reactRouterContext.isSpaMode && // @ts-expect-error
+apps/web/node_modules/.vite/deps/react-router-dom.js:8003:function getRouteCssDescriptors(route) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:8007:async function prefetchRouteCss(route) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:8009:  let descriptors = getRouteCssDescriptors(route);
+apps/web/node_modules/.vite/deps/react-router-dom.js:8016:    descriptors.push(...getRouteCssDescriptors(route));
+apps/web/node_modules/.vite/deps/react-router-dom.js:8076:        let mod = await loadRouteModule(route, routeModules);
+apps/web/node_modules/.vite/deps/react-router-dom.js:8108:      let manifestRoute = manifest.routes[match.route.id];
+apps/web/node_modules/.vite/deps/react-router-dom.js:8109:      if (!manifestRoute || !manifestRoute.hasLoader) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:8211:function groupRoutesByParentId(manifest) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:8224:function getRouteComponents(route, routeModule, isSpaMode) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:8225:  let Component4 = getRouteModuleComponent(routeModule);
+apps/web/node_modules/.vite/deps/react-router-dom.js:8227:  let ErrorBoundary = routeModule.ErrorBoundary ? routeModule.ErrorBoundary : route.id === "root" ? () => React6.createElement(RemixRootDefaultErrorBoundary, { error: useRouteError() }) : void 0;
+apps/web/node_modules/.vite/deps/react-router-dom.js:8243:function createServerRoutes(manifest, routeModules, future, isSpaMode, parentId = "", routesByParentId = groupRoutesByParentId(manifest), spaModeLazyPromise = Promise.resolve({ Component: () => null })) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:8250:    let dataRoute = {
+apps/web/node_modules/.vite/deps/react-router-dom.js:8251:      ...getRouteComponents(route, routeModule, isSpaMode),
+apps/web/node_modules/.vite/deps/react-router-dom.js:8270:    let children = createServerRoutes(
+apps/web/node_modules/.vite/deps/react-router-dom.js:8279:    if (children.length > 0) dataRoute.children = children;
+apps/web/node_modules/.vite/deps/react-router-dom.js:8280:    return dataRoute;
+apps/web/node_modules/.vite/deps/react-router-dom.js:8283:function createClientRoutesWithHMRRevalidationOptOut(needsRevalidation, manifest, routeModulesCache, initialState, ssr, isSpaMode) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:8284:  return createClientRoutes(
+apps/web/node_modules/.vite/deps/react-router-dom.js:8291:    groupRoutesByParentId(manifest),
+apps/web/node_modules/.vite/deps/react-router-dom.js:8305:  let msg = `Route "${routeId}" does not have ${article} ${type}, but you are trying to submit to it. To fix this, please add ${article} \`${type}\` function to the route`;
+apps/web/node_modules/.vite/deps/react-router-dom.js:8309:function createClientRoutes(manifest, routeModulesCache, initialState, ssr, isSpaMode, parentId = "", routesByParentId = groupRoutesByParentId(manifest), needsRevalidation) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:8336:    function prefetchRouteModuleChunks(route2) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:8353:    let dataRoute = {
+apps/web/node_modules/.vite/deps/react-router-dom.js:8359:      Object.assign(dataRoute, {
+apps/web/node_modules/.vite/deps/react-router-dom.js:8360:        ...dataRoute,
+apps/web/node_modules/.vite/deps/react-router-dom.js:8361:        ...getRouteComponents(route, routeModule, isSpaMode),
+apps/web/node_modules/.vite/deps/react-router-dom.js:8365:          dataRoute.path,
+apps/web/node_modules/.vite/deps/react-router-dom.js:8377:      dataRoute.loader = async ({ request, params, context }, singleFetch) => {
+apps/web/node_modules/.vite/deps/react-router-dom.js:8410:      dataRoute.loader.hydrate = shouldHydrateRouteLoader(
+apps/web/node_modules/.vite/deps/react-router-dom.js:8416:      dataRoute.action = ({ request, params, context }, singleFetch) => {
+apps/web/node_modules/.vite/deps/react-router-dom.js:8441:        dataRoute.loader = (_, singleFetch) => prefetchStylesAndCallHandler(() => {
+apps/web/node_modules/.vite/deps/react-router-dom.js:8446:        dataRoute.action = (_, singleFetch) => prefetchStylesAndCallHandler(() => {
+apps/web/node_modules/.vite/deps/react-router-dom.js:8453:      let lazyRoutePromise;
+apps/web/node_modules/.vite/deps/react-router-dom.js:8454:      async function getLazyRoute() {
+apps/web/node_modules/.vite/deps/react-router-dom.js:8455:        if (lazyRoutePromise) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:8456:          return await lazyRoutePromise;
+apps/web/node_modules/.vite/deps/react-router-dom.js:8458:        lazyRoutePromise = (async () => {
+apps/web/node_modules/.vite/deps/react-router-dom.js:8462:          let routeModulePromise = loadRouteModuleWithBlockingLinks(
+apps/web/node_modules/.vite/deps/react-router-dom.js:8466:          prefetchRouteModuleChunks(route);
+apps/web/node_modules/.vite/deps/react-router-dom.js:8469:        return await lazyRoutePromise;
+apps/web/node_modules/.vite/deps/react-router-dom.js:8471:      dataRoute.lazy = {
+apps/web/node_modules/.vite/deps/react-router-dom.js:8477:          ) : await getLazyRoute();
+apps/web/node_modules/.vite/deps/react-router-dom.js:8492:          ) : getLazyRoute();
+apps/web/node_modules/.vite/deps/react-router-dom.js:8493:          prefetchRouteModuleChunks(route);
+apps/web/node_modules/.vite/deps/react-router-dom.js:8509:          ) : await getLazyRoute();
+apps/web/node_modules/.vite/deps/react-router-dom.js:8514:          let lazyRoute = await getLazyRoute();
+apps/web/node_modules/.vite/deps/react-router-dom.js:8516:            dataRoute.path,
+apps/web/node_modules/.vite/deps/react-router-dom.js:8517:            lazyRoute,
+apps/web/node_modules/.vite/deps/react-router-dom.js:8523:        handle: async () => (await getLazyRoute()).handle,
+apps/web/node_modules/.vite/deps/react-router-dom.js:8526:        Component: async () => (await getLazyRoute()).Component,
+apps/web/node_modules/.vite/deps/react-router-dom.js:8527:        ErrorBoundary: route.hasErrorBoundary ? async () => (await getLazyRoute()).ErrorBoundary : void 0
+apps/web/node_modules/.vite/deps/react-router-dom.js:8530:    let children = createClientRoutes(
+apps/web/node_modules/.vite/deps/react-router-dom.js:8540:    if (children.length > 0) dataRoute.children = children;
+apps/web/node_modules/.vite/deps/react-router-dom.js:8541:    return dataRoute;
+apps/web/node_modules/.vite/deps/react-router-dom.js:8544:function getShouldRevalidateFunction(path, route, manifestRoute, ssr, needsRevalidation) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:8547:      manifestRoute.id,
+apps/web/node_modules/.vite/deps/react-router-dom.js:8552:  if (!ssr && manifestRoute.hasLoader && !manifestRoute.hasClientLoader) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:8581:async function loadRouteModuleWithBlockingLinks(route, routeModules) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:8582:  let routeModulePromise = loadRouteModule(route, routeModules);
+apps/web/node_modules/.vite/deps/react-router-dom.js:8583:  let prefetchRouteCssPromise = prefetchRouteCss(route);
+apps/web/node_modules/.vite/deps/react-router-dom.js:8586:    prefetchRouteCssPromise,
+apps/web/node_modules/.vite/deps/react-router-dom.js:8590:    Component: getRouteModuleComponent(routeModule),
+apps/web/node_modules/.vite/deps/react-router-dom.js:8601:function getRouteModuleComponent(routeModule) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:8608:function shouldHydrateRouteLoader(routeId, clientLoader, hasLoader, isSpaMode) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:8628:    let matches = matchRoutes(router2.routes, path, router2.basename);
+apps/web/node_modules/.vite/deps/react-router-dom.js:8633:  let initialRoutes = [...routeIds].reduce(
+apps/web/node_modules/.vite/deps/react-router-dom.js:8639:    routes: initialRoutes,
+apps/web/node_modules/.vite/deps/react-router-dom.js:8643:function getPatchRoutesOnNavigationFunction(manifest, routeModules, ssr, routeDiscovery, isSpaMode, basename) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:8703:          router2.patchRoutes
+apps/web/node_modules/.vite/deps/react-router-dom.js:8729:async function fetchAndApplyManifestPatches(paths, errorReloadPath, manifest, routeModules, ssr, isSpaMode, basename, manifestPath, patchRoutes, signal) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:8780:  let knownRoutes = new Set(Object.keys(manifest.routes));
+apps/web/node_modules/.vite/deps/react-router-dom.js:8782:    if (route && !knownRoutes.has(route.id)) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:8796:    (parentId) => patchRoutes(
+apps/web/node_modules/.vite/deps/react-router-dom.js:8798:      createClientRoutes(patches, routeModules, null, ssr, isSpaMode, parentId)
+apps/web/node_modules/.vite/deps/react-router-dom.js:8816:function useDataRouterContext2() {
+apps/web/node_modules/.vite/deps/react-router-dom.js:8817:  let context = React8.useContext(DataRouterContext);
+apps/web/node_modules/.vite/deps/react-router-dom.js:8820:    "You must render this element inside a <DataRouterContext.Provider> element"
+apps/web/node_modules/.vite/deps/react-router-dom.js:8824:function useDataRouterStateContext() {
+apps/web/node_modules/.vite/deps/react-router-dom.js:8825:  let context = React8.useContext(DataRouterStateContext);
+apps/web/node_modules/.vite/deps/react-router-dom.js:8828:    "You must render this element inside a <DataRouterStateContext.Provider> element"
+apps/web/node_modules/.vite/deps/react-router-dom.js:8838:    "You must render this element inside a <HydratedRouter> element"
+apps/web/node_modules/.vite/deps/react-router-dom.js:8921:  let { errors, matches: routerMatches } = useDataRouterStateContext();
+apps/web/node_modules/.vite/deps/react-router-dom.js:8946:  let { router: router2 } = useDataRouterContext2();
+apps/web/node_modules/.vite/deps/react-router-dom.js:8948:    () => matchRoutes(router2.routes, page, router2.basename),
+apps/web/node_modules/.vite/deps/react-router-dom.js:8981:  let { basename } = useDataRouterContext2();
+apps/web/node_modules/.vite/deps/react-router-dom.js:8982:  let { loaderData, matches } = useDataRouterStateContext();
+apps/web/node_modules/.vite/deps/react-router-dom.js:9010:    let foundOptOutRoute = false;
+apps/web/node_modules/.vite/deps/react-router-dom.js:9012:      let manifestRoute = manifest.routes[m.route.id];
+apps/web/node_modules/.vite/deps/react-router-dom.js:9013:      if (!manifestRoute || !manifestRoute.hasLoader) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:9017:        foundOptOutRoute = true;
+apps/web/node_modules/.vite/deps/react-router-dom.js:9018:      } else if (manifestRoute.hasClientLoader) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:9019:        foundOptOutRoute = true;
+apps/web/node_modules/.vite/deps/react-router-dom.js:9028:    if (foundOptOutRoute && routesParams.size > 0) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:9062:  } = useDataRouterStateContext();
+apps/web/node_modules/.vite/deps/react-router-dom.js:9172:  let { router: router2, static: isStatic, staticContext } = useDataRouterContext2();
+apps/web/node_modules/.vite/deps/react-router-dom.js:9173:  let { matches: routerMatches } = useDataRouterStateContext();
+apps/web/node_modules/.vite/deps/react-router-dom.js:9174:  let isRSCRouterContext = useIsRSCRouterContext();
+apps/web/node_modules/.vite/deps/react-router-dom.js:9184:    if (isRSCRouterContext) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:9187:    let streamScript = "window.__reactRouterContext.stream = new ReadableStream({start(controller){window.__reactRouterContext.streamController = controller;}}).pipeThrough(new TextEncoderStream());";
+apps/web/node_modules/.vite/deps/react-router-dom.js:9188:    let contextScript = staticContext ? `window.__reactRouterContext = ${serverHandoffString};${streamScript}` : " ";
+apps/web/node_modules/.vite/deps/react-router-dom.js:9193:      invariant2(manifestEntry, `Route ${match.route.id} not found in manifest`);
+apps/web/node_modules/.vite/deps/react-router-dom.js:9237:      `window.__reactRouterManifest = ${JSON.stringify(
+apps/web/node_modules/.vite/deps/react-router-dom.js:9243:  window.__reactRouterRouteModules = {${matches.map((match, index) => `${JSON.stringify(match.route.id)}:route${index}`).join(",")}};
+apps/web/node_modules/.vite/deps/react-router-dom.js:9265:  let preloads = isHydrated || isRSCRouterContext ? [] : dedupe(
+apps/web/node_modules/.vite/deps/react-router-dom.js:9274:    !isRSCRouterContext,
+apps/web/node_modules/.vite/deps/react-router-dom.js:9277:  return isHydrated || isRSCRouterContext ? null : React8.createElement(React8.Fragment, null, typeof manifest.sri === "object" ? React8.createElement(
+apps/web/node_modules/.vite/deps/react-router-dom.js:9378:  if (isRouteErrorResponse(error)) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:9431:    window.__reactRouterVersion = // @ts-expect-error
+apps/web/node_modules/.vite/deps/react-router-dom.js:9436:function createBrowserRouter(routes, opts) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:9437:  return createRouter({
+apps/web/node_modules/.vite/deps/react-router-dom.js:9444:    mapRouteProperties,
+apps/web/node_modules/.vite/deps/react-router-dom.js:9445:    hydrationRouteProperties,
+apps/web/node_modules/.vite/deps/react-router-dom.js:9447:    patchRoutesOnNavigation: opts?.patchRoutesOnNavigation,
+apps/web/node_modules/.vite/deps/react-router-dom.js:9451:function createHashRouter(routes, opts) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:9452:  return createRouter({
+apps/web/node_modules/.vite/deps/react-router-dom.js:9459:    mapRouteProperties,
+apps/web/node_modules/.vite/deps/react-router-dom.js:9460:    hydrationRouteProperties,
+apps/web/node_modules/.vite/deps/react-router-dom.js:9462:    patchRoutesOnNavigation: opts?.patchRoutesOnNavigation,
+apps/web/node_modules/.vite/deps/react-router-dom.js:9467:  let state = window?.__staticRouterHydrationData;
+apps/web/node_modules/.vite/deps/react-router-dom.js:9481:    if (val && val.__type === "RouteErrorResponse") {
+apps/web/node_modules/.vite/deps/react-router-dom.js:9511:function BrowserRouter({
+apps/web/node_modules/.vite/deps/react-router-dom.js:9533:    Router,
+apps/web/node_modules/.vite/deps/react-router-dom.js:9543:function HashRouter({ basename, children, window: window2 }) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:9561:    Router,
+apps/web/node_modules/.vite/deps/react-router-dom.js:9571:function HistoryRouter({
+apps/web/node_modules/.vite/deps/react-router-dom.js:9588:    Router,
+apps/web/node_modules/.vite/deps/react-router-dom.js:9598:HistoryRouter.displayName = "unstable_HistoryRouter";
+apps/web/node_modules/.vite/deps/react-router-dom.js:9691:    let routerState = React10.useContext(DataRouterStateContext);
+apps/web/node_modules/.vite/deps/react-router-dom.js:9853:function getDataRouterConsoleError2(hookName) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:9856:function useDataRouterContext3(hookName) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:9857:  let ctx = React10.useContext(DataRouterContext);
+apps/web/node_modules/.vite/deps/react-router-dom.js:9858:  invariant(ctx, getDataRouterConsoleError2(hookName));
+apps/web/node_modules/.vite/deps/react-router-dom.js:9861:function useDataRouterState2(hookName) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:9862:  let state = React10.useContext(DataRouterStateContext);
+apps/web/node_modules/.vite/deps/react-router-dom.js:9863:  invariant(state, getDataRouterConsoleError2(hookName));
+apps/web/node_modules/.vite/deps/react-router-dom.js:9941:  let { router: router2 } = useDataRouterContext3(
+apps/web/node_modules/.vite/deps/react-router-dom.js:9946:  let currentRouteId = useRouteId();
+apps/web/node_modules/.vite/deps/react-router-dom.js:9955:        await router2.fetch(key, currentRouteId, options.action || action, {
+apps/web/node_modules/.vite/deps/react-router-dom.js:9972:          fromRouteId: currentRouteId,
+apps/web/node_modules/.vite/deps/react-router-dom.js:9978:    [router2, basename, currentRouteId]
+apps/web/node_modules/.vite/deps/react-router-dom.js:9983:  let routeContext = React10.useContext(RouteContext);
+apps/web/node_modules/.vite/deps/react-router-dom.js:9984:  invariant(routeContext, "useFormAction must be used inside a RouteContext");
+apps/web/node_modules/.vite/deps/react-router-dom.js:10011:  let { router: router2 } = useDataRouterContext3(
+apps/web/node_modules/.vite/deps/react-router-dom.js:10015:  let state = useDataRouterState2(
+apps/web/node_modules/.vite/deps/react-router-dom.js:10020:  let route = React10.useContext(RouteContext);
+apps/web/node_modules/.vite/deps/react-router-dom.js:10023:  invariant(route, `useFetcher must be used inside a RouteContext`);
+apps/web/node_modules/.vite/deps/react-router-dom.js:10081:  let state = useDataRouterState2(
+apps/web/node_modules/.vite/deps/react-router-dom.js:10116:  let { router: router2 } = useDataRouterContext3(
+apps/web/node_modules/.vite/deps/react-router-dom.js:10120:  let { restoreScrollPosition, preventScrollReset } = useDataRouterState2(
+apps/web/node_modules/.vite/deps/react-router-dom.js:10252:    "`useViewTransitionState` must be used within `react-router-dom`'s `RouterProvider`.  Did you accidentally import `RouterProvider` from `react-router`?"
+apps/web/node_modules/.vite/deps/react-router-dom.js:10254:  let { basename } = useDataRouterContext3(
+apps/web/node_modules/.vite/deps/react-router-dom.js:10266:function StaticRouter({
+apps/web/node_modules/.vite/deps/react-router-dom.js:10284:    Router,
+apps/web/node_modules/.vite/deps/react-router-dom.js:10295:function StaticRouterProvider({
+apps/web/node_modules/.vite/deps/react-router-dom.js:10303:    "You must provide `router` and `context` to <StaticRouterProvider>"
+apps/web/node_modules/.vite/deps/react-router-dom.js:10305:  let dataRouterContext = {
+apps/web/node_modules/.vite/deps/react-router-dom.js:10321:    hydrateScript = `window.__staticRouterHydrationData = JSON.parse(${json});`;
+apps/web/node_modules/.vite/deps/react-router-dom.js:10323:  let { state } = dataRouterContext.router;
+apps/web/node_modules/.vite/deps/react-router-dom.js:10324:  return React11.createElement(React11.Fragment, null, React11.createElement(DataRouterContext.Provider, { value: dataRouterContext }, React11.createElement(DataRouterStateContext.Provider, { value: state }, React11.createElement(FetchersContext.Provider, { value: fetchersContext }, React11.createElement(ViewTransitionContext.Provider, { value: { isTransitioning: false } }, React11.createElement(
+apps/web/node_modules/.vite/deps/react-router-dom.js:10325:    Router,
+apps/web/node_modules/.vite/deps/react-router-dom.js:10327:      basename: dataRouterContext.basename,
+apps/web/node_modules/.vite/deps/react-router-dom.js:10330:      navigator: dataRouterContext.navigator,
+apps/web/node_modules/.vite/deps/react-router-dom.js:10331:      static: dataRouterContext.static
+apps/web/node_modules/.vite/deps/react-router-dom.js:10334:      DataRoutes2,
+apps/web/node_modules/.vite/deps/react-router-dom.js:10350:function DataRoutes2({
+apps/web/node_modules/.vite/deps/react-router-dom.js:10355:  return useRoutesImpl(routes, void 0, state, void 0, future);
+apps/web/node_modules/.vite/deps/react-router-dom.js:10362:    if (isRouteErrorResponse(val)) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:10363:      serialized[key] = { ...val, __type: "RouteErrorResponse" };
+apps/web/node_modules/.vite/deps/react-router-dom.js:10414:    mapRouteProperties
+apps/web/node_modules/.vite/deps/react-router-dom.js:10417:function createStaticRouter(routes, context, opts = {}) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:10419:  let dataRoutes = convertRoutesToDataRoutes(
+apps/web/node_modules/.vite/deps/react-router-dom.js:10421:    mapRouteProperties,
+apps/web/node_modules/.vite/deps/react-router-dom.js:10461:      return dataRoutes;
+apps/web/node_modules/.vite/deps/react-router-dom.js:10504:    patchRoutes() {
+apps/web/node_modules/.vite/deps/react-router-dom.js:10505:      throw msg("patchRoutes");
+apps/web/node_modules/.vite/deps/react-router-dom.js:10508:    _internalSetRoutes() {
+apps/web/node_modules/.vite/deps/react-router-dom.js:10509:      throw msg("_internalSetRoutes");
+apps/web/node_modules/.vite/deps/react-router-dom.js:10551:function ServerRouter({
+apps/web/node_modules/.vite/deps/react-router-dom.js:10560:  let routes = createServerRoutes(
+apps/web/node_modules/.vite/deps/react-router-dom.js:10572:    let manifestRoute = context.manifest.routes[routeId];
+apps/web/node_modules/.vite/deps/react-router-dom.js:10573:    if (route && manifestRoute && shouldHydrateRouteLoader(
+apps/web/node_modules/.vite/deps/react-router-dom.js:10576:      manifestRoute.hasLoader,
+apps/web/node_modules/.vite/deps/react-router-dom.js:10578:    ) && (route.HydrateFallback || !manifestRoute.hasLoader)) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:10582:  let router2 = createStaticRouter(routes, context.staticHandlerContext);
+apps/web/node_modules/.vite/deps/react-router-dom.js:10600:      StaticRouterProvider,
+apps/web/node_modules/.vite/deps/react-router-dom.js:10618:function createRoutesStub(routes, _context) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:10619:  return function RoutesTestStub({
+apps/web/node_modules/.vite/deps/react-router-dom.js:10644:      let patched = processRoutes(
+apps/web/node_modules/.vite/deps/react-router-dom.js:10645:        // @ts-expect-error `StubRouteObject` is stricter about `loader`/`action`
+apps/web/node_modules/.vite/deps/react-router-dom.js:10646:        // types compared to `AgnosticRouteObject`
+apps/web/node_modules/.vite/deps/react-router-dom.js:10647:        convertRoutesToDataRoutes(routes, (r) => r),
+apps/web/node_modules/.vite/deps/react-router-dom.js:10648:        _context !== void 0 ? _context : future?.v8_middleware ? new RouterContextProvider() : {},
+apps/web/node_modules/.vite/deps/react-router-dom.js:10652:      routerRef.current = createMemoryRouter(patched, {
+apps/web/node_modules/.vite/deps/react-router-dom.js:10658:    return React22.createElement(FrameworkContext.Provider, { value: frameworkContextRef.current }, React22.createElement(RouterProvider, { router: routerRef.current }));
+apps/web/node_modules/.vite/deps/react-router-dom.js:10661:function processRoutes(routes, context, manifest, routeModules, parentId) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:10665:        "Expected a route.id in react-router processRoutes() function"
+apps/web/node_modules/.vite/deps/react-router-dom.js:10668:    let newRoute = {
+apps/web/node_modules/.vite/deps/react-router-dom.js:10686:    let entryRoute = {
+apps/web/node_modules/.vite/deps/react-router-dom.js:10707:    manifest.routes[newRoute.id] = entryRoute;
+apps/web/node_modules/.vite/deps/react-router-dom.js:10709:      default: newRoute.Component || Outlet,
+apps/web/node_modules/.vite/deps/react-router-dom.js:10710:      ErrorBoundary: newRoute.ErrorBoundary || void 0,
+apps/web/node_modules/.vite/deps/react-router-dom.js:10717:      newRoute.children = processRoutes(
+apps/web/node_modules/.vite/deps/react-router-dom.js:10722:        newRoute.id
+apps/web/node_modules/.vite/deps/react-router-dom.js:10725:    return newRoute;
+apps/web/node_modules/.vite/deps/react-router-dom.js:10902:function createEntryRouteModules(manifest) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:10945:    if (isRouteErrorResponse(val)) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:10946:      serialized[key] = { ...val, __type: "RouteErrorResponse" };
+apps/web/node_modules/.vite/deps/react-router-dom.js:10967:function matchServerRoutes(routes, pathname, basename) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:10968:  let matches = matchRoutes(
+apps/web/node_modules/.vite/deps/react-router-dom.js:10980:async function callRouteHandler(handler, args) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:10982:    request: stripRoutesParam(stripIndexParam2(args.request)),
+apps/web/node_modules/.vite/deps/react-router-dom.js:11015:function stripRoutesParam(request) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:11032:      "The following error is a bug in React Router; please open an issue! https://github.com/remix-run/react-router/issues/new/choose"
+apps/web/node_modules/.vite/deps/react-router-dom.js:11037:var globalDevServerHooksKey = "__reactRouterDevServerHooks";
+apps/web/node_modules/.vite/deps/react-router-dom.js:11055:function groupRoutesByParentId2(manifest) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:11068:function createRoutes(manifest, parentId = "", routesByParentId = groupRoutesByParentId2(manifest)) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:11071:    children: createRoutes(manifest, route.id, routesByParentId)
+apps/web/node_modules/.vite/deps/react-router-dom.js:11074:function createStaticHandlerDataRoutes(manifest, future, parentId = "", routesByParentId = groupRoutesByParentId2(manifest)) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:11076:    let commonRoute = {
+apps/web/node_modules/.vite/deps/react-router-dom.js:11087:          "X-React-Router-Prerender-Data"
+apps/web/node_modules/.vite/deps/react-router-dom.js:11124:        let val = await callRouteHandler(route.module.loader, args);
+apps/web/node_modules/.vite/deps/react-router-dom.js:11127:      action: route.module.action ? (args) => callRouteHandler(route.module.action, args) : void 0,
+apps/web/node_modules/.vite/deps/react-router-dom.js:11132:      ...commonRoute
+apps/web/node_modules/.vite/deps/react-router-dom.js:11135:      children: createStaticHandlerDataRoutes(
+apps/web/node_modules/.vite/deps/react-router-dom.js:11141:      ...commonRoute
+apps/web/node_modules/.vite/deps/react-router-dom.js:11151:    invariant22(route, `Route with id "${m.route.id}" not found in build`);
+apps/web/node_modules/.vite/deps/react-router-dom.js:11155:function getDocumentHeadersImpl(context, getRouteHeadersFn, _defaultHeaders) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:11178:    let headersFn = getRouteHeadersFn(match);
+apps/web/node_modules/.vite/deps/react-router-dom.js:11265:        if (!isRouteErrorResponse(err) || err.error) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:11288:  let loadRouteIds = routesParam ? new Set(routesParam.split(",")) : null;
+apps/web/node_modules/.vite/deps/react-router-dom.js:11296:      filterMatchesToLoad: (m) => !loadRouteIds || loadRouteIds.has(m.route.id),
+apps/web/node_modules/.vite/deps/react-router-dom.js:11329:        if (!isRouteErrorResponse(err) || err.error) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:11338:        (m) => loadRouteIds ? loadRouteIds.has(m.route.id) : m.route.loader != null
+apps/web/node_modules/.vite/deps/react-router-dom.js:11458:  let routes = createRoutes(build.routes);
+apps/web/node_modules/.vite/deps/react-router-dom.js:11459:  let dataRoutes = createStaticHandlerDataRoutes(build.routes, build.future);
+apps/web/node_modules/.vite/deps/react-router-dom.js:11461:  let staticHandler = createStaticHandler(dataRoutes, {
+apps/web/node_modules/.vite/deps/react-router-dom.js:11468:        isRouteErrorResponse(error) && error.error ? error.error : error
+apps/web/node_modules/.vite/deps/react-router-dom.js:11474:    dataRoutes,
+apps/web/node_modules/.vite/deps/react-router-dom.js:11514:      if (initialContext && !(initialContext instanceof RouterContextProvider)) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:11516:          "Invalid `context` value provided to `handleRequest`. When middleware is enabled you must return an instance of `RouterContextProvider` from your `getLoadContext` function."
+apps/web/node_modules/.vite/deps/react-router-dom.js:11521:      loadContext = initialContext || new RouterContextProvider();
+apps/web/node_modules/.vite/deps/react-router-dom.js:11536:    let isSpaMode = getBuildTimeHeader(request, "X-React-Router-SPA-Mode") === "yes";
+apps/web/node_modules/.vite/deps/react-router-dom.js:11599:    let matches = matchServerRoutes(routes, normalizedPath, _build.basename);
+apps/web/node_modules/.vite/deps/react-router-dom.js:11607:      let singleFetchMatches = matchServerRoutes(
+apps/web/node_modules/.vite/deps/react-router-dom.js:11708:      let matches = matchServerRoutes(routes, path, build.basename);
+apps/web/node_modules/.vite/deps/react-router-dom.js:11779:        if (!isRouteErrorResponse(err) || err.error) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:11799:      routeModules: createEntryRouteModules(build.routes),
+apps/web/node_modules/.vite/deps/react-router-dom.js:11843:        staticHandler.dataRoutes,
+apps/web/node_modules/.vite/deps/react-router-dom.js:11884:    let result = await staticHandler.queryRoute(request, {
+apps/web/node_modules/.vite/deps/react-router-dom.js:11887:      generateMiddlewareResponse: build.future.v8_middleware ? async (queryRoute) => {
+apps/web/node_modules/.vite/deps/react-router-dom.js:11889:          let innerResult = await queryRoute(request);
+apps/web/node_modules/.vite/deps/react-router-dom.js:11890:          return handleQueryRouteResult(innerResult);
+apps/web/node_modules/.vite/deps/react-router-dom.js:11892:          return handleQueryRouteError(error);
+apps/web/node_modules/.vite/deps/react-router-dom.js:11896:    return handleQueryRouteResult(result);
+apps/web/node_modules/.vite/deps/react-router-dom.js:11898:    return handleQueryRouteError(error);
+apps/web/node_modules/.vite/deps/react-router-dom.js:11900:  function handleQueryRouteResult(result) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:11909:  function handleQueryRouteError(error) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:11913:    if (isRouteErrorResponse(error)) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:11917:    if (error instanceof Error && error.message === "Expected a response from queryRoute") {
+apps/web/node_modules/.vite/deps/react-router-dom.js:12120:  getRouteInfo,
+apps/web/node_modules/.vite/deps/react-router-dom.js:12129:  let initialMatches = matchRoutes(routes, location2, basename);
+apps/web/node_modules/.vite/deps/react-router-dom.js:12133:      let routeInfo = getRouteInfo(routeId);
+apps/web/node_modules/.vite/deps/react-router-dom.js:12134:      if (shouldHydrateRouteLoader(
+apps/web/node_modules/.vite/deps/react-router-dom.js:12148:var RSCRouterGlobalErrorBoundary = class extends import_react.default.Component {
+apps/web/node_modules/.vite/deps/react-router-dom.js:12209:  if (isRouteErrorResponse(error)) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:12243:  let error = useRouteError();
+apps/web/node_modules/.vite/deps/react-router-dom.js:12255:function createRSCRouteModules(payload) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:12258:    populateRSCRouteModules(routeModules, match);
+apps/web/node_modules/.vite/deps/react-router-dom.js:12262:function populateRSCRouteModules(routeModules, matches) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:12301:    globalVar.__reactRouterDataRouter.__setPendingRerender(
+apps/web/node_modules/.vite/deps/react-router-dom.js:12310:            globalVar.__reactRouterDataRouter.navigate(payload.location, {
+apps/web/node_modules/.vite/deps/react-router-dom.js:12326:              globalVar.__reactRouterDataRouter.navigate(rerender.location, {
+apps/web/node_modules/.vite/deps/react-router-dom.js:12334:              globalVar.__reactRouterDataRouter.patchRoutes(
+apps/web/node_modules/.vite/deps/react-router-dom.js:12336:                [createRouteFromServerManifest(match)],
+apps/web/node_modules/.vite/deps/react-router-dom.js:12341:            window.__reactRouterDataRouter._internalSetStateDoNotUseOrYouWillBreakYourApp(
+apps/web/node_modules/.vite/deps/react-router-dom.js:12345:                  globalVar.__reactRouterDataRouter.state.loaderData,
+apps/web/node_modules/.vite/deps/react-router-dom.js:12350:                  globalVar.__reactRouterDataRouter.state.errors,
+apps/web/node_modules/.vite/deps/react-router-dom.js:12370:function createRouterFromPayload({
+apps/web/node_modules/.vite/deps/react-router-dom.js:12377:  if (globalVar.__reactRouterDataRouter && globalVar.__reactRouterRouteModules)
+apps/web/node_modules/.vite/deps/react-router-dom.js:12379:      router: globalVar.__reactRouterDataRouter,
+apps/web/node_modules/.vite/deps/react-router-dom.js:12380:      routeModules: globalVar.__reactRouterRouteModules
+apps/web/node_modules/.vite/deps/react-router-dom.js:12383:  globalVar.__reactRouterRouteModules = globalVar.__reactRouterRouteModules ?? {};
+apps/web/node_modules/.vite/deps/react-router-dom.js:12384:  populateRSCRouteModules(globalVar.__reactRouterRouteModules, payload.matches);
+apps/web/node_modules/.vite/deps/react-router-dom.js:12394:    const route = createRouteFromServerManifest(
+apps/web/node_modules/.vite/deps/react-router-dom.js:12403:          ...childrenToPatch.map((r) => createRouteFromServerManifest(r))
+apps/web/node_modules/.vite/deps/react-router-dom.js:12409:  globalVar.__reactRouterDataRouter = createRouter({
+apps/web/node_modules/.vite/deps/react-router-dom.js:12421:      getRouteInfo: (routeId) => {
+apps/web/node_modules/.vite/deps/react-router-dom.js:12423:        invariant(match, "Route not found in payload");
+apps/web/node_modules/.vite/deps/react-router-dom.js:12434:    async patchRoutesOnNavigation({ path, signal }) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:12447:      () => globalVar.__reactRouterDataRouter,
+apps/web/node_modules/.vite/deps/react-router-dom.js:12454:  if (globalVar.__reactRouterDataRouter.state.initialized) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:12456:    globalVar.__reactRouterDataRouter.initialize();
+apps/web/node_modules/.vite/deps/react-router-dom.js:12461:  globalVar.__reactRouterDataRouter.subscribe(({ loaderData, actionData }) => {
+apps/web/node_modules/.vite/deps/react-router-dom.js:12466:  globalVar.__reactRouterDataRouter._updateRoutesForHMR = (routeUpdateByRouteId) => {
+apps/web/node_modules/.vite/deps/react-router-dom.js:12467:    const oldRoutes = window.__reactRouterDataRouter.routes;
+apps/web/node_modules/.vite/deps/react-router-dom.js:12468:    const newRoutes = [];
+apps/web/node_modules/.vite/deps/react-router-dom.js:12469:    function walkRoutes(routes2, parentId) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:12471:        const routeUpdate = routeUpdateByRouteId.get(route.id);
+apps/web/node_modules/.vite/deps/react-router-dom.js:12480:          const newRoute = createRouteFromServerManifest({
+apps/web/node_modules/.vite/deps/react-router-dom.js:12500:            newRoute.children = walkRoutes(route.children, route.id);
+apps/web/node_modules/.vite/deps/react-router-dom.js:12502:          return newRoute;
+apps/web/node_modules/.vite/deps/react-router-dom.js:12504:        const updatedRoute = { ...route };
+apps/web/node_modules/.vite/deps/react-router-dom.js:12506:          updatedRoute.children = walkRoutes(route.children, route.id);
+apps/web/node_modules/.vite/deps/react-router-dom.js:12508:        return updatedRoute;
+apps/web/node_modules/.vite/deps/react-router-dom.js:12511:    newRoutes.push(
+apps/web/node_modules/.vite/deps/react-router-dom.js:12512:      ...walkRoutes(oldRoutes, void 0)
+apps/web/node_modules/.vite/deps/react-router-dom.js:12514:    window.__reactRouterDataRouter._internalSetRoutes(newRoutes);
+apps/web/node_modules/.vite/deps/react-router-dom.js:12517:    router: globalVar.__reactRouterDataRouter,
+apps/web/node_modules/.vite/deps/react-router-dom.js:12518:    routeModules: globalVar.__reactRouterRouteModules
+apps/web/node_modules/.vite/deps/react-router-dom.js:12521:var renderedRoutesContext = createContext4();
+apps/web/node_modules/.vite/deps/react-router-dom.js:12522:function getRSCSingleFetchDataStrategy(getRouter, ssr, basename, createFromReadableStream, fetchImplementation) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:12524:    getRouter,
+apps/web/node_modules/.vite/deps/react-router-dom.js:12550:    context.set(renderedRoutesContext, []);
+apps/web/node_modules/.vite/deps/react-router-dom.js:12552:    const renderedRoutesById = /* @__PURE__ */ new Map();
+apps/web/node_modules/.vite/deps/react-router-dom.js:12553:    for (const route of context.get(renderedRoutesContext)) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:12554:      if (!renderedRoutesById.has(route.id)) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:12555:        renderedRoutesById.set(route.id, []);
+apps/web/node_modules/.vite/deps/react-router-dom.js:12557:      renderedRoutesById.get(route.id).push(route);
+apps/web/node_modules/.vite/deps/react-router-dom.js:12560:      const renderedRoutes = renderedRoutesById.get(match.route.id);
+apps/web/node_modules/.vite/deps/react-router-dom.js:12561:      if (renderedRoutes) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:12562:        for (const rendered of renderedRoutes) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:12563:          window.__reactRouterDataRouter.patchRoutes(
+apps/web/node_modules/.vite/deps/react-router-dom.js:12565:            [createRouteFromServerManifest(rendered)],
+apps/web/node_modules/.vite/deps/react-router-dom.js:12575:  return async (args, basename, targetRoutes) => {
+apps/web/node_modules/.vite/deps/react-router-dom.js:12580:      if (targetRoutes) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:12581:        url.searchParams.set("_routes", targetRoutes.join(","));
+apps/web/node_modules/.vite/deps/react-router-dom.js:12612:      context.get(renderedRoutesContext).push(...payload.matches);
+apps/web/node_modules/.vite/deps/react-router-dom.js:12629:function RSCHydratedRouter({
+apps/web/node_modules/.vite/deps/react-router-dom.js:12638:    () => createRouterFromPayload({
+apps/web/node_modules/.vite/deps/react-router-dom.js:12653:      globalVar.__reactRouterDataRouter.initialize();
+apps/web/node_modules/.vite/deps/react-router-dom.js:12734:  return React42.createElement(RSCRouterContext.Provider, { value: true }, React42.createElement(RSCRouterGlobalErrorBoundary, { location: location2 }, React42.createElement(FrameworkContext.Provider, { value: frameworkContext }, React42.createElement(UNSTABLE_TransitionEnabledRouterProvider, { router: router2, flushSync: ReactDOM.flushSync }))));
+apps/web/node_modules/.vite/deps/react-router-dom.js:12736:function createRouteFromServerManifest(match, payload) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:12745:  invariant(window.__reactRouterRouteModules);
+apps/web/node_modules/.vite/deps/react-router-dom.js:12746:  populateRSCRouteModules(window.__reactRouterRouteModules, match);
+apps/web/node_modules/.vite/deps/react-router-dom.js:12747:  let dataRoute = {
+apps/web/node_modules/.vite/deps/react-router-dom.js:12808:  if (typeof dataRoute.loader === "function") {
+apps/web/node_modules/.vite/deps/react-router-dom.js:12809:    dataRoute.loader.hydrate = shouldHydrateRouteLoader(
+apps/web/node_modules/.vite/deps/react-router-dom.js:12816:  return dataRoute;
+apps/web/node_modules/.vite/deps/react-router-dom.js:12842:  let basename = (globalVar.__reactRouterDataRouter.basename ?? "").replace(
+apps/web/node_modules/.vite/deps/react-router-dom.js:12871:    window.__reactRouterDataRouter.patchRoutes(
+apps/web/node_modules/.vite/deps/react-router-dom.js:12873:      [createRouteFromServerManifest(p)]
+apps/web/node_modules/.vite/deps/react-router-dom.js:12983:  throw new Error("React Router v7 requires React 19+ for RSC features.");
+apps/web/node_modules/.vite/deps/react-router-dom.js:12996:  if (respondWithRSCPayload || serverResponse.headers.get("React-Router-Resource") === "true") {
+apps/web/node_modules/.vite/deps/react-router-dom.js:13099:      const status = isRouteErrorResponse(reason) ? reason.status : 500;
+apps/web/node_modules/.vite/deps/react-router-dom.js:13151:function RSCStaticRouter({ getPayload }) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:13165:    if (shouldHydrateRouteLoader(
+apps/web/node_modules/.vite/deps/react-router-dom.js:13205:  const router2 = createStaticRouter(
+apps/web/node_modules/.vite/deps/react-router-dom.js:13247:    routeModules: createRSCRouteModules(payload)
+apps/web/node_modules/.vite/deps/react-router-dom.js:13249:  return React52.createElement(RSCRouterContext.Provider, { value: true }, React52.createElement(RSCRouterGlobalErrorBoundary, { location: payload.location }, React52.createElement(FrameworkContext.Provider, { value: frameworkContext }, React52.createElement(
+apps/web/node_modules/.vite/deps/react-router-dom.js:13250:    StaticRouterProvider,
+apps/web/node_modules/.vite/deps/react-router-dom.js:13303:    if (val && val.__type === "RouteErrorResponse") {
+apps/web/node_modules/.vite/deps/react-router-dom.js:13338:function RouterProvider2(props) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:13339:  return React13.createElement(RouterProvider, { flushSync: ReactDOM2.flushSync, ...props });
+apps/web/node_modules/.vite/deps/react-router-dom.js:13344:  if (!ssrInfo && window.__reactRouterContext && window.__reactRouterManifest && window.__reactRouterRouteModules) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:13345:    if (window.__reactRouterManifest.sri === true) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:13349:          window.__reactRouterManifest.sri = JSON.parse(
+apps/web/node_modules/.vite/deps/react-router-dom.js:13358:      context: window.__reactRouterContext,
+apps/web/node_modules/.vite/deps/react-router-dom.js:13359:      manifest: window.__reactRouterManifest,
+apps/web/node_modules/.vite/deps/react-router-dom.js:13360:      routeModules: window.__reactRouterRouteModules,
+apps/web/node_modules/.vite/deps/react-router-dom.js:13367:function createHydratedRouter({
+apps/web/node_modules/.vite/deps/react-router-dom.js:13373:      "You must be using the SSR features of React Router in order to skip passing a `router` prop to `<RouterProvider>`"
+apps/web/node_modules/.vite/deps/react-router-dom.js:13394:  let routes = createClientRoutes(
+apps/web/node_modules/.vite/deps/react-router-dom.js:13415:      getRouteInfo: (routeId) => ({
+apps/web/node_modules/.vite/deps/react-router-dom.js:13421:      basename: window.__reactRouterContext?.basename,
+apps/web/node_modules/.vite/deps/react-router-dom.js:13428:  let router2 = createRouter({
+apps/web/node_modules/.vite/deps/react-router-dom.js:13434:    hydrationRouteProperties,
+apps/web/node_modules/.vite/deps/react-router-dom.js:13435:    mapRouteProperties,
+apps/web/node_modules/.vite/deps/react-router-dom.js:13446:    patchRoutesOnNavigation: getPatchRoutesOnNavigationFunction(
+apps/web/node_modules/.vite/deps/react-router-dom.js:13460:  router2.createRoutesForHMR = /* spacer so ts-ignore does not affect the right hand of the assignment */
+apps/web/node_modules/.vite/deps/react-router-dom.js:13461:  createClientRoutesWithHMRRevalidationOptOut;
+apps/web/node_modules/.vite/deps/react-router-dom.js:13462:  window.__reactRouterDataRouter = router2;
+apps/web/node_modules/.vite/deps/react-router-dom.js:13465:function HydratedRouter(props) {
+apps/web/node_modules/.vite/deps/react-router-dom.js:13467:    router = createHydratedRouter({
+apps/web/node_modules/.vite/deps/react-router-dom.js:13500:  invariant(ssrInfo, "ssrInfo unavailable for HydratedRouter");
+apps/web/node_modules/.vite/deps/react-router-dom.js:13510:    // This fragment is important to ensure we match the <ServerRouter> JSX
+apps/web/node_modules/.vite/deps/react-router-dom.js:13526:        RouterProvider2,
+apps/web/node_modules/.vite/deps/react-router-dom.js:13537:  BrowserRouter,
+apps/web/node_modules/.vite/deps/react-router-dom.js:13539:  HashRouter,
+apps/web/node_modules/.vite/deps/react-router-dom.js:13540:  HydratedRouter,
+apps/web/node_modules/.vite/deps/react-router-dom.js:13546:  MemoryRouter,
+apps/web/node_modules/.vite/deps/react-router-dom.js:13553:  Route,
+apps/web/node_modules/.vite/deps/react-router-dom.js:13554:  Router,
+apps/web/node_modules/.vite/deps/react-router-dom.js:13555:  RouterContextProvider,
+apps/web/node_modules/.vite/deps/react-router-dom.js:13556:  RouterProvider2 as RouterProvider,
+apps/web/node_modules/.vite/deps/react-router-dom.js:13557:  Routes,
+apps/web/node_modules/.vite/deps/react-router-dom.js:13560:  ServerRouter,
+apps/web/node_modules/.vite/deps/react-router-dom.js:13561:  StaticRouter,
+apps/web/node_modules/.vite/deps/react-router-dom.js:13562:  StaticRouterProvider,
+apps/web/node_modules/.vite/deps/react-router-dom.js:13564:  DataRouterContext as UNSAFE_DataRouterContext,
+apps/web/node_modules/.vite/deps/react-router-dom.js:13565:  DataRouterStateContext as UNSAFE_DataRouterStateContext,
+apps/web/node_modules/.vite/deps/react-router-dom.js:13573:  RouteContext as UNSAFE_RouteContext,
+apps/web/node_modules/.vite/deps/react-router-dom.js:13581:  createClientRoutes as UNSAFE_createClientRoutes,
+apps/web/node_modules/.vite/deps/react-router-dom.js:13582:  createClientRoutesWithHMRRevalidationOptOut as UNSAFE_createClientRoutesWithHMRRevalidationOptOut,
+apps/web/node_modules/.vite/deps/react-router-dom.js:13583:  createRouter as UNSAFE_createRouter,
+apps/web/node_modules/.vite/deps/react-router-dom.js:13587:  getPatchRoutesOnNavigationFunction as UNSAFE_getPatchRoutesOnNavigationFunction,
+apps/web/node_modules/.vite/deps/react-router-dom.js:13589:  hydrationRouteProperties as UNSAFE_hydrationRouteProperties,
+apps/web/node_modules/.vite/deps/react-router-dom.js:13591:  mapRouteProperties as UNSAFE_mapRouteProperties,
+apps/web/node_modules/.vite/deps/react-router-dom.js:13592:  shouldHydrateRouteLoader as UNSAFE_shouldHydrateRouteLoader,
+apps/web/node_modules/.vite/deps/react-router-dom.js:13598:  createBrowserRouter,
+apps/web/node_modules/.vite/deps/react-router-dom.js:13602:  createHashRouter,
+apps/web/node_modules/.vite/deps/react-router-dom.js:13603:  createMemoryRouter,
+apps/web/node_modules/.vite/deps/react-router-dom.js:13607:  createRoutesFromChildren,
+apps/web/node_modules/.vite/deps/react-router-dom.js:13608:  createRoutesFromElements,
+apps/web/node_modules/.vite/deps/react-router-dom.js:13609:  createRoutesStub,
+apps/web/node_modules/.vite/deps/react-router-dom.js:13614:  createStaticRouter,
+apps/web/node_modules/.vite/deps/react-router-dom.js:13619:  isRouteErrorResponse,
+apps/web/node_modules/.vite/deps/react-router-dom.js:13622:  matchRoutes,
+apps/web/node_modules/.vite/deps/react-router-dom.js:13629:  HistoryRouter as unstable_HistoryRouter,
+apps/web/node_modules/.vite/deps/react-router-dom.js:13630:  RSCHydratedRouter as unstable_RSCHydratedRouter,
+apps/web/node_modules/.vite/deps/react-router-dom.js:13631:  RSCStaticRouter as unstable_RSCStaticRouter,
+apps/web/node_modules/.vite/deps/react-router-dom.js:13646:  useInRouterContext,
+apps/web/node_modules/.vite/deps/react-router-dom.js:13660:  useRouteError,
+apps/web/node_modules/.vite/deps/react-router-dom.js:13661:  useRouteLoaderData,
+apps/web/node_modules/.vite/deps/react-router-dom.js:13662:  useRoutes,
+apps/web/src/App.tsx:1:import { Routes, Route } from 'react-router-dom'
+apps/web/src/App.tsx:14:        <Routes>
+apps/web/src/App.tsx:15:          <Route path="/" element={<Home />} />
+apps/web/src/App.tsx:16:          <Route path="/applications" element={<Applications />} />
+apps/web/src/App.tsx:17:          <Route path="*" element={<NotFound />} />
+apps/web/src/App.tsx:18:        </Routes>
+apps/web/src/main.tsx:3:import { BrowserRouter } from 'react-router-dom'
+apps/web/src/main.tsx:9:    <BrowserRouter>
+apps/web/src/main.tsx:11:    </BrowserRouter>

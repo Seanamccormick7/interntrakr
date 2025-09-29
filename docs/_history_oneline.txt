@@ -1,0 +1,5 @@
+* 2ea94ff (origin/main, origin/HEAD) feat(web): add routing, pages, and API client (#1)
+| * dec5284 (HEAD -> audit/roadmap, origin/feat/web-setup-routing, feat/web-setup-routing) feat(web): add routing, pages, and API client
+|/  
+* 3e5c84e (main) chore: setting up correct linting
+* 949d018 chore: initial clean commit
