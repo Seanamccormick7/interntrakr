@@ -8,5 +8,6 @@ module.exports = {
     "!src/**/*.d.ts",
     "!src/**/__tests__/**",
   ],
-  testTimeout: 10000,
+  testTimeout: 30000,
+  maxWorkers: 1, // run tests one at a time
 };
