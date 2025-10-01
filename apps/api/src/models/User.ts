@@ -34,7 +34,7 @@ const userSchema = new Schema<IUser>(
 );
 
 // Indexes for performance
-userSchema.index({ email: 1 }); // Already unique, but explicit index
+// Note: email already has unique index from schema definition
 userSchema.index({ createdAt: -1 }); // For sorting users by join date
 
 // Prevent password from being returned in JSON
