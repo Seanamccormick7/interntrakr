@@ -224,45 +224,48 @@ describe("Application Model", () => {
 
   describe("Indexes", () => {
     it("should have userId index", async () => {
-      const indexes = await Application.collection.getIndexes();
-      const userIdIndex = Object.keys(indexes).find((key) =>
-        key.includes("userId"),
+      const indexes = await Application.collection.listIndexes().toArray();
+      const userIdIndex = indexes.find(
+        (idx: any) => idx.key && idx.key.userId !== undefined,
       );
 
       expect(userIdIndex).toBeDefined();
     });
 
     it("should have company index", async () => {
-      const indexes = await Application.collection.getIndexes();
-      const companyIndex = Object.keys(indexes).find((key) =>
-        key.includes("company"),
+      const indexes = await Application.collection.listIndexes().toArray();
+      const companyIndex = indexes.find(
+        (idx: any) => idx.key && idx.key.company !== undefined,
       );
 
       expect(companyIndex).toBeDefined();
     });
 
     it("should have status index", async () => {
-      const indexes = await Application.collection.getIndexes();
-      const statusIndex = Object.keys(indexes).find((key) =>
-        key.includes("status"),
+      const indexes = await Application.collection.listIndexes().toArray();
+      const statusIndex = indexes.find(
+        (idx: any) => idx.key && idx.key.status !== undefined,
       );
 
       expect(statusIndex).toBeDefined();
     });
 
     it("should have deadline index", async () => {
-      const indexes = await Application.collection.getIndexes();
-      const deadlineIndex = Object.keys(indexes).find((key) =>
-        key.includes("deadline"),
+      const indexes = await Application.collection.listIndexes().toArray();
+      const deadlineIndex = indexes.find(
+        (idx: any) => idx.key && idx.key.deadline !== undefined,
       );
 
       expect(deadlineIndex).toBeDefined();
     });
 
     it("should have compound userId_status index", async () => {
-      const indexes = await Application.collection.getIndexes();
-      const compoundIndex = Object.keys(indexes).find(
-        (key) => key.includes("userId") && key.includes("status"),
+      const indexes = await Application.collection.listIndexes().toArray();
+      const compoundIndex = indexes.find(
+        (idx: any) =>
+          idx.key &&
+          idx.key.userId !== undefined &&
+          idx.key.status !== undefined,
       );
 
       expect(compoundIndex).toBeDefined();
@@ -270,10 +273,8 @@ describe("Application Model", () => {
 
     it("should have text search index", async () => {
       const indexes = await Application.collection.listIndexes().toArray();
-
-      // Look for text index by checking weights property
       const textIndex = indexes.find(
-        (index: any) => index.weights && typeof index.weights === "object",
+        (idx: any) => idx.weights && typeof idx.weights === "object",
       );
 
       expect(textIndex).toBeDefined();
