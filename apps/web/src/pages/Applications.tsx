@@ -16,8 +16,8 @@ export default function Applications() {
       try {
         const data = await apiGet<AppItem[]>('/applications')
         if (mounted) setItems(data)
-      } catch (err: any) {
-        if (mounted) setError(err?.message ?? 'Failed to load applications')
+      } catch (err: unknown) {
+        if (mounted) setError(err instanceof Error ? err.message : 'Failed to load applications')
       } finally {
         if (mounted) setLoading(false)
       }
