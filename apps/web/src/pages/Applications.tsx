@@ -1,58 +1,76 @@
-import { useEffect, useState } from 'react'
-import { apiGet } from '../lib/api'
-import type { AppItem } from '../types'
+import { useEffect, useState } from "react";
+import { apiGet, withAuth } from "../lib/api";
+import type { AppItem } from "../types";
 
 export default function Applications() {
-  const [items, setItems] = useState<AppItem[] | null>(null)
-  const [error, setError] = useState<string | null>(null)
-  const [loading, setLoading] = useState(true)
+  const [items, setItems] = useState<AppItem[] | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    let mounted = true
+    let mounted = true;
 
     async function load() {
-      setLoading(true)
-      setError(null)
+      setLoading(true);
+      setError(null);
       try {
-        const data = await apiGet<AppItem[]>('/applications')
-        if (mounted) setItems(data)
+        // Get token from localStorage
+        const token = localStorage.getItem("access_token");
+        if (!token) {
+          throw new Error("No authentication token found");
+        }
+
+        // Fetch with auth token
+        const data = await apiGet<AppItem[]>("/applications", withAuth(token));
+        if (mounted) setItems(data);
       } catch (err: unknown) {
-        if (mounted) setError(err instanceof Error ? err.message : 'Failed to load applications')
+        if (mounted)
+          setError(
+            err instanceof Error ? err.message : "Failed to load applications",
+          );
       } finally {
-        if (mounted) setLoading(false)
+        if (mounted) setLoading(false);
       }
     }
 
-    load()
+    load();
     return () => {
-      mounted = false
-    }
-  }, [])
+      mounted = false;
+    };
+  }, []);
 
-  if (loading) return <p>Loading applications…</p>
-  if (error) return <p style={{ color: 'tomato' }}>{error}</p>
+  if (loading) return <p>Loading applications…</p>;
+  if (error) return <p style={{ color: "tomato" }}>{error}</p>;
   if (!items || items.length === 0) {
     return (
       <section>
         <h1>Applications</h1>
         <p>No applications yet. Add one in the API or UI (coming next).</p>
       </section>
-    )
+    );
   }
 
   return (
     <section>
-      <h1 style={{ marginBottom: '1rem' }}>Applications</h1>
-      <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'grid', gap: '0.75rem' }}>
+      <h1 style={{ marginBottom: "1rem" }}>Applications</h1>
+      <ul
+        style={{
+          listStyle: "none",
+          padding: 0,
+          margin: 0,
+          display: "grid",
+          gap: "0.75rem",
+        }}
+      >
         {items.map((app) => (
           <li
             key={app.id}
             style={{
-              border: '1px solid #333',
+              border: "1px solid #333",
               borderRadius: 12,
-              padding: '1rem',
-              display: 'grid',
-              gap: '0.25rem',
+              padding: "1rem",
+              display: "grid",
+              gap: "0.25rem",
             }}
           >
             <div style={{ fontWeight: 700 }}>
@@ -75,5 +93,5 @@ export default function Applications() {
         ))}
       </ul>
     </section>
-  )
+  );
 }
