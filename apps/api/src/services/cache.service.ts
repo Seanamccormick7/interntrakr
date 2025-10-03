@@ -6,14 +6,14 @@ export class CacheService {
   // Generate cache key with userId and query parameters
   generateKey(
     userId: string,
-    queryParams: Record<string, unknown> = {},
+    queryParams: Record<string, unknown> | object = {},
   ): string {
     // Sort keys for consistent cache keys
     const sortedParams = Object.keys(queryParams)
       .sort()
       .reduce(
         (acc, key) => {
-          acc[key] = queryParams[key];
+          acc[key] = (queryParams as Record<string, unknown>)[key];
           return acc;
         },
         {} as Record<string, unknown>,
