@@ -4,6 +4,7 @@ import {
   ApplicationFilters,
 } from "../services/application.service";
 import { ApplicationStatus } from "../models/Application";
+import { cacheService } from "../services/cache.service";
 
 // GET /applications
 export async function getApplications(
@@ -31,10 +32,23 @@ export async function getApplications(
       filters.q = req.query.q as string;
     }
 
+    // Try to get from cache first
+    const cacheKey = cacheService.generateKey(req.user.userId, filters);
+    const cachedData = await cacheService.get(cacheKey);
+
+    if (cachedData) {
+      res.status(200).json(cachedData);
+      return;
+    }
+
+    // Cache miss - fetch from database
     const applications = await applicationService.getApplications(
       req.user.userId,
       filters,
     );
+
+    // Store in cache with 5-minute TTL
+    await cacheService.set(cacheKey, applications, 300);
 
     res.status(200).json(applications);
   } catch (error) {
@@ -92,6 +106,9 @@ export async function createApplication(
       req.body,
     );
 
+    // Invalidate user's cache after creating application
+    await cacheService.invalidateUser(req.user.userId);
+
     res.status(201).json(application);
   } catch (error) {
     console.error("Create application error:", error);
@@ -115,6 +132,9 @@ export async function updateApplication(
       req.user.userId,
       req.body,
     );
+
+    // Invalidate user's cache after updating application
+    await cacheService.invalidateUser(req.user.userId);
 
     res.status(200).json(application);
   } catch (error) {
@@ -145,6 +165,9 @@ export async function deleteApplication(
     }
 
     await applicationService.deleteApplication(req.params.id, req.user.userId);
+
+    // Invalidate user's cache after deleting application
+    await cacheService.invalidateUser(req.user.userId);
 
     res.status(204).send();
   } catch (error) {
