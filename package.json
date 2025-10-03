@@ -1,6 +1,7 @@
 {
   "name": "interntrackr",
   "private": true,
+  "type": "module",
   "workspaces": [
     "apps/*"
   ],
@@ -8,7 +9,8 @@
     "build": "npm run build -w apps/api && npm run build -w apps/web",
     "dev:api": "npm run dev -w apps/api",
     "dev:web": "npm run dev -w apps/web",
-    "lint": "eslint . --ext .ts,.tsx",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
     "format": "prettier --write .",
     "prepare": "husky"
   },
@@ -19,17 +21,18 @@
     "eslint-plugin-import": "^2.29.1",
     "eslint-plugin-n": "^17.9.0",
     "eslint-plugin-promise": "^7.1.0",
+    "typescript-eslint": "^8.0.0",
     "husky": "^9.1.6",
     "lint-staged": "^15.2.9",
     "prettier": "^3.6.2"
   },
   "lint-staged": {
     "apps/web/**/*.{ts,tsx,js,jsx}": [
-      "npm -w apps/web exec -- eslint --fix",
+      "eslint --fix",
       "npm -w apps/web exec -- prettier --write"
     ],
     "apps/api/**/*.{ts,js}": [
-      "npm -w apps/api exec -- eslint --fix",
+      "eslint --fix",
       "npm -w apps/api exec -- prettier --write"
     ],
     "*.{json,md,css,scss}": [
