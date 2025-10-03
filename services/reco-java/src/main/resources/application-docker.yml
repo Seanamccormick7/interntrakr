@@ -1,0 +1,26 @@
+# Docker-specific configuration
+spring:
+  application:
+    name: reco-service
+
+# Actuator configuration for Docker health checks
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      show-details: always
+  health:
+    defaults:
+      enabled: true
+
+# Logging for Docker environment
+logging:
+  level:
+    com.interntrackr.reco: INFO
+    org.springframework: WARN
+    org.springframework.boot: WARN
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"
