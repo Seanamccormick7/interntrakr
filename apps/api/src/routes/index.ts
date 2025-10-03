@@ -1,10 +1,22 @@
 import { Router } from "express";
-import health from "./health";
-import auth from "./auth";
-import applications from "./applications";
+import authRoutes from "./auth";
+import applicationRoutes from "./applications";
+import healthRoutes from "./health";
 
-const r = Router();
-r.use("/", health); // /ping
-r.use("/auth", auth); // /auth/register, /auth/login, /auth/me
-r.use("/applications", applications); // /applications (all CRUD routes)
-export default r;
+const router = Router();
+
+// Health check route (public)
+router.use("/health", healthRoutes);
+
+// Auth routes
+router.use("/auth", authRoutes);
+
+// Application routes
+router.use("/applications", applicationRoutes);
+
+// Ping route for basic connectivity test
+router.get("/ping", (req, res) => {
+  res.json({ message: "pong" });
+});
+
+export default router;
