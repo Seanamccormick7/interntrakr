@@ -4,3 +4,5 @@ dist
 .env.*
 !.env.example
 .DS_Storeservices/reco-java/.gradle/
+services/reco-java/.gradle/
+apps/.DS_Store
