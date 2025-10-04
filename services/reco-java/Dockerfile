@@ -1,5 +1,5 @@
 # Multi-stage build for optimal image size
-FROM eclipse-temurin:17-jdk-alpine AS builder
+FROM eclipse-temurin:17-jdk AS builder
 
 # Set working directory
 WORKDIR /app
@@ -19,11 +19,11 @@ COPY src/ src/
 RUN ./gradlew bootJar --no-daemon
 
 # Runtime stage
-FROM eclipse-temurin:17-jre-alpine
+FROM eclipse-temurin:17-jre
 
 # Create non-root user for security
-RUN addgroup -g 1001 -S spring && \
-    adduser -u 1001 -S spring -G spring
+RUN groupadd -g 1001 spring && \
+    useradd -u 1001 -g spring spring
 
 # Set working directory
 WORKDIR /app
