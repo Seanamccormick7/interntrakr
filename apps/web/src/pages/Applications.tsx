@@ -1,15 +1,14 @@
 import { useEffect, useState } from "react";
 import { apiGet, apiPost, apiPut, apiDelete, withAuth } from "../lib/api";
+import { useWebSocket } from "../hooks/useWebSocket";
 import type { AppItem } from "../types";
 import { Modal } from "../components/Modal";
 import { ApplicationForm } from "../components/ApplicationForm";
 
 type FeedbackType = { type: "success" | "error"; message: string } | null;
 
-// Type for API response that might have _id instead of id
 type ApiResponse = Omit<AppItem, "id"> & { _id?: string; id?: string };
 
-// Helper to normalize API response
 const normalizeItem = (item: ApiResponse): AppItem => ({
   ...item,
   id: item.id || item._id || "",
@@ -22,16 +21,15 @@ export default function Applications() {
   const [loading, setLoading] = useState(true);
   const [feedback, setFeedback] = useState<FeedbackType>(null);
 
-  // Modal state
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingItem, setEditingItem] = useState<AppItem | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Filter state
   const [statusFilter, setStatusFilter] = useState<string>("ALL");
   const [searchQuery, setSearchQuery] = useState("");
 
-  // Load applications
+  const { socket } = useWebSocket();
+
   const loadApplications = async () => {
     setLoading(true);
     setError(null);
@@ -45,7 +43,6 @@ export default function Applications() {
         "/applications",
         withAuth(token),
       );
-      // Transform _id to id if needed
       const normalized = data.map(normalizeItem);
       setItems(normalized);
       setFilteredItems(normalized);
@@ -62,7 +59,58 @@ export default function Applications() {
     loadApplications();
   }, []);
 
-  // Apply filters
+  useEffect(() => {
+    if (!socket) return;
+
+    const handleApplicationCreated = ({
+      application,
+    }: {
+      application: ApiResponse;
+    }) => {
+      console.log("🔔 Real-time: Application created", application);
+      const normalized = normalizeItem(application);
+
+      setItems((prev) => {
+        const exists = prev.some((item) => item.id === normalized.id);
+        if (exists) return prev;
+        return [...prev, normalized];
+      });
+    };
+
+    const handleApplicationUpdated = ({
+      application,
+    }: {
+      application: ApiResponse;
+    }) => {
+      console.log("🔔 Real-time: Application updated", application);
+      const normalized = normalizeItem(application);
+
+      setItems((prev) =>
+        prev.map((item) => (item.id === normalized.id ? normalized : item)),
+      );
+    };
+
+    const handleApplicationDeleted = ({
+      applicationId,
+    }: {
+      applicationId: string;
+    }) => {
+      console.log("🔔 Real-time: Application deleted", applicationId);
+
+      setItems((prev) => prev.filter((item) => item.id !== applicationId));
+    };
+
+    socket.on("application:created", handleApplicationCreated);
+    socket.on("application:updated", handleApplicationUpdated);
+    socket.on("application:deleted", handleApplicationDeleted);
+
+    return () => {
+      socket.off("application:created", handleApplicationCreated);
+      socket.off("application:updated", handleApplicationUpdated);
+      socket.off("application:deleted", handleApplicationDeleted);
+    };
+  }, [socket]);
+
   useEffect(() => {
     let filtered = [...items];
 
@@ -82,27 +130,18 @@ export default function Applications() {
     setFilteredItems(filtered);
   }, [items, statusFilter, searchQuery]);
 
-  // Show feedback temporarily
   const showFeedback = (type: "success" | "error", message: string) => {
     setFeedback({ type, message });
     setTimeout(() => setFeedback(null), 5000);
   };
 
-  // Create application
   const handleCreate = async (data: Partial<AppItem>) => {
     setIsSubmitting(true);
     try {
       const token = localStorage.getItem("access_token");
       if (!token) throw new Error("No authentication token found");
 
-      const response = await apiPost<ApiResponse>(
-        "/applications",
-        data,
-        withAuth(token),
-      );
-      // Normalize response
-      const newItem = normalizeItem(response);
-      setItems((prev) => [...prev, newItem]);
+      await apiPost<ApiResponse>("/applications", data, withAuth(token));
       setIsModalOpen(false);
       showFeedback("success", "Application created successfully!");
     } catch (err) {
@@ -115,7 +154,6 @@ export default function Applications() {
     }
   };
 
-  // Update application
   const handleUpdate = async (data: Partial<AppItem>) => {
     if (!editingItem) return;
 
@@ -124,15 +162,10 @@ export default function Applications() {
       const token = localStorage.getItem("access_token");
       if (!token) throw new Error("No authentication token found");
 
-      const response = await apiPut<ApiResponse>(
+      await apiPut<ApiResponse>(
         `/applications/${editingItem.id}`,
         data,
         withAuth(token),
-      );
-      // Normalize response
-      const updated = normalizeItem(response);
-      setItems((prev) =>
-        prev.map((item) => (item.id === updated.id ? updated : item)),
       );
       setIsModalOpen(false);
       setEditingItem(null);
@@ -147,7 +180,6 @@ export default function Applications() {
     }
   };
 
-  // Delete application
   const handleDelete = async (id: string) => {
     if (!confirm("Are you sure you want to delete this application?")) return;
 
@@ -156,7 +188,6 @@ export default function Applications() {
       if (!token) throw new Error("No authentication token found");
 
       await apiDelete(`/applications/${id}`, withAuth(token));
-      setItems((prev) => prev.filter((item) => item.id !== id));
       showFeedback("success", "Application deleted successfully!");
     } catch (err) {
       showFeedback(
@@ -166,25 +197,21 @@ export default function Applications() {
     }
   };
 
-  // Open create modal
   const openCreateModal = () => {
     setEditingItem(null);
     setIsModalOpen(true);
   };
 
-  // Open edit modal
   const openEditModal = (item: AppItem) => {
     setEditingItem(item);
     setIsModalOpen(true);
   };
 
-  // Close modal
   const closeModal = () => {
     setIsModalOpen(false);
     setEditingItem(null);
   };
 
-  // Status badge color
   const getStatusColor = (status?: string) => {
     switch (status) {
       case "SAVED":
@@ -209,7 +236,6 @@ export default function Applications() {
 
   return (
     <section>
-      {/* Header */}
       <div
         style={{
           display: "flex",
@@ -237,7 +263,6 @@ export default function Applications() {
         </button>
       </div>
 
-      {/* Feedback */}
       {feedback && (
         <div
           style={{
@@ -253,7 +278,6 @@ export default function Applications() {
         </div>
       )}
 
-      {/* Filters */}
       <div
         style={{
           display: "flex",
@@ -298,12 +322,10 @@ export default function Applications() {
         </select>
       </div>
 
-      {/* Results count */}
       <p style={{ marginBottom: "1rem", opacity: 0.8 }}>
         Showing {filteredItems.length} of {items.length} applications
       </p>
 
-      {/* Applications List */}
       {filteredItems.length === 0 ? (
         <p style={{ textAlign: "center", opacity: 0.6, padding: "3rem 0" }}>
           {items.length === 0
@@ -423,7 +445,6 @@ export default function Applications() {
         </ul>
       )}
 
-      {/* Modal */}
       <Modal
         isOpen={isModalOpen}
         onClose={closeModal}
