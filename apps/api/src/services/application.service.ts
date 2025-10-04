@@ -4,24 +4,23 @@ import {
   IApplication,
   ApplicationStatus,
 } from "../models/Application";
+import { websocketService } from "./websocket.service";
 
 export interface ApplicationFilters {
   status?: ApplicationStatus;
   deadlineSoon?: boolean;
-  q?: string; // Search query
+  q?: string;
 }
 
 export class ApplicationService {
-  // Get all applications for a user with filters
   async getApplications(userId: string, filters: ApplicationFilters = {}) {
-    const query: any = { userId };
+    // Build query object for MongoDB
+    const query: Record<string, unknown> = { userId };
 
-    // Filter by status
     if (filters.status) {
       query.status = filters.status;
     }
 
-    // Filter by upcoming deadline (within 7 days)
     if (filters.deadlineSoon) {
       const sevenDaysFromNow = new Date();
       sevenDaysFromNow.setDate(sevenDaysFromNow.getDate() + 7);
@@ -32,19 +31,17 @@ export class ApplicationService {
       };
     }
 
-    // Text search on company, role, and notes
     if (filters.q) {
       query.$text = { $search: filters.q };
     }
 
     const applications = await Application.find(query)
-      .sort({ deadline: 1, createdAt: -1 }) // Upcoming deadlines first, then newest
+      .sort({ deadline: 1, createdAt: -1 })
       .lean();
 
     return applications;
   }
 
-  // Get single application by ID
   async getApplicationById(id: string, userId: string) {
     if (!mongoose.Types.ObjectId.isValid(id)) {
       throw new Error("Invalid application ID");
@@ -59,17 +56,17 @@ export class ApplicationService {
     return application;
   }
 
-  // Create new application
   async createApplication(userId: string, data: Partial<IApplication>) {
     const application = await Application.create({
       ...data,
       userId,
     });
 
+    websocketService.broadcastApplicationCreated(application);
+
     return application.toObject();
   }
 
-  // Update application
   async updateApplication(
     id: string,
     userId: string,
@@ -79,27 +76,37 @@ export class ApplicationService {
       throw new Error("Invalid application ID");
     }
 
-    // Prevent changing userId
-    const { userId: _, ...updateData } = data as any;
+    // Remove userId from update data to prevent overwriting
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { userId: _, ...updateData } = data as Partial<IApplication>;
 
     const application = await Application.findOneAndUpdate(
       { _id: id, userId },
       updateData,
       { new: true, runValidators: true },
-    ).lean();
+    );
 
     if (!application) {
       throw new Error("Application not found");
     }
 
-    return application;
+    websocketService.broadcastApplicationUpdated(application);
+
+    return application.toObject();
   }
 
-  // Delete application
   async deleteApplication(id: string, userId: string) {
     if (!mongoose.Types.ObjectId.isValid(id)) {
       throw new Error("Invalid application ID");
     }
+
+    const application = await Application.findOne({ _id: id, userId });
+
+    if (!application) {
+      throw new Error("Application not found");
+    }
+
+    const collaborators = application.collaborators || [];
 
     const result = await Application.deleteOne({ _id: id, userId });
 
@@ -107,9 +114,10 @@ export class ApplicationService {
       throw new Error("Application not found");
     }
 
+    websocketService.broadcastApplicationDeleted(id, userId, collaborators);
+
     return { success: true };
   }
 }
 
-// Export singleton instance
 export const applicationService = new ApplicationService();
