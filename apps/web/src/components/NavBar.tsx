@@ -1,8 +1,10 @@
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
+import { useWebSocket } from "../hooks/useWebSocket";
 
 export function NavBar() {
   const { isAuthenticated, user, logout } = useAuth();
+  const { isConnected } = useWebSocket();
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -60,9 +62,24 @@ export function NavBar() {
 
           {isAuthenticated ? (
             <div style={{ display: "flex", gap: "1rem", alignItems: "center" }}>
-              <span style={{ fontSize: "0.875rem", opacity: 0.8 }}>
-                {user?.email}
-              </span>
+              <div
+                style={{ display: "flex", alignItems: "center", gap: "0.4rem" }}
+              >
+                <span style={{ fontSize: "0.875rem", opacity: 0.8 }}>
+                  {user?.email}
+                </span>
+                <span
+                  style={{
+                    width: 6,
+                    height: 6,
+                    borderRadius: "50%",
+                    backgroundColor: isConnected ? "#10b981" : "#ef4444",
+                    display: "inline-block",
+                    flexShrink: 0,
+                  }}
+                  title={isConnected ? "Live" : "Offline"}
+                />
+              </div>
               <button
                 onClick={handleLogout}
                 style={{

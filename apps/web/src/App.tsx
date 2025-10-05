@@ -1,6 +1,7 @@
 import { Routes, Route } from "react-router-dom";
 import "./App.css";
-import { AuthProvider } from "./contexts/AuthProvider"; // Changed
+import { AuthProvider } from "./contexts/AuthProvider";
+import { WebSocketProvider } from "./contexts/WebSocketProvider";
 import { NavBar } from "./components/NavBar";
 import { Container } from "./components/Container";
 import { ProtectedRoute } from "./components/ProtectedRoute";
@@ -13,23 +14,25 @@ import NotFound from "./pages/NotFound";
 export default function App() {
   return (
     <AuthProvider>
-      <NavBar />
-      <Container>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
-          <Route
-            path="/applications"
-            element={
-              <ProtectedRoute>
-                <Applications />
-              </ProtectedRoute>
-            }
-          />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </Container>
+      <WebSocketProvider>
+        <NavBar />
+        <Container>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<Signup />} />
+            <Route
+              path="/applications"
+              element={
+                <ProtectedRoute>
+                  <Applications />
+                </ProtectedRoute>
+              }
+            />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </Container>
+      </WebSocketProvider>
     </AuthProvider>
   );
 }
