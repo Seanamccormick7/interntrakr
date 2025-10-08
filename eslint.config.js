@@ -88,6 +88,14 @@ export default [
     rules: {
       // Node-specific rules
       "n/no-unpublished-import": "off",
+      // Allow Node 21+ features like fetch
+      "n/no-unsupported-features/node-builtins": [
+        "error",
+        {
+          version: ">=21.0.0", // Set to Node 21+ to allow fetch
+          ignores: [],
+        },
+      ],
     },
   },
 ];
