@@ -4,12 +4,12 @@
   "private": true,
   "description": "Nightly alerts lambda: polls upcoming deadlines and notifies via Slack/SES.",
   "engines": {
-    "node": ">=20"
+    "node": ">=22"
   },
   "main": "dist/handler.cjs",
   "scripts": {
     "clean": "rimraf dist *.zip || true",
-    "build": "esbuild src/handler.ts --bundle --platform=node --target=node20 --format=cjs --outfile=dist/handler.cjs",
+    "build": "esbuild src/handler.ts --bundle --platform=node --target=node22 --format=cjs --outfile=dist/handler.cjs",
     "zip": "cd dist && zip -r ../alerts-lambda.zip .",
     "package": "npm run clean && npm run build && npm run zip",
     "local:run": "node -e \"const {handler}=require('./dist/handler.cjs'); handler({},{}).then(console.log).catch(console.error)\""

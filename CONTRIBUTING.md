@@ -5,12 +5,14 @@ Thank you for your interest in contributing to InternTrackr! This document provi
 ## 🚀 Getting Started
 
 ### Prerequisites
-- **Node.js 20.19.0** (LTS) - Use `nvm install 20.19.0 && nvm use 20.19.0`
+
+- **Node.js 22.x** (LTS) - Use `nvm install 22.x && nvm use 22.x`
 - **npm 10+**
 - **Docker Desktop** (for MongoDB + Redis)
 - **Git** with GitHub account
 
 ### Setup
+
 ```bash
 # Clone and setup
 git clone <repo>
@@ -31,12 +33,14 @@ npm run dev:web     # Frontend on http://localhost:5173
 ## 🌿 Branch Strategy
 
 ### Branch Naming
+
 - **Feature**: `feat/<area>-<short-name>` (e.g., `feat/auth-login`, `feat/api-applications`)
 - **Fix**: `fix/<area>-<short-name>` (e.g., `fix/auth-token-refresh`, `fix/ui-responsive`)
 - **Chore**: `chore/<description>` (e.g., `chore/update-deps`, `chore/lint-config`)
 - **Docs**: `docs/<description>` (e.g., `docs/api-documentation`, `docs/setup-guide`)
 
 ### Workflow
+
 1. **Create feature branch** from `main`
 2. **Make changes** with clear, atomic commits
 3. **Test locally** - ensure all tests pass
@@ -57,6 +61,7 @@ Use [Conventional Commits](https://www.conventionalcommits.org/):
 ```
 
 ### Types
+
 - `feat`: New feature
 - `fix`: Bug fix
 - `docs`: Documentation changes
@@ -66,6 +71,7 @@ Use [Conventional Commits](https://www.conventionalcommits.org/):
 - `chore`: Maintenance tasks
 
 ### Examples
+
 ```
 feat(auth): add JWT token refresh mechanism
 fix(api): handle validation errors in applications endpoint
@@ -76,6 +82,7 @@ test(auth): add unit tests for login flow
 ## 🔍 Code Quality
 
 ### Before Submitting
+
 - [ ] **Lint check**: `npm run lint` passes
 - [ ] **Type check**: TypeScript compilation succeeds
 - [ ] **Tests pass**: All existing tests pass
@@ -83,12 +90,14 @@ test(auth): add unit tests for login flow
 - [ ] **Commit messages**: Follow conventional commit format
 
 ### Code Style
+
 - **TypeScript**: Strict mode enabled
 - **ESLint**: Follow project configuration
 - **Prettier**: Auto-format on save
 - **Imports**: Use absolute imports where configured
 
 ### Testing
+
 - **Unit tests**: Required for new features
 - **Integration tests**: For API endpoints
 - **E2E tests**: For critical user flows
@@ -97,6 +106,7 @@ test(auth): add unit tests for login flow
 ## 📋 Pull Request Process
 
 ### PR Requirements
+
 1. **Link to Issue**: Reference the GitHub issue being addressed
 2. **Clear Title**: Descriptive PR title
 3. **Description**: Explain what, why, and how
@@ -105,26 +115,32 @@ test(auth): add unit tests for login flow
 6. **Breaking Changes**: Document any breaking changes
 
 ### PR Template
+
 ```markdown
 ## Description
+
 Brief description of changes
 
 ## Related Issue
+
 Closes #<issue-number>
 
 ## Type of Change
+
 - [ ] Bug fix
 - [ ] New feature
 - [ ] Breaking change
 - [ ] Documentation update
 
 ## Testing
+
 - [ ] Unit tests pass
 - [ ] Integration tests pass
 - [ ] Manual testing completed
 - [ ] Screenshots attached (if UI changes)
 
 ## Checklist
+
 - [ ] Code follows project style guidelines
 - [ ] Self-review completed
 - [ ] Documentation updated
@@ -134,6 +150,7 @@ Closes #<issue-number>
 ## 🐛 Bug Reports
 
 When reporting bugs, include:
+
 1. **Clear title**: Brief description
 2. **Steps to reproduce**: Detailed steps
 3. **Expected behavior**: What should happen
@@ -145,6 +162,7 @@ When reporting bugs, include:
 ## ✨ Feature Requests
 
 For new features:
+
 1. **Check existing issues**: Avoid duplicates
 2. **Clear description**: What and why
 3. **Use cases**: How would it be used?
@@ -154,6 +172,7 @@ For new features:
 ## 🏗️ Architecture Guidelines
 
 ### Backend (`apps/api`)
+
 - **Controllers**: Handle HTTP requests/responses
 - **Services**: Business logic
 - **Models**: Database schemas
@@ -161,6 +180,7 @@ For new features:
 - **Routes**: API endpoint definitions
 
 ### Frontend (`apps/web`)
+
 - **Components**: Reusable UI components
 - **Pages**: Route-level components
 - **Hooks**: Custom React hooks
@@ -168,6 +188,7 @@ For new features:
 - **Types**: TypeScript definitions
 
 ### File Structure
+
 ```
 apps/api/src/
 ├── controllers/     # HTTP handlers
@@ -189,6 +210,7 @@ apps/web/src/
 ## 🤝 Review Process
 
 ### For Reviewers
+
 - **Be constructive**: Provide helpful feedback
 - **Test changes**: Actually test the functionality
 - **Check standards**: Ensure code quality
@@ -196,6 +218,7 @@ apps/web/src/
 - **Approve promptly**: Don't let PRs sit
 
 ### For Authors
+
 - **Respond quickly**: Address feedback promptly
 - **Be open**: Accept constructive criticism
 - **Ask questions**: Clarify feedback if needed

@@ -6,3 +6,4 @@ dist
 .DS_Storeservices/reco-java/.gradle/
 services/reco-java/.gradle/
 apps/.DS_Store
+services/reco-java/build/
