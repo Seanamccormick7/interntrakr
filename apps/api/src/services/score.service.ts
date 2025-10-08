@@ -17,59 +17,89 @@ const SCORE_SERVICE_URL =
   process.env.SCORE_SERVICE_URL || "http://localhost:8080";
 
 export class ScoreService {
+  // Timeout for Spring Boot service calls (10 seconds)
+  private readonly TIMEOUT_MS = 10000;
+
   async calculateScore(request: ScoreRequest): Promise<ScoreResponse> {
     try {
-      // Call Spring Boot /score endpoint
-      const response = await fetch(`${SCORE_SERVICE_URL}/score`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          text: request.jobDescription,
-          keywords: request.resumeKeywords,
-        }),
-      });
+      // Create abort controller for timeout
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), this.TIMEOUT_MS);
 
-      if (!response.ok) {
-        throw new Error(`Score service returned ${response.status}`);
+      try {
+        // Call Spring Boot /score endpoint with timeout
+        const response = await fetch(`${SCORE_SERVICE_URL}/score`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            text: request.jobDescription,
+            keywords: request.resumeKeywords,
+          }),
+          signal: controller.signal,
+        });
+
+        clearTimeout(timeoutId);
+
+        if (!response.ok) {
+          throw new Error(`Score service returned ${response.status}`);
+        }
+
+        const data = await response.json();
+
+        // Transform Spring Boot response to our format
+        // The current Spring service only returns {score: number}
+        // so we enhance it with additional logic here
+        const score = Math.round(data.score * 100);
+
+        // Calculate missing keywords
+        const jobKeywords = this.extractKeywords(request.jobDescription);
+        const resumeKeywordSet = new Set(
+          request.resumeKeywords.map((k) => k.toLowerCase()),
+        );
+        const missingKeywords = jobKeywords.filter(
+          (k) => !resumeKeywordSet.has(k.toLowerCase()),
+        );
+
+        // Determine urgency band based on score
+        const urgencyBand = this.determineUrgency(score);
+
+        // Generate tips
+        const tips = this.generateTips(
+          score,
+          missingKeywords,
+          request.company,
+          request.role,
+        );
+
+        return {
+          score,
+          missingKeywords: missingKeywords.slice(0, 10), // Top 10
+          urgencyBand,
+          tips,
+        };
+      } finally {
+        // Always clear the timeout
+        clearTimeout(timeoutId);
       }
-
-      const data = await response.json();
-
-      // Transform Spring Boot response to our format
-      // The current Spring service only returns {score: number}
-      // so we'll enhance it with additional logic here
-      const score = Math.round(data.score * 100);
-
-      // Calculate missing keywords
-      const jobKeywords = this.extractKeywords(request.jobDescription);
-      const resumeKeywordSet = new Set(
-        request.resumeKeywords.map((k) => k.toLowerCase()),
-      );
-      const missingKeywords = jobKeywords.filter(
-        (k) => !resumeKeywordSet.has(k.toLowerCase()),
-      );
-
-      // Determine urgency band based on score
-      const urgencyBand = this.determineUrgency(score);
-
-      // Generate tips
-      const tips = this.generateTips(
-        score,
-        missingKeywords,
-        request.company,
-        request.role,
-      );
-
-      return {
-        score,
-        missingKeywords: missingKeywords.slice(0, 10), // Top 10
-        urgencyBand,
-        tips,
-      };
     } catch (error) {
       console.error("Error calling score service:", error);
+
+      // Handle timeout specifically
+      if (error instanceof Error && error.name === "AbortError") {
+        throw new Error(
+          "Score service timeout - request took longer than 10 seconds",
+        );
+      }
+
+      // Handle other fetch errors
+      if (error instanceof TypeError) {
+        throw new Error(
+          "Failed to connect to scoring service - is it running?",
+        );
+      }
+
       throw new Error("Failed to calculate score from scoring service");
     }
   }
