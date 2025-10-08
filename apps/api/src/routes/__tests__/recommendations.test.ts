@@ -21,7 +21,6 @@ beforeAll(async () => {
     "password123",
   );
   accessToken = result.accessToken;
-  userId = result.user.id;
 });
 
 afterAll(async () => {
