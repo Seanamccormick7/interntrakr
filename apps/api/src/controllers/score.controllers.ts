@@ -12,11 +12,19 @@ export async function getScore(req: Request, res: Response): Promise<void> {
     const { resumeKeywords, jobDescription, company, role } = req.body;
 
     // Validate required fields
-    if (!resumeKeywords || !jobDescription || !company || !role) {
+    if (
+      !resumeKeywords ||
+      !Array.isArray(resumeKeywords) ||
+      resumeKeywords.length === 0 ||
+      !jobDescription ||
+      jobDescription.trim().length === 0 ||
+      !company ||
+      !role
+    ) {
       res.status(400).json({
         error: "Missing required fields",
         details:
-          "resumeKeywords, jobDescription, company, and role are required",
+          "resumeKeywords (non-empty array), jobDescription, company, and role are required",
       });
       return;
     }
