@@ -4,8 +4,7 @@ import type { AppItem, ScoreResponse } from "../types";
 import { Modal } from "../components/Modal";
 import { ApplicationForm } from "../components/ApplicationForm";
 import { ScoreDisplay } from "../components/ScoreDisplay";
-
-type FeedbackType = { type: "success" | "error"; message: string } | null;
+import { useToast } from "../contexts/ToastContext";
 type ApiResponse = Omit<AppItem, "id"> & { _id?: string; id?: string };
 
 const normalizeItem = (item: ApiResponse): AppItem => ({
@@ -14,11 +13,11 @@ const normalizeItem = (item: ApiResponse): AppItem => ({
 });
 
 export default function Applications() {
+  const { showToast } = useToast();
   const [items, setItems] = useState<AppItem[]>([]);
   const [filteredItems, setFilteredItems] = useState<AppItem[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
-  const [feedback, setFeedback] = useState<FeedbackType>(null);
 
   // Modal state
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -84,10 +83,6 @@ export default function Applications() {
     setFilteredItems(filtered);
   }, [items, statusFilter, searchQuery]);
 
-  const showFeedback = (type: "success" | "error", message: string) => {
-    setFeedback({ type, message });
-    setTimeout(() => setFeedback(null), 5000);
-  };
 
   // Get score for application
   const handleGetScore = async (app: AppItem) => {
@@ -127,12 +122,12 @@ export default function Applications() {
 
       setScores((prev) => ({ ...prev, [app.id]: scoreData }));
       setScoringId(app.id);
-      showFeedback("success", "Score calculated successfully!");
+      showToast({ message: "Score calculated successfully!", type: "success" });
     } catch (err) {
-      showFeedback(
-        "error",
-        err instanceof Error ? err.message : "Failed to calculate score",
-      );
+      showToast({
+        message: err instanceof Error ? err.message : "Failed to calculate score",
+        type: "error",
+      });
     } finally {
       setLoadingScores((prev) => ({ ...prev, [app.id]: false }));
     }
@@ -159,12 +154,12 @@ export default function Applications() {
       const newItem = normalizeItem(response);
       setItems((prev) => [...prev, newItem]);
       setIsModalOpen(false);
-      showFeedback("success", "Application created successfully!");
+      showToast({ message: "Application created successfully!", type: "success" });
     } catch (err) {
-      showFeedback(
-        "error",
-        err instanceof Error ? err.message : "Failed to create application",
-      );
+      showToast({
+        message: err instanceof Error ? err.message : "Failed to create application",
+        type: "error",
+      });
     } finally {
       setIsSubmitting(false);
     }
@@ -189,12 +184,12 @@ export default function Applications() {
       );
       setIsModalOpen(false);
       setEditingItem(null);
-      showFeedback("success", "Application updated successfully!");
+      showToast({ message: "Application updated successfully!", type: "success" });
     } catch (err) {
-      showFeedback(
-        "error",
-        err instanceof Error ? err.message : "Failed to update application",
-      );
+      showToast({
+        message: err instanceof Error ? err.message : "Failed to update application",
+        type: "error",
+      });
     } finally {
       setIsSubmitting(false);
     }
@@ -209,12 +204,12 @@ export default function Applications() {
 
       await apiDelete(`/applications/${id}`, withAuth(token));
       setItems((prev) => prev.filter((item) => item.id !== id));
-      showFeedback("success", "Application deleted successfully!");
+      showToast({ message: "Application deleted successfully!", type: "success" });
     } catch (err) {
-      showFeedback(
-        "error",
-        err instanceof Error ? err.message : "Failed to delete application",
-      );
+      showToast({
+        message: err instanceof Error ? err.message : "Failed to delete application",
+        type: "error",
+      });
     }
   };
 
@@ -286,20 +281,6 @@ export default function Applications() {
       </div>
 
       {/* Feedback */}
-      {feedback && (
-        <div
-          style={{
-            padding: "0.75rem 1rem",
-            marginBottom: "1rem",
-            borderRadius: 8,
-            backgroundColor: feedback.type === "success" ? "#d1fae5" : "#fee",
-            border: `1px solid ${feedback.type === "success" ? "#10b981" : "#c33"}`,
-            color: feedback.type === "success" ? "#065f46" : "#991b1b",
-          }}
-        >
-          {feedback.message}
-        </div>
-      )}
 
       {/* Filters */}
       <div
