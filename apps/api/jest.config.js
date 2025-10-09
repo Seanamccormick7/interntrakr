@@ -10,4 +10,5 @@ module.exports = {
   ],
   testTimeout: 30000,
   maxWorkers: 1, // run tests one at a time
+  setupFiles: ["<rootDir>/src/__tests__/setup.ts"], // Set NODE_ENV=test
 };
