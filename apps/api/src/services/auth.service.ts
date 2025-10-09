@@ -1,78 +1,114 @@
 import bcrypt from "bcrypt";
-import { User, IUser } from "../models/User";
-import { generateTokens } from "../utils/jwt";
-import mongoose from "mongoose";
-const SALT_ROUNDS = 10;
+import jwt from "jsonwebtoken";
+import { env } from "../config/env";
+import { repositoryFactory } from "../repositories/factory";
+
+interface TokenPayload {
+  userId: string;
+  email: string;
+}
 
 export class AuthService {
-  // Register new user
+  private get userRepo() {
+    return repositoryFactory.getUserRepository();
+  }
+
   async register(email: string, password: string) {
-    // Check if user already exists
-    const existingUser = await User.findOne({ email });
+    // Check if user exists
+    const existingUser = await this.userRepo.findByEmail(email);
+
     if (existingUser) {
-      throw new Error("User already exists");
+      throw new Error("Email already registered");
     }
 
     // Hash password
-    const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
+    const hashedPassword = await bcrypt.hash(password, 10);
 
     // Create user
-    const user = await User.create({
-      email,
-      password: hashedPassword,
-    });
+    const user = await this.userRepo.create(email, hashedPassword);
 
     // Generate tokens
-    const tokens = generateTokens({
-      userId: (user._id as mongoose.Types.ObjectId).toString(),
+    const accessToken = this.generateAccessToken({
+      userId: user.id,
+      email: user.email,
+    });
+
+    const refreshToken = this.generateRefreshToken({
+      userId: user.id,
       email: user.email,
     });
 
     return {
       user: {
-        id: (user._id as mongoose.Types.ObjectId).toString(),
+        id: user.id,
         email: user.email,
-        createdAt: user.createdAt,
       },
-      ...tokens,
+      accessToken,
+      refreshToken,
     };
   }
 
-  // Login user
   async login(email: string, password: string) {
-    // Find user and explicitly select password
-    const user = await User.findOne({ email }).select("+password");
+    // Find user with password
+    const user = await this.userRepo.findByEmailWithPassword(email);
+
     if (!user) {
       throw new Error("Invalid credentials");
     }
 
     // Verify password
     const isValidPassword = await bcrypt.compare(password, user.password);
+
     if (!isValidPassword) {
       throw new Error("Invalid credentials");
     }
 
     // Generate tokens
-    const tokens = generateTokens({
-      userId: (user._id as mongoose.Types.ObjectId).toString(),
+    const accessToken = this.generateAccessToken({
+      userId: user.id,
+      email: user.email,
+    });
+
+    const refreshToken = this.generateRefreshToken({
+      userId: user.id,
       email: user.email,
     });
 
     return {
       user: {
-        id: (user._id as mongoose.Types.ObjectId).toString(),
+        id: user.id,
         email: user.email,
-        createdAt: user.createdAt,
       },
-      ...tokens,
+      accessToken,
+      refreshToken,
     };
   }
 
-  // Verify user exists
-  async getUserById(userId: string): Promise<IUser | null> {
-    return User.findById(userId);
+  async getCurrentUser(userId: string) {
+    const user = await this.userRepo.findById(userId);
+
+    if (!user) {
+      throw new Error("User not found");
+    }
+
+    return {
+      id: user.id,
+      email: user.email,
+      createdAt: user.createdAt,
+    };
+  }
+
+  private generateAccessToken(payload: TokenPayload): string {
+    return jwt.sign(payload, env.JWT_SECRET, { expiresIn: "15m" });
+  }
+
+  private generateRefreshToken(payload: TokenPayload): string {
+    return jwt.sign(payload, env.JWT_SECRET, { expiresIn: "7d" });
+  }
+
+  verifyToken(token: string): TokenPayload {
+    return jwt.verify(token, env.JWT_SECRET) as TokenPayload;
   }
 }
 
-// Export singleton instance
 export const authService = new AuthService();

@@ -1,53 +1,26 @@
-import mongoose from "mongoose";
-import {
-  Application,
-  IApplication,
-  ApplicationStatus,
-} from "../models/Application";
+import { ApplicationStatus } from "../types/application.types";
 import { websocketService } from "./websocket.service";
+import { repositoryFactory } from "../repositories/factory";
+import {
+  ApplicationFilters,
+  CreateApplicationData,
+  UpdateApplicationData,
+} from "../repositories/interfaces";
 
-export interface ApplicationFilters {
-  status?: ApplicationStatus;
-  deadlineSoon?: boolean;
-  q?: string;
-}
+// Export for controllers to use
+export { ApplicationFilters, ApplicationStatus };
 
 export class ApplicationService {
+  private get repo() {
+    return repositoryFactory.getApplicationRepository();
+  }
+
   async getApplications(userId: string, filters: ApplicationFilters = {}) {
-    // Build query object for MongoDB
-    const query: Record<string, unknown> = { userId };
-
-    if (filters.status) {
-      query.status = filters.status;
-    }
-
-    if (filters.deadlineSoon) {
-      const sevenDaysFromNow = new Date();
-      sevenDaysFromNow.setDate(sevenDaysFromNow.getDate() + 7);
-
-      query.deadline = {
-        $gte: new Date(),
-        $lte: sevenDaysFromNow,
-      };
-    }
-
-    if (filters.q) {
-      query.$text = { $search: filters.q };
-    }
-
-    const applications = await Application.find(query)
-      .sort({ deadline: 1, createdAt: -1 })
-      .lean();
-
-    return applications;
+    return await this.repo.find(userId, filters);
   }
 
   async getApplicationById(id: string, userId: string) {
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-      throw new Error("Invalid application ID");
-    }
-
-    const application = await Application.findOne({ _id: id, userId }).lean();
+    const application = await this.repo.findById(id, userId);
 
     if (!application) {
       throw new Error("Application not found");
@@ -56,65 +29,46 @@ export class ApplicationService {
     return application;
   }
 
-  async createApplication(userId: string, data: Partial<IApplication>) {
-    const application = await Application.create({
-      ...data,
-      userId,
-    });
-
+  async createApplication(userId: string, data: CreateApplicationData) {
+    const application = await this.repo.create(userId, data);
     websocketService.broadcastApplicationCreated(application);
-
-    return application.toObject();
+    return application;
   }
 
   async updateApplication(
     id: string,
     userId: string,
-    data: Partial<IApplication>,
+    data: UpdateApplicationData,
   ) {
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-      throw new Error("Invalid application ID");
-    }
-
-    // Remove userId from update data to prevent overwriting
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { userId: _, ...updateData } = data as Partial<IApplication>;
-
-    const application = await Application.findOneAndUpdate(
-      { _id: id, userId },
-      updateData,
-      { new: true, runValidators: true },
-    );
+    const application = await this.repo.update(id, userId, data);
 
     if (!application) {
       throw new Error("Application not found");
     }
 
     websocketService.broadcastApplicationUpdated(application);
-
-    return application.toObject();
+    return application;
   }
 
   async deleteApplication(id: string, userId: string) {
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-      throw new Error("Invalid application ID");
-    }
-
-    const application = await Application.findOne({ _id: id, userId });
+    // Get application first to access collaborators
+    const application = await this.repo.findById(id, userId);
 
     if (!application) {
       throw new Error("Application not found");
     }
 
-    const collaborators = application.collaborators || [];
+    const success = await this.repo.delete(id, userId);
 
-    const result = await Application.deleteOne({ _id: id, userId });
-
-    if (result.deletedCount === 0) {
+    if (!success) {
       throw new Error("Application not found");
     }
 
-    websocketService.broadcastApplicationDeleted(id, userId, collaborators);
+    websocketService.broadcastApplicationDeleted(
+      id,
+      userId,
+      application.collaborators,
+    );
 
     return { success: true };
   }

@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
 import { authService } from "../services/auth.service";
-import mongoose from "mongoose";
 
 // POST /auth/register
 export async function register(req: Request, res: Response): Promise<void> {
@@ -12,7 +11,7 @@ export async function register(req: Request, res: Response): Promise<void> {
     res.status(201).json(result);
   } catch (error) {
     if (error instanceof Error) {
-      if (error.message === "User already exists") {
+      if (error.message === "Email already registered") {
         res.status(400).json({ error: error.message });
         return;
       }
@@ -33,7 +32,7 @@ export async function login(req: Request, res: Response): Promise<void> {
   } catch (error) {
     if (error instanceof Error) {
       if (error.message === "Invalid credentials") {
-        res.status(401).json({ error: "Invalid email or password" });
+        res.status(401).json({ error: error.message });
         return;
       }
     }
@@ -42,7 +41,7 @@ export async function login(req: Request, res: Response): Promise<void> {
   }
 }
 
-// GET /auth/me (protected route to test auth)
+// GET /auth/me
 export async function getCurrentUser(
   req: Request,
   res: Response,
@@ -53,17 +52,9 @@ export async function getCurrentUser(
       return;
     }
 
-    const user = await authService.getUserById(req.user.userId);
-    if (!user) {
-      res.status(404).json({ error: "User not found" });
-      return;
-    }
+    const user = await authService.getCurrentUser(req.user.userId);
 
-    res.status(200).json({
-      id: (user._id as mongoose.Types.ObjectId).toString(),
-      email: user.email,
-      createdAt: user.createdAt,
-    });
+    res.status(200).json(user);
   } catch (error) {
     console.error("Get current user error:", error);
     res.status(500).json({ error: "Failed to get user" });

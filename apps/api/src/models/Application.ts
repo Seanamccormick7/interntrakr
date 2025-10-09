@@ -1,19 +1,15 @@
-import mongoose, { Document, Schema } from "mongoose";
+// apps/api/src/models/Application.ts
 
-// Status enum matches the plan
-export enum ApplicationStatus {
-  SAVED = "SAVED",
-  APPLIED = "APPLIED",
-  OA = "OA",
-  INTERVIEW = "INTERVIEW",
-  REJECTED = "REJECTED",
-  OFFER = "OFFER",
-}
+import mongoose, { Document, Schema } from "mongoose";
+import { ApplicationStatus } from "../types/application.types";
+
+// Re-export for backward compatibility
+export { ApplicationStatus };
 
 // TypeScript interface
 export interface IApplication extends Document {
   userId: mongoose.Types.ObjectId;
-  collaborators: string[]; // Array of user IDs who can view/edit
+  collaborators: string[];
   company: string;
   role: string;
   location?: string;
@@ -32,7 +28,7 @@ const applicationSchema = new Schema<IApplication>(
       type: Schema.Types.ObjectId,
       ref: "User",
       required: [true, "User ID is required"],
-      index: true, // Index for querying by user
+      index: true,
     },
     collaborators: {
       type: [String],
@@ -42,7 +38,7 @@ const applicationSchema = new Schema<IApplication>(
       type: String,
       required: [true, "Company name is required"],
       trim: true,
-      index: true, // Index for searching by company
+      index: true,
     },
     role: {
       type: String,
@@ -65,11 +61,11 @@ const applicationSchema = new Schema<IApplication>(
       type: String,
       enum: Object.values(ApplicationStatus),
       default: ApplicationStatus.SAVED,
-      index: true, // Index for filtering by status
+      index: true,
     },
     deadline: {
       type: Date,
-      index: true, // Index for deadline queries (upcoming deadlines)
+      index: true,
     },
     notes: {
       type: String,
@@ -86,12 +82,12 @@ const applicationSchema = new Schema<IApplication>(
 );
 
 // Compound indexes for common queries
-applicationSchema.index({ userId: 1, status: 1 }); // Filter user's apps by status
-applicationSchema.index({ userId: 1, deadline: 1 }); // User's upcoming deadlines
-applicationSchema.index({ userId: 1, company: 1 }); // Search by company within user's apps
-applicationSchema.index({ deadline: 1, status: 1 }); // Global deadline alerts
+applicationSchema.index({ userId: 1, status: 1 });
+applicationSchema.index({ userId: 1, deadline: 1 });
+applicationSchema.index({ userId: 1, company: 1 });
+applicationSchema.index({ deadline: 1, status: 1 });
 
-// Text index for full-text search on company, role, and notes
+// Text index for full-text search
 applicationSchema.index({ company: "text", role: "text", notes: "text" });
 
 export const Application = mongoose.model<IApplication>(

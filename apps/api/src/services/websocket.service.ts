@@ -1,16 +1,18 @@
+// apps/api/src/services/websocket.service.ts
+
 import { getIO } from "../config/socket";
-import { IApplication } from "../models/Application";
+import { ApplicationData } from "../repositories/interfaces";
 
 export class WebSocketService {
   // Broadcast application creation to user and collaborators
-  broadcastApplicationCreated(application: IApplication) {
+  broadcastApplicationCreated(application: ApplicationData) {
     try {
       const io = getIO();
       const rooms = this.getRoomsForApplication(application);
 
       rooms.forEach((room) => {
         io.to(room).emit("application:created", {
-          application: application.toObject(),
+          application,
         });
       });
 
@@ -21,14 +23,14 @@ export class WebSocketService {
   }
 
   // Broadcast application update to user and collaborators
-  broadcastApplicationUpdated(application: IApplication) {
+  broadcastApplicationUpdated(application: ApplicationData) {
     try {
       const io = getIO();
       const rooms = this.getRoomsForApplication(application);
 
       rooms.forEach((room) => {
         io.to(room).emit("application:updated", {
-          application: application.toObject(),
+          application,
         });
       });
 
@@ -64,8 +66,8 @@ export class WebSocketService {
   }
 
   // Get all rooms that should receive updates for an application
-  private getRoomsForApplication(application: IApplication): string[] {
-    const rooms = [`user:${application.userId.toString()}`];
+  private getRoomsForApplication(application: ApplicationData): string[] {
+    const rooms = [`user:${application.userId}`];
 
     // Add collaborator rooms
     if (application.collaborators && application.collaborators.length > 0) {
