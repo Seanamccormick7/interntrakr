@@ -12,10 +12,21 @@ function required(name: string, fallback?: string) {
 export const env = {
   NODE_ENV: process.env.NODE_ENV ?? "development",
   PORT: Number(process.env.PORT ?? 4000),
-  JWT_SECRET: process.env.JWT_SECRET ?? "dev-secret", // replace later
-  MONGO_URI: process.env.MONGO_URI ?? "mongodb://localhost:27017/interntrackr",
-  REDIS_URL: process.env.REDIS_URL ?? "redis://localhost:6379",
+  JWT_SECRET: process.env.JWT_SECRET ?? "dev-secret",
+
+  // Database configuration
   DB_ENGINE: process.env.DB_ENGINE ?? "mongo",
+
+  // MongoDB
+  MONGO_URI: process.env.MONGO_URI ?? "mongodb://localhost:27017/interntrackr",
+
+  // PostgreSQL (for Prisma)
+  DATABASE_URL:
+    process.env.DATABASE_URL ??
+    "postgresql://postgres:postgres@localhost:5432/interntrackr",
+
+  // Redis
+  REDIS_URL: process.env.REDIS_URL ?? "redis://localhost:6379",
 
   // Security configuration
   ALLOWED_ORIGINS: (

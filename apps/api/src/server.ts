@@ -1,13 +1,13 @@
 import { createServer } from "http";
 import { createApp } from "./app";
 import { env } from "./config/env";
-import { connectDB } from "./config/db";
+import { connectDatabase } from "./config/database";
 import { connectRedis, disconnectRedis } from "./config/redis";
 import { initializeSocketIO } from "./config/socket";
 
 async function startServer() {
   try {
-    await connectDB();
+    await connectDatabase();
     await connectRedis();
 
     const app = createApp();
