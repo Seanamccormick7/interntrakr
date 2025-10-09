@@ -14,7 +14,8 @@ if (!API_BASE_URL) {
   throw new Error("Missing required env: API_BASE_URL");
 }
 
-export const handler = async (_event: any, _ctx: any) => {
+// Fix: Remove unused parameters and use unknown instead of any
+export const handler = async () => {
   const url = new URL("/applications", API_BASE_URL);
   url.searchParams.set("deadlineSoon", "1");
   try {
@@ -48,8 +49,10 @@ export const handler = async (_event: any, _ctx: any) => {
     }
 
     return { ok: true, count: items.length };
-  } catch (err: any) {
-    console.error("alerts-lambda error:", err?.stack || err);
+  } catch (err: unknown) {
+    // Fix: Use unknown instead of any
+    const error = err as Error;
+    console.error("alerts-lambda error:", error?.stack || error);
     throw err;
   }
 };
