@@ -30,7 +30,6 @@ npm run dev:api        # http://localhost:4000/ping -> {"message":"pong"}
 npm run dev:web        # http://localhost:5173
 ```
 
-<<<<<<< HEAD
 ## Security Configuration
 
 The API includes production-ready security middleware:
@@ -101,7 +100,7 @@ Before deploying to production:
 - [ ] Review rate limits based on expected traffic
 - [ ] Ensure `NODE_ENV=production` is set
 - [ ] If behind multiple proxies/load balancers, adjust trust proxy setting
-=======
+
 ## Database Configuration
 
 InternTrackr supports **dual database engines** via a repository pattern:
@@ -268,4 +267,3 @@ npm run dev:api
 echo "DB_ENGINE=mongo" > apps/api/.env
 npm run dev:api
 ```
->>>>>>> b817bd1 (docs: update configuration and documentation)
