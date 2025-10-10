@@ -7,7 +7,7 @@ import React, {
 } from "react";
 import { createPortal } from "react-dom";
 import { nanoid } from "nanoid";
-import { Toast, ToastProps } from "../components/Toast";
+import { Toast } from "../components/Toast";
 
 interface ToastItem {
   id: string;
@@ -160,4 +160,3 @@ export function useToast() {
   }
   return context;
 }
-
