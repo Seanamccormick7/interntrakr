@@ -7,10 +7,11 @@ import {
   deleteApplication,
 } from "../controllers/application.controllers";
 import {
-  validateCreateApplication,
-  validateUpdateApplication,
-  validateApplicationFilters,
-} from "../validators/application.validators";
+  createApplicationSchema,
+  updateApplicationSchema,
+  applicationFiltersSchema,
+} from "../schemas/application.schemas";
+import { validate } from "../middleware/validate";
 import { requireAuth } from "../middleware/auth";
 
 const router = Router();
@@ -19,16 +20,16 @@ const router = Router();
 router.use(requireAuth);
 
 // GET /applications (with optional filters)
-router.get("/", validateApplicationFilters, getApplications);
+router.get("/", validate(applicationFiltersSchema), getApplications);
 
 // POST /applications
-router.post("/", validateCreateApplication, createApplication);
+router.post("/", validate(createApplicationSchema), createApplication);
 
 // GET /applications/:id
 router.get("/:id", getApplicationById);
 
 // PUT /applications/:id
-router.put("/:id", validateUpdateApplication, updateApplication);
+router.put("/:id", validate(updateApplicationSchema), updateApplication);
 
 // DELETE /applications/:id
 router.delete("/:id", deleteApplication);

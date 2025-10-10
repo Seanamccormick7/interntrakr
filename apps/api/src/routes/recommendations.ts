@@ -1,5 +1,7 @@
 import { Router } from "express";
 import { getScore } from "../controllers/score.controllers";
+import { scoreRequestSchema } from "../schemas/score.schemas";
+import { validate } from "../middleware/validate";
 import { requireAuth } from "../middleware/auth";
 
 const router = Router();
@@ -8,6 +10,6 @@ const router = Router();
 router.use(requireAuth);
 
 // POST /recommendations/score
-router.post("/score", getScore);
+router.post("/score", validate(scoreRequestSchema), getScore);
 
 export default router;
