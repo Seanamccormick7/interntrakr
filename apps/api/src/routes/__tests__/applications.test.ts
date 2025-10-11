@@ -101,6 +101,13 @@ describe("GET /applications", () => {
       .expect(400);
 
     expect(response.body.error).toBe("Validation failed");
+    expect(response.body.details).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          field: "query.status",
+        }),
+      ]),
+    );
   });
 
   it("should only return current users applications", async () => {
@@ -165,7 +172,14 @@ describe("POST /applications", () => {
       .expect(400);
 
     expect(response.body.error).toBe("Validation failed");
-    expect(response.body.details).toContain("Company is required");
+    expect(response.body.details).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          field: "body.company",
+          message: expect.stringContaining("Company is required"),
+        }),
+      ]),
+    );
   });
 
   it("should return 400 for missing role", async () => {
@@ -178,7 +192,14 @@ describe("POST /applications", () => {
       .expect(400);
 
     expect(response.body.error).toBe("Validation failed");
-    expect(response.body.details).toContain("Role is required");
+    expect(response.body.details).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          field: "body.role",
+          message: expect.stringContaining("Role is required"),
+        }),
+      ]),
+    );
   });
 
   it("should return 400 for invalid link", async () => {
@@ -192,8 +213,14 @@ describe("POST /applications", () => {
       })
       .expect(400);
 
-    expect(response.body.details).toContain(
-      "Link must be a valid URL starting with http:// or https://",
+    expect(response.body.details).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          message: expect.stringContaining(
+            "Link must be a valid URL starting with http:// or https://",
+          ),
+        }),
+      ]),
     );
   });
 
@@ -351,6 +378,14 @@ describe("PUT /applications/:id", () => {
       .expect(400);
 
     expect(response.body.error).toBe("Validation failed");
+    expect(response.body.details).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          field: "body.company",
+          message: expect.stringContaining("non-empty string"),
+        }),
+      ]),
+    );
   });
 
   it("should not update other users application", async () => {

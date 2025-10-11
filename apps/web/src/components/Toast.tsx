@@ -1,5 +1,3 @@
-import React from "react";
-
 export interface ToastProps {
   id: string;
   message: string;
@@ -37,7 +35,8 @@ export function Toast({
 
   // Use 'status' for info/success (polite), 'alert' for error/warning (assertive)
   const ariaRole = type === "error" || type === "warning" ? "alert" : "status";
-  const ariaLive = type === "error" || type === "warning" ? "assertive" : "polite";
+  const ariaLive =
+    type === "error" || type === "warning" ? "assertive" : "polite";
 
   return (
     <div
@@ -79,4 +78,3 @@ export function Toast({
     </div>
   );
 }
-
