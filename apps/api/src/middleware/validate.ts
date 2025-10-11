@@ -20,10 +20,11 @@ export const validate =
         params: req.params,
       })) as ValidatedRequest;
 
-      // Apply sanitized values back to request
-      if (validated.body) req.body = validated.body;
-      if (validated.query) req.query = validated.query as typeof req.query;
-      if (validated.params) req.params = validated.params as typeof req.params;
+      // Only apply sanitized values to req.body (it's writable)
+      // query and params are read-only in Express, so we just validate them
+      if (validated.body) {
+        req.body = validated.body;
+      }
 
       // If validation passes, continue
       next();
