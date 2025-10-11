@@ -4,16 +4,17 @@ import {
   login,
   getCurrentUser,
 } from "../controllers/auth.controllers";
-import { validateRegister, validateLogin } from "../validators/auth.validators";
+import { registerSchema, loginSchema } from "../schemas/auth.schemas";
+import { validate } from "../middleware/validate";
 import { requireAuth } from "../middleware/auth";
 
 const router = Router();
 
 // POST /auth/register
-router.post("/register", validateRegister, register);
+router.post("/register", validate(registerSchema), register);
 
 // POST /auth/login
-router.post("/login", validateLogin, login);
+router.post("/login", validate(loginSchema), login);
 
 // GET /auth/me (protected)
 router.get("/me", requireAuth, getCurrentUser);

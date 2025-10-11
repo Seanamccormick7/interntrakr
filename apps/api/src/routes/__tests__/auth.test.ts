@@ -47,7 +47,13 @@ describe("POST /auth/register", () => {
       .expect(400);
 
     expect(response.body.error).toBe("Validation failed");
-    expect(response.body.details).toContain("Invalid email format");
+    expect(response.body.details).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          message: expect.stringContaining("Invalid email format"),
+        }),
+      ]),
+    );
   });
 
   it("should return 400 for short password", async () => {
@@ -60,8 +66,12 @@ describe("POST /auth/register", () => {
       .expect(400);
 
     expect(response.body.error).toBe("Validation failed");
-    expect(response.body.details).toContain(
-      "Password must be at least 6 characters",
+    expect(response.body.details).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          message: expect.stringContaining("at least 6 characters"),
+        }),
+      ]),
     );
   });
 
@@ -74,6 +84,13 @@ describe("POST /auth/register", () => {
       .expect(400);
 
     expect(response.body.error).toBe("Validation failed");
+    expect(response.body.details).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          field: "body.email",
+        }),
+      ]),
+    );
   });
 
   it("should return 400 for duplicate email", async () => {

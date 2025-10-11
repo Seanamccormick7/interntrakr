@@ -12,45 +12,6 @@ import {
 // Export for controllers to use
 export { ApplicationFilters, ApplicationStatus };
 
-// ---- Temporary runtime guards until Zod is added ----
-const FORBIDDEN_FIELDS = new Set<string>([
-  "userId",
-  "ownerId",
-  "_id",
-  "id",
-  "createdAt",
-  "updatedAt",
-]);
-
-/**
- * Reject payloads that try to:
- *  - overwrite ownership/system fields
- *  - use Mongo operators like $set/$push
- *  - use dot-path updates like "userId.$set" or "ownerId.something"
- */
-function assertSafeUpdatePayload(data: unknown) {
-  if (!data || typeof data !== "object") return;
-
-  const keys = Object.keys(data as Record<string, unknown>);
-
-  const forbidden = keys.filter((k) => FORBIDDEN_FIELDS.has(k));
-  if (forbidden.length) {
-    throw new Error(
-      `Forbidden fields in update payload: ${forbidden.join(", ")}`,
-    );
-  }
-
-  const hasOperatorsOrDotPaths = keys.some(
-    (k) => k.startsWith("$") || k.includes("."),
-  );
-  if (hasOperatorsOrDotPaths) {
-    throw new Error(
-      "Update payload contains disallowed operators or dot-paths.",
-    );
-  }
-}
-// -----------------------------------------------------
-
 export class ApplicationService {
   private get repo() {
     return repositoryFactory.getApplicationRepository();
@@ -81,10 +42,8 @@ export class ApplicationService {
     userId: string,
     data: UpdateApplicationData,
   ) {
-    // Temporary guard until Zod validation is added
-    assertSafeUpdatePayload(data);
-
-    // Repo must scope by { id, userId } internally to prevent cross-tenant writes.
+    // Zod .strict() mode now prevents forbidden fields at middleware layer
+    // Repo must scope by { id, userId } internally to prevent cross-tenant writes
     const application = await this.repo.update(id, userId, data);
 
     if (!application) {

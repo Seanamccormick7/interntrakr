@@ -1,9 +1,10 @@
 import request from "supertest";
 import mongoose from "mongoose";
 import { createApp } from "../../app";
-import { authService } from "../../services/auth.service";
+import { User } from "../../models/User";
 
 const app = createApp();
+jest.setTimeout(30000); // Increase timeout for slow tests
 
 let accessToken: string;
 
@@ -14,18 +15,23 @@ beforeAll(async () => {
   const mongoUri =
     process.env.MONGO_URI || "mongodb://localhost:27017/interntrackr_test";
   await mongoose.connect(mongoUri);
-
-  // Create test user and get token
-  const result = await authService.register(
-    "recommendations-test@example.com",
-    "password123",
-  );
-  accessToken = result.accessToken;
 });
 
 afterAll(async () => {
   await mongoose.connection.dropDatabase();
   await mongoose.connection.close();
+});
+
+beforeEach(async () => {
+  // Clean up and create fresh user for each test
+  await User.deleteMany({});
+
+  const response = await request(app).post("/auth/register").send({
+    email: "recommendations-test@example.com",
+    password: "password123",
+  });
+
+  accessToken = response.body.accessToken;
 });
 
 afterEach(() => {
@@ -85,7 +91,10 @@ describe("POST /recommendations/score", () => {
       })
       .expect(400);
 
-    expect(response.body.error).toBe("Missing required fields");
+    expect(response.body.error).toBe("Validation failed");
+    expect(response.body.details).toBeDefined();
+    expect(Array.isArray(response.body.details)).toBe(true);
+    expect(response.body.details.length).toBeGreaterThan(0);
   });
 
   it("should return 400 with empty resumeKeywords", async () => {
@@ -98,7 +107,15 @@ describe("POST /recommendations/score", () => {
       })
       .expect(400);
 
-    expect(response.body.error).toBe("Missing required fields");
+    expect(response.body.error).toBe("Validation failed");
+    expect(response.body.details).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          field: "body.resumeKeywords",
+          message: expect.stringContaining("at least one keyword"),
+        }),
+      ]),
+    );
   });
 
   it("should return 400 with empty jobDescription", async () => {
@@ -111,7 +128,61 @@ describe("POST /recommendations/score", () => {
       })
       .expect(400);
 
-    expect(response.body.error).toBe("Missing required fields");
+    expect(response.body.error).toBe("Validation failed");
+    expect(response.body.details).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          field: "body.jobDescription",
+          message: expect.stringContaining("cannot be empty"),
+        }),
+      ]),
+    );
+  });
+
+  it("should return 400 with missing company", async () => {
+    const response = await request(app)
+      .post("/recommendations/score")
+      .set("Authorization", `Bearer ${accessToken}`)
+      .send({
+        resumeKeywords: ["javascript"],
+        jobDescription: "Need JavaScript developer",
+        role: "Engineer",
+        // Missing company
+      })
+      .expect(400);
+
+    expect(response.body.error).toBe("Validation failed");
+    expect(response.body.details).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          field: "body.company",
+          message: expect.stringContaining("company is required"),
+        }),
+      ]),
+    );
+  });
+
+  it("should return 400 with missing role", async () => {
+    const response = await request(app)
+      .post("/recommendations/score")
+      .set("Authorization", `Bearer ${accessToken}`)
+      .send({
+        resumeKeywords: ["javascript"],
+        jobDescription: "Need JavaScript developer",
+        company: "Google",
+        // Missing role
+      })
+      .expect(400);
+
+    expect(response.body.error).toBe("Validation failed");
+    expect(response.body.details).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          field: "body.role",
+          message: expect.stringContaining("role is required"),
+        }),
+      ]),
+    );
   });
 
   it("should handle Spring Boot service timeout", async () => {

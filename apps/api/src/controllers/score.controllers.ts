@@ -9,25 +9,8 @@ export async function getScore(req: Request, res: Response): Promise<void> {
       return;
     }
 
+    // Zod validation middleware has already validated and sanitized req.body
     const { resumeKeywords, jobDescription, company, role } = req.body;
-
-    // Validate required fields
-    if (
-      !resumeKeywords ||
-      !Array.isArray(resumeKeywords) ||
-      resumeKeywords.length === 0 ||
-      !jobDescription ||
-      jobDescription.trim().length === 0 ||
-      !company ||
-      !role
-    ) {
-      res.status(400).json({
-        error: "Missing required fields",
-        details:
-          "resumeKeywords (non-empty array), jobDescription, company, and role are required",
-      });
-      return;
-    }
 
     // Call Spring Boot scoring service
     const scoreData = await scoreService.calculateScore({

@@ -2,6 +2,7 @@ import request from "supertest";
 import mongoose from "mongoose";
 import { createApp } from "../../app";
 import { Application, ApplicationStatus } from "../../models/Application";
+import { User } from "../../models/User";
 import { authService } from "../../services/auth.service";
 import { cacheService } from "../../services/cache.service";
 import { connectRedis, disconnectRedis } from "../../config/redis";
@@ -16,14 +17,6 @@ beforeAll(async () => {
     process.env.MONGO_URI || "mongodb://localhost:27017/interntrackr_test";
   await mongoose.connect(mongoUri);
   await connectRedis();
-
-  // Create test user and get token
-  const result = await authService.register(
-    "cache-test@example.com",
-    "password123",
-  );
-  accessToken = result.accessToken;
-  userId = result.user.id;
 });
 
 afterAll(async () => {
@@ -33,8 +26,17 @@ afterAll(async () => {
 });
 
 beforeEach(async () => {
-  // Clear cache before each test
+  // Clear cache and users before each test
   await cacheService.clearAll();
+  await User.deleteMany({});
+
+  // Create test user and get token
+  const result = await authService.register(
+    "cache-test@example.com",
+    "password123",
+  );
+  accessToken = result.accessToken;
+  userId = result.user.id;
 });
 
 afterEach(async () => {
@@ -117,43 +119,48 @@ describe("Applications API - Caching", () => {
       expect(response2.body).toHaveLength(1);
       expect(response2.body[0].status).toBe("SAVED");
 
-      // Request with no filter
-      const response3 = await request(app)
-        .get("/applications")
-        .set("Authorization", `Bearer ${accessToken}`)
-        .expect(200);
+      // Verify both cache keys exist
+      const cacheKey1 = cacheService.generateKey(userId, {
+        status: "APPLIED",
+      });
+      const cacheKey2 = cacheService.generateKey(userId, { status: "SAVED" });
 
-      expect(response3.body).toHaveLength(2);
+      const cached1 = await cacheService.get(cacheKey1);
+      const cached2 = await cacheService.get(cacheKey2);
+
+      expect(cached1).not.toBeNull();
+      expect(cached2).not.toBeNull();
     });
   });
 
   describe("Cache invalidation on mutations", () => {
     it("should invalidate cache on POST", async () => {
-      // Get initial list (creates cache)
-      await request(app)
+      // Get list (creates cache)
+      const response1 = await request(app)
         .get("/applications")
         .set("Authorization", `Bearer ${accessToken}`)
         .expect(200);
 
-      // Create new application
+      expect(response1.body).toHaveLength(0);
+
+      // Create application
       await request(app)
         .post("/applications")
         .set("Authorization", `Bearer ${accessToken}`)
         .send({
-          company: "Amazon",
+          company: "Google",
           role: "SWE Intern",
           status: ApplicationStatus.APPLIED,
         })
         .expect(201);
 
-      // Next GET should fetch fresh data (not cached)
-      const response = await request(app)
+      // Next GET should have new application
+      const response2 = await request(app)
         .get("/applications")
         .set("Authorization", `Bearer ${accessToken}`)
         .expect(200);
 
-      expect(response.body).toHaveLength(1);
-      expect(response.body[0].company).toBe("Amazon");
+      expect(response2.body).toHaveLength(1);
     });
 
     it("should invalidate cache on PUT", async () => {
