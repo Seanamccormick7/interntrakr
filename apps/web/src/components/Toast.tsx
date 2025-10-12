@@ -19,11 +19,11 @@ export function Toast({
   onMouseEnter,
   onMouseLeave,
 }: ToastProps) {
-  const bgColor = {
-    success: "bg-green-500",
-    error: "bg-red-500",
-    info: "bg-blue-500",
-    warning: "bg-yellow-500",
+  const bgClass = {
+    success: "toast-success",
+    error: "toast-error",
+    info: "toast-info",
+    warning: "toast-warning",
   }[type];
 
   const icon = {
@@ -33,7 +33,6 @@ export function Toast({
     warning: "⚠",
   }[type];
 
-  // Use 'status' for info/success (polite), 'alert' for error/warning (assertive)
   const ariaRole = type === "error" || type === "warning" ? "alert" : "status";
   const ariaLive =
     type === "error" || type === "warning" ? "assertive" : "polite";
@@ -45,15 +44,10 @@ export function Toast({
       aria-atomic="true"
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
-      className={`${bgColor} text-white px-4 py-3 rounded-lg shadow-lg flex items-center gap-3 min-w-[300px] max-w-[500px] pointer-events-auto`}
-      style={{
-        animation: "slideIn 0.3s ease-out",
-      }}
+      className={`toast ${bgClass}`}
     >
-      <span className="text-xl" aria-hidden="true">
-        {icon}
-      </span>
-      <span className="flex-1">{message}</span>
+      <span aria-hidden="true">{icon}</span>
+      <span style={{ flex: 1 }}>{message}</span>
       {action && (
         <button
           onClick={(e) => {
@@ -61,7 +55,7 @@ export function Toast({
             action.onClick();
             onClose();
           }}
-          className="underline hover:no-underline font-semibold"
+          className="btn btn-ghost"
           type="button"
         >
           {action.label}
@@ -69,7 +63,7 @@ export function Toast({
       )}
       <button
         onClick={onClose}
-        className="text-xl opacity-70 hover:opacity-100 ml-2"
+        className="toast-close btn btn-ghost"
         aria-label="Close notification"
         type="button"
       >
