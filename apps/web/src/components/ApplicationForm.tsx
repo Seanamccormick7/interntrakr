@@ -35,7 +35,6 @@ export function ApplicationForm({
   );
   const [errors, setErrors] = useState<{ company?: string; role?: string }>({});
 
-  // Reset form when initialData changes
   useEffect(() => {
     if (initialData) {
       setCompany(initialData.company);
@@ -83,16 +82,8 @@ export function ApplicationForm({
   return (
     <form onSubmit={handleSubmit}>
       <div style={{ display: "grid", gap: "1rem" }}>
-        {/* Company */}
         <div>
-          <label
-            htmlFor="company"
-            style={{
-              display: "block",
-              marginBottom: "0.25rem",
-              fontWeight: 500,
-            }}
-          >
+          <label htmlFor="company" className="label">
             Company *
           </label>
           <input
@@ -100,33 +91,16 @@ export function ApplicationForm({
             id="company"
             value={company}
             onChange={(e) => setCompany(e.target.value)}
-            style={{
-              width: "100%",
-              padding: "0.5rem",
-              borderRadius: 8,
-              border: errors.company ? "1px solid #c33" : "1px solid #333",
-              backgroundColor: "transparent",
-              color: "inherit",
-            }}
+            className="input"
+            style={{ borderColor: errors.company ? "#c33" : undefined }}
             disabled={isSubmitting}
           />
           {errors.company && (
-            <span style={{ fontSize: "0.875rem", color: "#c33" }}>
-              {errors.company}
-            </span>
+            <span className="helper-error">{errors.company}</span>
           )}
         </div>
-
-        {/* Role */}
         <div>
-          <label
-            htmlFor="role"
-            style={{
-              display: "block",
-              marginBottom: "0.25rem",
-              fontWeight: 500,
-            }}
-          >
+          <label htmlFor="role" className="label">
             Role *
           </label>
           <input
@@ -134,33 +108,14 @@ export function ApplicationForm({
             id="role"
             value={role}
             onChange={(e) => setRole(e.target.value)}
-            style={{
-              width: "100%",
-              padding: "0.5rem",
-              borderRadius: 8,
-              border: errors.role ? "1px solid #c33" : "1px solid #333",
-              backgroundColor: "transparent",
-              color: "inherit",
-            }}
+            className="input"
+            style={{ borderColor: errors.role ? "#c33" : undefined }}
             disabled={isSubmitting}
           />
-          {errors.role && (
-            <span style={{ fontSize: "0.875rem", color: "#c33" }}>
-              {errors.role}
-            </span>
-          )}
+          {errors.role && <span className="helper-error">{errors.role}</span>}
         </div>
-
-        {/* Link */}
         <div>
-          <label
-            htmlFor="link"
-            style={{
-              display: "block",
-              marginBottom: "0.25rem",
-              fontWeight: 500,
-            }}
-          >
+          <label htmlFor="link" className="label">
             Job Link
           </label>
           <input
@@ -169,28 +124,12 @@ export function ApplicationForm({
             value={link}
             onChange={(e) => setLink(e.target.value)}
             placeholder="https://..."
-            style={{
-              width: "100%",
-              padding: "0.5rem",
-              borderRadius: 8,
-              border: "1px solid #333",
-              backgroundColor: "transparent",
-              color: "inherit",
-            }}
+            className="input"
             disabled={isSubmitting}
           />
         </div>
-
-        {/* Deadline */}
         <div>
-          <label
-            htmlFor="deadline"
-            style={{
-              display: "block",
-              marginBottom: "0.25rem",
-              fontWeight: 500,
-            }}
-          >
+          <label htmlFor="deadline" className="label">
             Deadline
           </label>
           <input
@@ -198,42 +137,19 @@ export function ApplicationForm({
             id="deadline"
             value={deadline}
             onChange={(e) => setDeadline(e.target.value)}
-            style={{
-              width: "100%",
-              padding: "0.5rem",
-              borderRadius: 8,
-              border: "1px solid #333",
-              backgroundColor: "transparent",
-              color: "inherit",
-            }}
+            className="input"
             disabled={isSubmitting}
           />
         </div>
-
-        {/* Status */}
         <div>
-          <label
-            htmlFor="status"
-            style={{
-              display: "block",
-              marginBottom: "0.25rem",
-              fontWeight: 500,
-            }}
-          >
+          <label htmlFor="status" className="label">
             Status
           </label>
           <select
             id="status"
             value={status}
             onChange={(e) => setStatus(e.target.value as AppItem["status"])}
-            style={{
-              width: "100%",
-              padding: "0.5rem",
-              borderRadius: 8,
-              border: "1px solid #333",
-              backgroundColor: "#1a1a1a",
-              color: "inherit",
-            }}
+            className="select"
             disabled={isSubmitting}
           >
             {STATUSES.map((s) => (
@@ -243,22 +159,18 @@ export function ApplicationForm({
             ))}
           </select>
         </div>
-
-        {/* Buttons */}
-        <div style={{ display: "flex", gap: "0.75rem", marginTop: "0.5rem" }}>
+        <div
+          className="row"
+          style={{ justifyContent: "stretch", gap: 12, marginTop: 8 }}
+        >
           <button
             type="submit"
             disabled={isSubmitting}
+            className="btn btn-primary"
             style={{
               flex: 1,
-              padding: "0.75rem",
-              borderRadius: 8,
-              border: "1px solid #646cff",
-              backgroundColor: "#646cff",
-              color: "white",
-              fontWeight: 600,
-              cursor: isSubmitting ? "not-allowed" : "pointer",
               opacity: isSubmitting ? 0.6 : 1,
+              cursor: isSubmitting ? "not-allowed" : "pointer",
             }}
           >
             {isSubmitting ? "Saving..." : initialData ? "Update" : "Create"}
@@ -267,12 +179,9 @@ export function ApplicationForm({
             type="button"
             onClick={onCancel}
             disabled={isSubmitting}
+            className="btn"
             style={{
               flex: 1,
-              padding: "0.75rem",
-              borderRadius: 8,
-              border: "1px solid #333",
-              backgroundColor: "transparent",
               cursor: isSubmitting ? "not-allowed" : "pointer",
             }}
           >

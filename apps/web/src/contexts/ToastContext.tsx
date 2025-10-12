@@ -131,10 +131,7 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
     <ToastContext.Provider value={{ showToast, hideToast, toasts }}>
       {children}
       {createPortal(
-        <div
-          className="fixed top-4 right-4 z-50 flex flex-col gap-2 pointer-events-none"
-          aria-label="Notifications"
-        >
+        <div className="toaster" aria-label="Notifications">
           {toasts.map((toast) => (
             <Toast
               key={toast.id}
