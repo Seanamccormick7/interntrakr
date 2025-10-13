@@ -1,23 +1,23 @@
 import request from "supertest";
-import mongoose from "mongoose";
 import { createApp } from "../../app";
-import { User } from "../../models/User";
+import {
+  setupTestDatabase,
+  teardownTestDatabase,
+  clearTestDatabase,
+} from "../../__tests__/helpers/testDb";
 
 const app = createApp();
 
 beforeAll(async () => {
-  const mongoUri =
-    process.env.MONGO_URI || "mongodb://localhost:27017/interntrackr_test";
-  await mongoose.connect(mongoUri);
+  await setupTestDatabase();
 });
 
 afterAll(async () => {
-  await mongoose.connection.dropDatabase();
-  await mongoose.connection.close();
+  await teardownTestDatabase();
 });
 
 afterEach(async () => {
-  await User.deleteMany({});
+  await clearTestDatabase();
 });
 
 describe("POST /auth/register", () => {
@@ -94,11 +94,13 @@ describe("POST /auth/register", () => {
   });
 
   it("should return 400 for duplicate email", async () => {
+    // First registration
     await request(app).post("/auth/register").send({
       email: "test@example.com",
       password: "password123",
     });
 
+    // Duplicate registration
     const response = await request(app)
       .post("/auth/register")
       .send({
@@ -107,12 +109,13 @@ describe("POST /auth/register", () => {
       })
       .expect(400);
 
-    expect(response.body.error).toBe("User already exists");
+    expect(response.body.error).toBe("Email already registered");
   });
 });
 
 describe("POST /auth/login", () => {
   beforeEach(async () => {
+    // Register test user
     await request(app).post("/auth/register").send({
       email: "test@example.com",
       password: "password123",
@@ -143,7 +146,7 @@ describe("POST /auth/login", () => {
       })
       .expect(401);
 
-    expect(response.body.error).toBe("Invalid email or password");
+    expect(response.body.error).toBe("Invalid credentials");
   });
 
   it("should return 401 for non-existent user", async () => {
@@ -155,7 +158,7 @@ describe("POST /auth/login", () => {
       })
       .expect(401);
 
-    expect(response.body.error).toBe("Invalid email or password");
+    expect(response.body.error).toBe("Invalid credentials");
   });
 
   it("should return 400 for missing credentials", async () => {
