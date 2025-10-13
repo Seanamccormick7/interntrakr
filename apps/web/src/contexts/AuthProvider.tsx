@@ -20,13 +20,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     const token = localStorage.getItem(TOKEN_KEY);
     if (token) {
-      apiGet<User>("/auth/me", withAuth(token))
+      void apiGet<User>("/auth/me", withAuth(token))
         .then((userData) => {
           setUser(userData);
+          return userData;
         })
         .catch(() => {
           localStorage.removeItem(TOKEN_KEY);
           localStorage.removeItem(REFRESH_TOKEN_KEY);
+          return null;
         })
         .finally(() => {
           setIsLoading(false);
