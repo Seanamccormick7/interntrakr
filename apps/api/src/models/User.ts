@@ -17,7 +17,7 @@ const userSchema = new Schema<IUser>(
       lowercase: true,
       trim: true,
       match: [
-        /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
+        /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/,
         "Please provide a valid email address",
       ],
     },
@@ -39,8 +39,9 @@ userSchema.index({ createdAt: -1 }); // For sorting users by join date
 
 // Prevent password from being returned in JSON
 userSchema.set("toJSON", {
-  transform: (_doc, ret) => {
-    delete (ret as any).password;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  transform: (_doc: unknown, ret: any) => {
+    delete ret.password;
     return ret;
   },
 });
