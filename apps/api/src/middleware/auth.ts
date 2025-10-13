@@ -1,12 +1,10 @@
 import { Request, Response, NextFunction } from "express";
 import { verifyToken, JWTPayload } from "../utils/jwt";
 
-// Extend Express Request type to include user
-declare global {
-  namespace Express {
-    interface Request {
-      user?: JWTPayload;
-    }
+// Use module augmentation instead of namespace
+declare module "express-serve-static-core" {
+  interface Request {
+    user?: JWTPayload;
   }
 }
 
