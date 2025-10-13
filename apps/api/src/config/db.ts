@@ -36,7 +36,7 @@ export async function connectDB(): Promise<void> {
     process.on("SIGINT", async () => {
       await mongoose.connection.close();
       console.log("MongoDB: Connection closed due to app termination");
-      process.exit(0);
+      throw new Error("Failed to connect to MongoDB");
     });
   } catch (error) {
     console.error("MongoDB: Failed to connect", error);
@@ -45,9 +45,13 @@ export async function connectDB(): Promise<void> {
   }
 }
 
-export async function disconnectDB(): Promise<void> {
-  if (!isConnected) return;
-  await mongoose.connection.close();
-  isConnected = false;
-  console.log("MongoDB: Disconnected");
+export async function connectDB(): Promise<void> {
+  try {
+    await mongoose.connect(env.MONGO_URI);
+    console.log("MongoDB: Connected successfully");
+  } catch (error) {
+    console.error("MongoDB: Connection failed", error);
+    // Don't throw or exit - let the app handle it
+    // In production, you might want to retry or use a health check
+  }
 }
