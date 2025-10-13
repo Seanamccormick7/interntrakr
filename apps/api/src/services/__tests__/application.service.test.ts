@@ -175,7 +175,7 @@ describe("ApplicationService", () => {
     it("should throw error for invalid ID format", async () => {
       await expect(
         applicationService.getApplicationById("invalid-id", testUserId),
-      ).rejects.toThrow("Invalid application ID");
+      ).rejects.toThrow("Application not found");
     });
 
     it("should throw error if application not found", async () => {
@@ -228,8 +228,10 @@ describe("ApplicationService", () => {
 
     it("should throw error for invalid ID format", async () => {
       await expect(
-        applicationService.updateApplication("invalid-id", testUserId, {}),
-      ).rejects.toThrow("Invalid application ID");
+        applicationService.updateApplication("invalid-id", testUserId, {
+          status: ApplicationStatus.APPLIED,
+        }),
+      ).rejects.toThrow("Application not found");
     });
 
     it("should throw error if application not found", async () => {

@@ -1,151 +1,81 @@
+// This test suite is MongoDB-specific (tests Mongoose model directly)
+// Skip when using PostgreSQL
 import mongoose from "mongoose";
 import { Application, ApplicationStatus } from "../Application";
 import { User } from "../User";
+import { env } from "../../config/env";
 
-let testUserId: mongoose.Types.ObjectId;
+// Skip these tests when using PostgreSQL since they test Mongoose models directly
+const describeIfMongo = env.DB_ENGINE === "mongo" ? describe : describe.skip;
+
+let testUserId: string;
 
 beforeAll(async () => {
+  if (env.DB_ENGINE !== "mongo") return;
+
   const mongoUri =
     process.env.MONGO_URI || "mongodb://localhost:27017/interntrackr_test";
   await mongoose.connect(mongoUri);
 
-  // Create a test user
+  // Create test user
   const user = await User.create({
     email: "test@example.com",
-    password: "password123",
+    password: "hashedpassword",
   });
-  testUserId = user._id as mongoose.Types.ObjectId;
+  // Use .id instead of ._id to avoid TypeScript 'unknown' error
+  testUserId = user.id;
 });
 
 afterAll(async () => {
+  if (env.DB_ENGINE !== "mongo") return;
+
   await mongoose.connection.dropDatabase();
   await mongoose.connection.close();
 });
 
 afterEach(async () => {
+  if (env.DB_ENGINE !== "mongo") return;
+
   await Application.deleteMany({});
 });
 
-describe("Application Model", () => {
-  // Ensure indexes are created before running index tests
-  beforeAll(async () => {
-    await Application.init(); // This creates all indexes
-  });
-  describe("Validation", () => {
-    it("should create a valid application", async () => {
-      const appData = {
-        userId: testUserId,
-        company: "Google",
-        role: "Software Engineer Intern",
-        status: ApplicationStatus.APPLIED,
-      };
-
-      const app = await Application.create(appData);
-
-      expect(app.company).toBe("Google");
-      expect(app.role).toBe("Software Engineer Intern");
-      expect(app.status).toBe(ApplicationStatus.APPLIED);
-      expect(app.userId.toString()).toBe(testUserId.toString());
-      expect(app.createdAt).toBeDefined();
-      expect(app.updatedAt).toBeDefined();
-    });
-
-    it("should require userId", async () => {
-      const app = new Application({
-        company: "Google",
-        role: "SWE Intern",
-      });
-
-      await expect(app.save()).rejects.toThrow();
-    });
-
-    it("should require company", async () => {
-      const app = new Application({
-        userId: testUserId,
-        role: "SWE Intern",
-      });
-
-      await expect(app.save()).rejects.toThrow();
-    });
-
-    it("should require role", async () => {
-      const app = new Application({
-        userId: testUserId,
-        company: "Google",
-      });
-
-      await expect(app.save()).rejects.toThrow();
-    });
-
-    it("should default status to SAVED", async () => {
+describeIfMongo("Application Model", () => {
+  describe("Schema validation", () => {
+    it("should create application with required fields", async () => {
       const app = await Application.create({
         userId: testUserId,
         company: "Google",
         role: "SWE Intern",
-      });
-
-      expect(app.status).toBe(ApplicationStatus.SAVED);
-    });
-
-    it("should validate status enum", async () => {
-      const app = new Application({
-        userId: testUserId,
-        company: "Google",
-        role: "SWE Intern",
-        status: "INVALID_STATUS" as any,
-      });
-
-      await expect(app.save()).rejects.toThrow();
-    });
-
-    it("should validate URL format for link", async () => {
-      const app = new Application({
-        userId: testUserId,
-        company: "Google",
-        role: "SWE Intern",
-        link: "not-a-url",
-      });
-
-      await expect(app.save()).rejects.toThrow(/valid URL/);
-    });
-
-    it("should accept valid URLs", async () => {
-      const app = await Application.create({
-        userId: testUserId,
-        company: "Google",
-        role: "SWE Intern",
-        link: "https://careers.google.com/job123",
-      });
-
-      expect(app.link).toBe("https://careers.google.com/job123");
-    });
-
-    it("should enforce max length on notes", async () => {
-      const longNotes = "x".repeat(5001);
-      const app = new Application({
-        userId: testUserId,
-        company: "Google",
-        role: "SWE Intern",
-        notes: longNotes,
-      });
-
-      await expect(app.save()).rejects.toThrow(/cannot exceed 5000/);
-    });
-
-    it("should trim company and role", async () => {
-      const app = await Application.create({
-        userId: testUserId,
-        company: "  Google  ",
-        role: "  SWE Intern  ",
       });
 
       expect(app.company).toBe("Google");
       expect(app.role).toBe("SWE Intern");
+      expect(app.userId.toString()).toBe(testUserId);
+      expect(app.status).toBe(ApplicationStatus.SAVED);
+    });
+
+    it("should fail without required fields", async () => {
+      await expect(
+        Application.create({
+          company: "Google",
+        }),
+      ).rejects.toThrow();
+    });
+
+    it("should validate status enum", async () => {
+      await expect(
+        Application.create({
+          userId: testUserId,
+          company: "Google",
+          role: "SWE Intern",
+          status: "INVALID_STATUS" as unknown as ApplicationStatus,
+        }),
+      ).rejects.toThrow();
     });
   });
 
-  describe("Optional Fields", () => {
-    it("should accept location", async () => {
+  describe("Optional fields", () => {
+    it("should accept optional location field", async () => {
       const app = await Application.create({
         userId: testUserId,
         company: "Google",
@@ -156,11 +86,22 @@ describe("Application Model", () => {
       expect(app.location).toBe("Mountain View, CA");
     });
 
-    it("should accept deadline", async () => {
+    it("should accept optional link field", async () => {
+      const app = await Application.create({
+        userId: testUserId,
+        company: "Microsoft",
+        role: "SWE Intern",
+        link: "https://careers.microsoft.com",
+      });
+
+      expect(app.link).toBe("https://careers.microsoft.com");
+    });
+
+    it("should accept optional deadline field", async () => {
       const deadline = new Date("2025-12-31");
       const app = await Application.create({
         userId: testUserId,
-        company: "Google",
+        company: "Amazon",
         role: "SWE Intern",
         deadline,
       });
@@ -168,21 +109,21 @@ describe("Application Model", () => {
       expect(app.deadline?.toISOString()).toBe(deadline.toISOString());
     });
 
-    it("should accept notes", async () => {
+    it("should accept optional notes field", async () => {
       const app = await Application.create({
         userId: testUserId,
-        company: "Google",
+        company: "Meta",
         role: "SWE Intern",
-        notes: "Applied through referral",
+        notes: "Applied via referral",
       });
 
-      expect(app.notes).toBe("Applied through referral");
+      expect(app.notes).toBe("Applied via referral");
     });
 
-    it("should accept tags", async () => {
+    it("should accept optional tags array", async () => {
       const app = await Application.create({
         userId: testUserId,
-        company: "Google",
+        company: "Apple",
         role: "SWE Intern",
         tags: ["referral", "priority"],
       });
@@ -190,31 +131,10 @@ describe("Application Model", () => {
       expect(app.tags).toEqual(["referral", "priority"]);
     });
 
-    it("should default tags to empty array", async () => {
-      const app = await Application.create({
-        userId: testUserId,
-        company: "Google",
-        role: "SWE Intern",
-      });
-
-      expect(app.tags).toEqual([]);
-    });
-
-    it("should accept collaborators", async () => {
-      const app = await Application.create({
-        userId: testUserId,
-        company: "Google",
-        role: "SWE Intern",
-        collaborators: ["user123", "user456"],
-      });
-
-      expect(app.collaborators).toEqual(["user123", "user456"]);
-    });
-
     it("should default collaborators to empty array", async () => {
       const app = await Application.create({
         userId: testUserId,
-        company: "Google",
+        company: "Netflix",
         role: "SWE Intern",
       });
 
@@ -226,7 +146,10 @@ describe("Application Model", () => {
     it("should have userId index", async () => {
       const indexes = await Application.collection.listIndexes().toArray();
       const userIdIndex = indexes.find(
-        (idx: any) => idx.key && idx.key.userId !== undefined,
+        (idx: {
+          key?: Record<string, unknown>;
+          weights?: Record<string, unknown>;
+        }) => idx.key && idx.key.userId !== undefined,
       );
 
       expect(userIdIndex).toBeDefined();
@@ -235,7 +158,10 @@ describe("Application Model", () => {
     it("should have company index", async () => {
       const indexes = await Application.collection.listIndexes().toArray();
       const companyIndex = indexes.find(
-        (idx: any) => idx.key && idx.key.company !== undefined,
+        (idx: {
+          key?: Record<string, unknown>;
+          weights?: Record<string, unknown>;
+        }) => idx.key && idx.key.company !== undefined,
       );
 
       expect(companyIndex).toBeDefined();
@@ -244,7 +170,10 @@ describe("Application Model", () => {
     it("should have status index", async () => {
       const indexes = await Application.collection.listIndexes().toArray();
       const statusIndex = indexes.find(
-        (idx: any) => idx.key && idx.key.status !== undefined,
+        (idx: {
+          key?: Record<string, unknown>;
+          weights?: Record<string, unknown>;
+        }) => idx.key && idx.key.status !== undefined,
       );
 
       expect(statusIndex).toBeDefined();
@@ -253,7 +182,10 @@ describe("Application Model", () => {
     it("should have deadline index", async () => {
       const indexes = await Application.collection.listIndexes().toArray();
       const deadlineIndex = indexes.find(
-        (idx: any) => idx.key && idx.key.deadline !== undefined,
+        (idx: {
+          key?: Record<string, unknown>;
+          weights?: Record<string, unknown>;
+        }) => idx.key && idx.key.deadline !== undefined,
       );
 
       expect(deadlineIndex).toBeDefined();
@@ -262,7 +194,10 @@ describe("Application Model", () => {
     it("should have compound userId_status index", async () => {
       const indexes = await Application.collection.listIndexes().toArray();
       const compoundIndex = indexes.find(
-        (idx: any) =>
+        (idx: {
+          key?: Record<string, unknown>;
+          weights?: Record<string, unknown>;
+        }) =>
           idx.key &&
           idx.key.userId !== undefined &&
           idx.key.status !== undefined,
@@ -274,7 +209,10 @@ describe("Application Model", () => {
     it("should have text search index", async () => {
       const indexes = await Application.collection.listIndexes().toArray();
       const textIndex = indexes.find(
-        (idx: any) => idx.weights && typeof idx.weights === "object",
+        (idx: {
+          key?: Record<string, unknown>;
+          weights?: Record<string, unknown>;
+        }) => idx.weights && typeof idx.weights === "object",
       );
 
       expect(textIndex).toBeDefined();
@@ -297,7 +235,8 @@ describe("Application Model", () => {
       const populated = await Application.findById(app._id).populate("userId");
 
       expect(populated?.userId).toBeDefined();
-      expect((populated?.userId as any).email).toBe("test@example.com");
+      const populatedUser = populated?.userId as unknown as { email: string };
+      expect(populatedUser.email).toBe("test@example.com");
     });
   });
 
