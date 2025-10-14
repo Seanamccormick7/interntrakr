@@ -5,6 +5,12 @@ import { env } from "./env";
 let isConnected = false;
 
 export async function connectDB(): Promise<void> {
+  // Skip if using PostgreSQL
+  if (env.DB_ENGINE !== "mongo") {
+    console.log("MongoDB: Skipped (using PostgreSQL)");
+    return;
+  }
+
   if (isConnected) {
     console.log("MongoDB: Already connected");
     return;
@@ -32,11 +38,12 @@ export async function connectDB(): Promise<void> {
       isConnected = false;
     });
 
-    // Graceful shutdown
+    // Graceful shutdown handler
     process.on("SIGINT", async () => {
       await mongoose.connection.close();
       console.log("MongoDB: Connection closed due to app termination");
-      throw new Error("Failed to connect to MongoDB");
+      // eslint-disable-next-line n/no-process-exit
+      process.exit(0);
     });
   } catch (error) {
     console.error("MongoDB: Failed to connect", error);
@@ -45,13 +52,13 @@ export async function connectDB(): Promise<void> {
   }
 }
 
-export async function connectDB(): Promise<void> {
-  try {
-    await mongoose.connect(env.MONGO_URI);
-    console.log("MongoDB: Connected successfully");
-  } catch (error) {
-    console.error("MongoDB: Connection failed", error);
-    // Don't throw or exit - let the app handle it
-    // In production, you might want to retry or use a health check
+export async function disconnectDB(): Promise<void> {
+  // Skip if using PostgreSQL or not connected
+  if (env.DB_ENGINE !== "mongo" || !isConnected) {
+    return;
   }
+
+  await mongoose.connection.close();
+  isConnected = false;
+  console.log("MongoDB: Disconnected");
 }
