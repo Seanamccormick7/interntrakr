@@ -1,13 +1,14 @@
 import { Server as HTTPServer } from "http";
 import { Server as SocketIOServer } from "socket.io";
 import { verifyToken } from "../utils/jwt";
+import { env } from "./env";
 
 let io: SocketIOServer | null = null;
 
 export function initializeSocketIO(server: HTTPServer): SocketIOServer {
   io = new SocketIOServer(server, {
     cors: {
-      origin: ["http://localhost:5173", "http://localhost:3000"],
+      origin: env.ALLOWED_ORIGINS,
       credentials: true,
       methods: ["GET", "POST"],
     },
@@ -45,7 +46,7 @@ export function initializeSocketIO(server: HTTPServer): SocketIOServer {
     });
   });
 
-  console.log("Socket.IO initialized");
+  console.log("Socket.IO initialized with CORS origins:", env.ALLOWED_ORIGINS);
   return io;
 }
 
