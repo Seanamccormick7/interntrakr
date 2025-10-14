@@ -12,7 +12,7 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "format": "prettier --write .",
-    "prepare": "husky"
+    "prepare": "node -e \"try { require('husky').install() } catch (e) { if (e.code !== 'MODULE_NOT_FOUND') throw e }\""
   },
   "devDependencies": {
     "@eslint/js": "^9.36.0",
