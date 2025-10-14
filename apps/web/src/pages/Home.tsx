@@ -36,7 +36,7 @@ export default function Home() {
           </div>
           <div className="preview-box">
             <img
-              src="../../public/InternTrakrHeroImage.png"
+              src="/InternTrakrHeroImage.png"
               alt="InternTrakr preview"
               style={{
                 width: "100%",
