@@ -1,17 +1,50 @@
 # alerts-lambda
 
-Nightly AWS Lambda that fetches upcoming internship-application deadlines from the API and sends a notification (Slack webhook). Designed to be triggered by an EventBridge cron.
+AWS Lambda function that fetches upcoming internship application deadlines from the InternTrackr API and sends email notifications via AWS SES.
 
-## Env vars
+Triggered nightly by EventBridge cron schedule.
 
-- `API_BASE_URL` (required)
-- `WEBHOOK_URL` (optional) — Slack Incoming Webhook; if omitted, the Lambda just logs the summary
-- `ALERT_WINDOW_DAYS` (optional, default 7) — display text only (filtering is done by API)
+## Environment Variables
 
-## Build & package
+Required:
+
+- `API_BASE_URL` - InternTrackr API URL (e.g., https://interntrackr-api-production.up.railway.app)
+- `SES_FROM_EMAIL` - Verified sender email in SES (e.g., alerts@yourdomain.com)
+- `SES_TO_EMAIL` - Recipient email address (e.g., your@email.com)
+
+Optional:
+
+- `AWS_REGION` - AWS region for SES (default: us-west-2)
+- `ALERT_WINDOW_DAYS` - Days ahead to check for deadlines (default: 7)
+
+## Build & Package
 
 ```bash
 cd serverless/alerts-lambda
-npm ci
-npm run package   # will produce alerts-lambda.zip
+npm install
+npm run package   # produces alerts-lambda.zip
+```
+
+## Local Testing
+
+```bash
+# Set environment variables
+export API_BASE_URL=https://interntrackr-api-production.up.railway.app
+export SES_FROM_EMAIL=alerts@yourdomain.com
+export SES_TO_EMAIL=your@email.com
+
+# Run locally
+npm run build
+npm run local:run
+```
+
+## Deployment
+
+Deployed via Terraform in `infra/terraform/`.
+
+```bash
+cd infra/terraform
+terraform init
+terraform plan -var-file=envs/prod.tfvars
+terraform apply -var-file=envs/prod.tfvars
 ```
