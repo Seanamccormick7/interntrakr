@@ -24,6 +24,20 @@ export interface ApplicationData {
   updatedAt: Date;
 }
 
+export interface ApplicationSummary {
+  id: string;
+  company: string;
+  role: string;
+  deadline: Date;
+  link?: string;
+  status: ApplicationStatus;
+}
+
+export interface UserWithDeadlines {
+  email: string;
+  applications: ApplicationSummary[];
+}
+
 export interface ApplicationFilters {
   status?: ApplicationStatus;
   deadlineSoon?: boolean;
@@ -59,6 +73,9 @@ export interface IUserRepository {
   findById(id: string): Promise<UserData | null>;
   create(email: string, password: string): Promise<UserData>;
   findByEmailWithPassword(email: string): Promise<UserData | null>;
+  findUsersWithUpcomingDeadlines(
+    windowDays: number,
+  ): Promise<UserWithDeadlines[]>;
 }
 
 export interface IApplicationRepository {
