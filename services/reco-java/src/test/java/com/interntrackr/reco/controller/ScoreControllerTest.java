@@ -14,6 +14,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Set;
 
+import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anySet;
 import static org.mockito.Mockito.when;
@@ -127,8 +128,7 @@ class ScoreControllerTest {
                 .andExpect(jsonPath("$.urgencyBand").value("HIGH"))
                 .andExpect(jsonPath("$.missingKeywords").isArray())
                 .andExpect(jsonPath("$.missingKeywords.length()").value(2))
-                .andExpect(jsonPath("$.missingKeywords[0]").value("python"))
-                .andExpect(jsonPath("$.missingKeywords[1]").value("react"));
+                .andExpect(jsonPath("$.missingKeywords", containsInAnyOrder("python", "react")));
     }
 
     @Test

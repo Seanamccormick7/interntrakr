@@ -17,14 +17,14 @@ jobs:
 
     services:
       mongo:
-        image: mongo:7
+        image: mongo:6
         ports:
           - 27017:27017
         options: >-
-          --health-cmd "mongosh --eval 'db.adminCommand({ping: 1})'"
+          --health-cmd "mongosh --quiet --eval 'db.adminCommand({ping: 1})'"
           --health-interval 10s
           --health-timeout 5s
-          --health-retries 5
+          --health-retries 12
 
     strategy:
       matrix:
@@ -46,6 +46,21 @@ jobs:
       - name: Generate Prisma client
         working-directory: ./apps/api
         run: npx prisma generate
+
+      - name: Wait for MongoDB to be ready
+        run: |
+          set -e
+          echo "Waiting for MongoDB to accept connections..."
+          for i in $(seq 1 30); do
+            npx mongosh mongodb://localhost:27017 --quiet --eval "db.adminCommand({ping:1})" && {
+              echo "MongoDB is ready"
+              exit 0
+            }
+            echo "MongoDB not ready yet (attempt $i/30), sleeping 2s..."
+            sleep 2
+          done
+          echo "Timed out waiting for MongoDB"
+          exit 1
 
       - name: Clean MongoDB test database
         run: |
