@@ -11,4 +11,5 @@ module.exports = {
   testTimeout: 30000,
   maxWorkers: 1,
   setupFiles: ["<rootDir>/src/__tests__/setup.ts"],
+  forceExit: true,
 };

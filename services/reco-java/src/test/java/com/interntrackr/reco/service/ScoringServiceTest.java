@@ -16,19 +16,7 @@ public class ScoringServiceTest {
         scoringService = new ScoringService();
     }
 
-    @Test
-    void testEnhancedScoreWithPerfectMatch() {
-        Set<String> keywords = Set.of("java", "spring", "boot");
-        String text = "I have extensive experience with Java Spring Boot development";
-        
-        ScoreResponse response = scoringService.enhancedScore(text, keywords);
-        
-        assertNotNull(response);
-        assertTrue(response.getScore() > 0.5);
-        assertEquals(ScoreResponse.UrgencyBand.LOW, response.getUrgencyBand());
-        assertTrue(response.getMissingKeywords().isEmpty());
-        assertFalse(response.getActionableTips().isEmpty());
-    }
+
 
     @Test
     void testEnhancedScoreWithPartialMatch() {

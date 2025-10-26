@@ -17,11 +17,21 @@ jobs:
 
     services:
       mongo:
-        image: mongo:7
+        image: mongo:6
         ports:
           - 27017:27017
         options: >-
-          --health-cmd "mongosh --eval 'db.adminCommand({ping: 1})'"
+          --health-cmd "mongosh --quiet --eval 'db.adminCommand({ping: 1})'"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 12
+
+      redis:
+        image: redis:7-alpine
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
@@ -47,6 +57,46 @@ jobs:
         working-directory: ./apps/api
         run: npx prisma generate
 
+      - name: Wait for MongoDB to be ready
+        run: |
+          set -e
+          echo "Waiting for MongoDB to accept connections..."
+          for i in $(seq 1 30); do
+            npx mongosh mongodb://localhost:27017 --quiet --eval "db.adminCommand({ping:1})" && {
+              echo "MongoDB is ready"
+              exit 0
+            }
+            echo "MongoDB not ready yet (attempt $i/30), sleeping 2s..."
+            sleep 2
+          done
+          echo "Timed out waiting for MongoDB"
+          exit 1
+
+      - name: Wait for Redis to be ready
+        run: |
+          set -e
+          # Install redis-cli if not available
+          if ! command -v redis-cli &> /dev/null; then
+            sudo apt-get update
+            sudo apt-get install -y redis-tools
+          fi
+
+          echo "Waiting for Redis to accept connections..."
+          for i in $(seq 1 30); do
+            if redis-cli -h localhost -p 6379 ping > /dev/null 2>&1; then
+              echo "Redis is ready"
+              exit 0
+            fi
+            echo "Redis not ready yet (attempt $i/30), sleeping 2s..."
+            sleep 2
+          done
+          echo "Timed out waiting for Redis"
+          exit 1
+
+      - name: Clean MongoDB test database
+        run: |
+          npx mongosh mongodb://localhost:27017/interntrackr_test --eval "db.dropDatabase()" || echo "Database does not exist yet, skipping"
+
       - name: Run ESLint
         run: npm run lint
         continue-on-error: false
@@ -67,9 +117,15 @@ jobs:
         env:
           NODE_ENV: test
           MONGO_URI: mongodb://localhost:27017/interntrackr_test
+          REDIS_URL: redis://localhost:6379
           JWT_SECRET: test-jwt-secret
           INTERNAL_API_KEY: test-api-key
           DB_ENGINE: mongo
+          SCORE_SERVICE_URL: http://localhost:8080
+
+      - name: Wait for MongoDB cleanup
+        if: always()
+        run: sleep 5
 
       - name: Test Web
         working-directory: ./apps/web
