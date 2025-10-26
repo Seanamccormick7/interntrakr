@@ -26,13 +26,11 @@ async function startServer() {
         console.log("HTTP server closed");
         await disconnectRedis();
         console.log("All connections closed");
-        // eslint-disable-next-line n/no-process-exit
         process.exit(0);
       });
 
       setTimeout(() => {
         console.error("Forcefully shutting down after timeout");
-        // eslint-disable-next-line n/no-process-exit
         process.exit(1);
       }, 10000);
     };
@@ -41,7 +39,6 @@ async function startServer() {
     process.on("SIGINT", () => shutdown("SIGINT"));
   } catch (error) {
     console.error("Failed to start server:", error);
-    // eslint-disable-next-line n/no-process-exit
     process.exit(1);
   }
 }

@@ -26,11 +26,11 @@
   },
   "lint-staged": {
     "apps/web/**/*.{ts,tsx,js,jsx}": [
-      "eslint --fix",
+      "npm -w apps/web exec -- eslint --fix",
       "npm -w apps/web exec -- prettier --write"
     ],
     "apps/api/**/*.{ts,js}": [
-      "eslint --fix",
+      "npm -w apps/api exec -- eslint --fix",
       "npm -w apps/api exec -- prettier --write"
     ],
     "*.{json,md,css,scss}": [

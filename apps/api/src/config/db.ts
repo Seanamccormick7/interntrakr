@@ -42,7 +42,6 @@ export async function connectDB(): Promise<void> {
     process.on("SIGINT", async () => {
       await mongoose.connection.close();
       console.log("MongoDB: Connection closed due to app termination");
-      // eslint-disable-next-line n/no-process-exit
       process.exit(0);
     });
   } catch (error) {
