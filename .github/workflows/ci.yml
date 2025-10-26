@@ -63,7 +63,7 @@ jobs:
 
       - name: Test API
         working-directory: ./apps/api
-        run: npm test -- --coverage --maxWorkers=2
+        run: npm test -- --coverage --maxWorkers=1
         env:
           NODE_ENV: test
           MONGO_URI: mongodb://localhost:27017/interntrackr_test
