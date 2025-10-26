@@ -12,7 +12,9 @@
     "build": "esbuild src/handler.ts --bundle --platform=node --target=node22 --format=cjs --outfile=dist/handler.cjs --external:@aws-sdk/*",
     "zip": "node -e \"const fs=require('fs');const archiver=require('archiver');const output=fs.createWriteStream('alerts-lambda.zip');const archive=archiver('zip');output.on('close',()=>console.log('Created alerts-lambda.zip'));archive.pipe(output);archive.directory('dist/',false);archive.finalize();\"",
     "package": "npm run clean && npm run build && npm run zip",
-    "local:run": "node -e \"const {handler}=require('./dist/handler.cjs'); handler({},{}).then(console.log).catch(console.error)\""
+    "local:run": "node -e \"const {handler}=require('./dist/handler.cjs'); handler({},{}).then(console.log).catch(console.error)\"",
+    "lint": "eslint src --ext .ts",
+    "test": "echo 'No tests yet' && exit 0"
   },
   "dependencies": {
     "@aws-sdk/client-ses": "^3.705.0"
