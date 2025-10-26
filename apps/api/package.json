@@ -5,12 +5,11 @@
   "type": "commonjs",
   "main": "dist/index.js",
   "scripts": {
+    "postinstall": "prisma generate",
     "dev": "ts-node-dev --respawn --transpile-only src/server.ts",
     "build": "tsc",
     "start": "node dist/server.js",
     "test": "jest --forceExit",
-    "test:watch": "jest --watch",
-    "test:coverage": "jest --coverage --forceExit",
     "lint": "eslint src --ext .ts,.js",
     "type-check": "tsc --noEmit"
   },
