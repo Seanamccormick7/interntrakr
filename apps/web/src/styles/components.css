@@ -30,9 +30,7 @@
   backdrop-filter: saturate(180%) blur(8px);
   background: color-mix(in srgb, var(--surface) 85%, transparent);
   border-bottom: 1px solid var(--border);
-  width: 100vw;
-  margin-left: calc(50% - 50vw);
-  margin-right: calc(50% - 50vw);
+  width: 100%;
 }
 .navbar-inner {
   width: 100%;
@@ -291,9 +289,7 @@
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
 }
 .full-bleed {
-  width: 100vw;
-  margin-left: calc(50% - 50vw);
-  margin-right: calc(50% - 50vw);
+  width: 100%;
   padding-left: 16px;
   padding-right: 16px;
 }
