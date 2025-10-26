@@ -6,16 +6,25 @@ on:
   pull_request:
     branches: [main, develop]
 
-# Cancel in-progress workflows when new one starts
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
-  # Job 1: Lint and test Node.js applications (monorepo)
   node-ci:
     name: Node.js CI
     runs-on: ubuntu-latest
+
+    services:
+      mongo:
+        image: mongo:7
+        ports:
+          - 27017:27017
+        options: >-
+          --health-cmd "mongosh --eval 'db.adminCommand({ping: 1})'"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
 
     strategy:
       matrix:
@@ -31,40 +40,37 @@ jobs:
           node-version: ${{ matrix.node-version }}
           cache: "npm"
 
-      # Install all workspace dependencies from root
       - name: Install dependencies
         run: npm ci
 
-      # Generate Prisma client before linting/type checking
       - name: Generate Prisma client
         working-directory: ./apps/api
         run: npx prisma generate
 
-      # Run ESLint on entire monorepo
       - name: Run ESLint
         run: npm run lint
         continue-on-error: false
 
-      # Run type checking for API workspace
       - name: Type check API
         working-directory: ./apps/api
         run: npx tsc --noEmit
         continue-on-error: false
 
-      # Run type checking for Web workspace
       - name: Type check Web
         working-directory: ./apps/web
         run: npx tsc --noEmit
         continue-on-error: false
 
-      # Run tests for API workspace
       - name: Test API
         working-directory: ./apps/api
         run: npm test -- --coverage --maxWorkers=2
         env:
           NODE_ENV: test
+          MONGO_URI: mongodb://localhost:27017/interntrackr_test
+          JWT_SECRET: test-jwt-secret
+          INTERNAL_API_KEY: test-api-key
+          DB_ENGINE: mongo
 
-      # Run tests for Web workspace (if tests exist)
       - name: Test Web
         working-directory: ./apps/web
         run: npm test -- --coverage --maxWorkers=2 || echo "No tests found, skipping"
@@ -72,7 +78,6 @@ jobs:
         env:
           NODE_ENV: test
 
-      # Upload coverage to Codecov (optional)
       - name: Upload API coverage
         if: success()
         uses: codecov/codecov-action@v4
@@ -81,7 +86,6 @@ jobs:
           flags: api-tests
           fail_ci_if_error: false
 
-  # Job 2: Lint and test Java/Spring Boot service with Gradle
   java-ci:
     name: Java CI (Gradle)
     runs-on: ubuntu-latest
@@ -90,7 +94,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # Set up Java 17 to match project config
       - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
@@ -98,35 +101,37 @@ jobs:
           distribution: "temurin"
           cache: "gradle"
 
-      # Validate Gradle wrapper
       - name: Validate Gradle wrapper
         uses: gradle/wrapper-validation-action@v2
 
-      # Build with Gradle
       - name: Build with Gradle
         working-directory: ./services/reco-java
         run: ./gradlew build --no-daemon
 
-      # Run tests with Gradle
       - name: Run tests
         working-directory: ./services/reco-java
         run: ./gradlew test --no-daemon
 
-      # Generate test report
+      - name: Upload raw JUnit results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: reco-java-test-results
+          path: ./services/reco-java/build/test-results/test/
+
       - name: Publish test report
         if: always()
         uses: mikepenz/action-junit-report@v4
+        continue-on-error: true
         with:
           report_paths: "./services/reco-java/build/test-results/test/TEST-*.xml"
-          fail_on_failure: true
+          fail_on_failure: false
 
-      # Check code quality (if checkstyle configured)
       - name: Run code quality checks
         working-directory: ./services/reco-java
         run: ./gradlew check --no-daemon || echo "No checkstyle configured, skipping"
         continue-on-error: true
 
-  # Job 3: Build Docker images (only on main branch)
   docker-build:
     name: Docker Build
     runs-on: ubuntu-latest
@@ -140,24 +145,20 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      # Build API Docker image
       - name: Build API Docker image
         working-directory: ./apps/api
         run: docker build -t interntrackr-api:${{ github.sha }} .
         continue-on-error: true
 
-      # Build Web Docker image
       - name: Build Web Docker image
         working-directory: ./apps/web
         run: docker build -t interntrackr-web:${{ github.sha }} .
         continue-on-error: true
 
-      # Build Java service Docker image
       - name: Build Java service Docker image
         working-directory: ./services/reco-java
         run: docker build -t interntrackr-java:${{ github.sha }} .
 
-  # Job 4: All checks passed
   ci-success:
     name: All CI Checks Passed
     runs-on: ubuntu-latest
