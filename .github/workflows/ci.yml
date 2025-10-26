@@ -47,6 +47,10 @@ jobs:
         working-directory: ./apps/api
         run: npx prisma generate
 
+      - name: Clean MongoDB test database
+        run: |
+          npx mongosh mongodb://localhost:27017/interntrackr_test --eval "db.dropDatabase()" || echo "Database does not exist yet, skipping"
+
       - name: Run ESLint
         run: npm run lint
         continue-on-error: false
@@ -70,6 +74,10 @@ jobs:
           JWT_SECRET: test-jwt-secret
           INTERNAL_API_KEY: test-api-key
           DB_ENGINE: mongo
+
+      - name: Wait for MongoDB cleanup
+        if: always()
+        run: sleep 5
 
       - name: Test Web
         working-directory: ./apps/web
