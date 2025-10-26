@@ -6,13 +6,12 @@
     "apps/*"
   ],
   "scripts": {
-    "build": "npm run build -w apps/api && npm run build -w apps/web",
-    "dev:api": "npm run dev -w apps/api",
-    "dev:web": "npm run dev -w apps/web",
-    "lint": "eslint .",
-    "lint:fix": "eslint . --fix",
-    "format": "prettier --write .",
-    "prepare": "husky || true"
+    "lint": "npm run lint --workspaces --if-present",
+    "lint:fix": "npm run lint -- --fix --workspaces --if-present",
+    "type-check": "npm run type-check --workspaces --if-present",
+    "test": "npm run test --workspaces --if-present",
+    "test:watch": "npm run test:watch --workspaces --if-present",
+    "test:coverage": "npm run test -- --coverage --workspaces --if-present"
   },
   "devDependencies": {
     "@eslint/js": "^9.36.0",
@@ -23,8 +22,7 @@
     "eslint-plugin-promise": "^7.1.0",
     "husky": "^9.1.6",
     "lint-staged": "^15.2.9",
-    "prettier": "^3.6.2",
-    "typescript-eslint": "^8.0.0"
+    "prettier": "^3.6.2"
   },
   "lint-staged": {
     "apps/web/**/*.{ts,tsx,js,jsx}": [
