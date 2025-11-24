@@ -11,7 +11,11 @@
     "type-check": "npm run type-check --workspaces --if-present",
     "test": "npm run test --workspaces --if-present",
     "test:watch": "npm run test:watch --workspaces --if-present",
-    "test:coverage": "npm run test -- --coverage --workspaces --if-present"
+    "test:coverage": "npm run test -- --coverage --workspaces --if-present",
+    "test:all": "python scripts/test_runner.py",
+    "test:all:coverage": "python scripts/test_runner.py --coverage",
+    "test:jest": "python scripts/test_runner.py --jest-only",
+    "test:java": "python scripts/test_runner.py --java-only"
   },
   "devDependencies": {
     "@eslint/js": "^9.36.0",
