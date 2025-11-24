@@ -13,4 +13,5 @@ coverage/
 # Python
 __pycache__/
 *.pyc
-.pytest_cache/
+.pytest_cache/apps/api/test-results.json
+apps/api/test-results/
