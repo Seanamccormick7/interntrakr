@@ -3,7 +3,18 @@ dist
 .env
 .env.*
 !.env.example
-.DS_Storeservices/reco-java/.gradle/
+.DS_Store
+
+# Test outputs
+test-reports/
+coverage/
+*.log
+apps/api/test-results/
+apps/api/test-results.json
 services/reco-java/.gradle/
-apps/.DS_Store
 services/reco-java/build/
+
+# Python
+__pycache__/
+*.pyc
+.pytest_cache/apps/api/test-results.json
