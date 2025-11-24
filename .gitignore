@@ -9,9 +9,12 @@ dist
 test-reports/
 coverage/
 *.log
+apps/api/test-results/
+apps/api/test-results.json
+services/reco-java/.gradle/
+services/reco-java/build/
 
 # Python
 __pycache__/
 *.pyc
 .pytest_cache/apps/api/test-results.json
-apps/api/test-results/
