@@ -67,14 +67,17 @@ def run_jest_tests(project_root: Path, coverage: bool = False) -> Optional[TestS
     env["NODE_ENV"] = "test"
     env["FORCE_COLOR"] = "0"
 
+    use_shell = sys.platform == "win32"
+
     try:
         result = subprocess.run(
-            cmd,
+            cmd if not use_shell else " ".join(cmd),
             cwd=api_dir,
             env=env,
             capture_output=True,
             text=True,
-            timeout=300
+            timeout=300,
+            shell=use_shell
         )
 
         print(result.stdout)
@@ -156,13 +159,16 @@ def run_gradle_tests(project_root: Path) -> Optional[TestSuiteResult]:
     print(f"Command: {' '.join(cmd)}")
     print(f"Working directory: {java_dir}\n")
 
+    use_shell = sys.platform == "win32"
+
     try:
         result = subprocess.run(
-            cmd,
+            cmd if not use_shell else " ".join(cmd),
             cwd=java_dir,
             capture_output=True,
             text=True,
-            timeout=300
+            timeout=300,
+            shell=use_shell
         )
 
         print(result.stdout)
