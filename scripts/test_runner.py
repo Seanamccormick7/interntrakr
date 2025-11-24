@@ -84,6 +84,8 @@ def run_jest_tests(project_root: Path, coverage: bool = False) -> Optional[TestS
         if result.stderr:
             print(result.stderr, file=sys.stderr)
 
+        jest_failed = result.returncode != 0
+
     except subprocess.TimeoutExpired:
         print("[ERROR] Jest tests timed out after 5 minutes")
         return TestSuiteResult(name="Jest (API)", failed=1, errors=1)
@@ -91,7 +93,14 @@ def run_jest_tests(project_root: Path, coverage: bool = False) -> Optional[TestS
         print(f"[ERROR] Failed to run Jest: {e}")
         return TestSuiteResult(name="Jest (API)", failed=1, errors=1)
 
-    return parse_jest_json(json_output_file)
+    suite = parse_jest_json(json_output_file)
+
+    if jest_failed and suite.tests == 0:
+        print("[ERROR] Jest command failed and no test results were generated")
+        suite.errors = 1
+        suite.failed = 1
+
+    return suite
 
 
 def parse_jest_json(json_file: Path) -> TestSuiteResult:
@@ -175,6 +184,8 @@ def run_gradle_tests(project_root: Path) -> Optional[TestSuiteResult]:
         if result.stderr:
             print(result.stderr, file=sys.stderr)
 
+        gradle_failed = result.returncode != 0
+
     except subprocess.TimeoutExpired:
         print("[ERROR] Gradle tests timed out after 5 minutes")
         return TestSuiteResult(name="JUnit (Java)", failed=1, errors=1)
@@ -186,7 +197,14 @@ def run_gradle_tests(project_root: Path) -> Optional[TestSuiteResult]:
         return TestSuiteResult(name="JUnit (Java)", failed=1, errors=1)
 
     test_results_dir = java_dir / "build" / "test-results" / "test"
-    return parse_junit_xml(test_results_dir)
+    suite = parse_junit_xml(test_results_dir)
+
+    if gradle_failed and suite.tests == 0:
+        print("[ERROR] Gradle command failed and no test results were generated")
+        suite.errors = 1
+        suite.failed = 1
+
+    return suite
 
 
 def parse_junit_xml(test_results_dir: Path) -> TestSuiteResult:
