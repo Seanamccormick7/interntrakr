@@ -45,7 +45,7 @@ variable "lambda_ses_from_email" {
 variable "lambda_web_app_url" {
   type        = string
   description = "Frontend web application URL for email CTA"
-  default     = "https://interntrackr-web.vercel.app"
+  default     = "https://interntrakr.com"
 }
 
 variable "lambda_alert_window_days" {
