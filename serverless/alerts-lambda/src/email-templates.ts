@@ -163,7 +163,7 @@ export function buildEmailHtml(userData: UserEmailData): string {
               <p style="margin: 0 0 16px 0; color: ${MUTED_COLOR}; font-size: 14px;">
                 Don't miss these deadlines!
               </p>
-              <a href="${process.env.WEB_APP_URL || "https://interntrakr-web.vercel.app"}" style="display: inline-block; background: ${BRAND_COLOR}; color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 16px;">
+              <a href="${process.env.WEB_APP_URL || "https://interntrakr.com"}" style="display: inline-block; background: ${BRAND_COLOR}; color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 16px;">
                 Open InternTrackr
               </a>
             </td>
@@ -211,7 +211,7 @@ ${applicationList}
 
 Don't miss these deadlines!
 
-Open InternTrackr: https://interntrakr-web.vercel.app/
+Open InternTrackr: https://interntrakr.com
 
 ---
 You're receiving this because you have upcoming application deadlines.

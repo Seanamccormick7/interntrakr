@@ -16,11 +16,11 @@ Triggered nightly by EventBridge cron schedule.
 
 ### Optional
 
-| Variable            | Description                       | Default                               |
-| ------------------- | --------------------------------- | ------------------------------------- |
-| `SES_REGION`        | AWS region for SES                | `us-west-1`                           |
-| `ALERT_WINDOW_DAYS` | Days ahead to check for deadlines | `7`                                   |
-| `WEB_APP_URL`       | Frontend URL for email CTA button | `https://interntrackr-web.vercel.app` |
+| Variable            | Description                       | Default                   |
+| ------------------- | --------------------------------- | ------------------------- |
+| `SES_REGION`        | AWS region for SES                | `us-west-1`               |
+| `ALERT_WINDOW_DAYS` | Days ahead to check for deadlines | `7`                       |
+| `WEB_APP_URL`       | Frontend URL for email CTA button | `https://interntrakr.com` |
 
 ## Architecture
 
@@ -53,7 +53,7 @@ export API_BASE_URL=https://interntrackr-api-production.up.railway.app
 export INTERNAL_API_KEY=your-secret-key
 export SES_FROM_EMAIL=alerts@yourdomain.com
 export SES_REGION=us-west-1
-export WEB_APP_URL=https://interntrackr-web.vercel.app
+export WEB_APP_URL=https://interntrakr.com
 
 # Run locally (requires AWS credentials for SES)
 npm run build
