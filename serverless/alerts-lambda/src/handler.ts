@@ -37,9 +37,16 @@ if (!SES_FROM_EMAIL) {
 
 const sesClient = new SESClient({ region: SES_REGION });
 
-async function fetchUsersWithDeadlines(): Promise<UserWithDeadlines[]> {
+export function getRunDate(): string {
+  return new Date().toISOString().slice(0, 10); // "YYYY-MM-DD"
+}
+
+async function fetchUsersWithDeadlines(
+  runDate: string,
+): Promise<UserWithDeadlines[]> {
   const url = new URL("/users/with-deadlines", API_BASE_URL);
   url.searchParams.set("days", String(ALERT_WINDOW_DAYS));
+  url.searchParams.set("runDate", runDate);
 
   console.log(`Calling API: ${url.toString()}`);
 
@@ -60,8 +67,31 @@ async function fetchUsersWithDeadlines(): Promise<UserWithDeadlines[]> {
   return users;
 }
 
+async function markUserNotified(
+  email: string,
+  runDate: string,
+): Promise<void> {
+  const url = new URL("/users/mark-notified", API_BASE_URL);
+
+  const res = await fetch(url, {
+    method: "POST",
+    headers: {
+      "content-type": "application/json",
+      "x-api-key": INTERNAL_API_KEY,
+    },
+    body: JSON.stringify({ email, runDate }),
+  });
+
+  if (!res.ok) {
+    console.error(
+      `Failed to mark ${email} as notified: API responded ${res.status}`,
+    );
+  }
+}
+
 async function sendEmailToUser(
   user: UserWithDeadlines,
+  runDate: string,
 ): Promise<{ success: boolean; error?: string }> {
   try {
     const subject = buildEmailSubject(user.applications.length);
@@ -93,6 +123,9 @@ async function sendEmailToUser(
 
     await sesClient.send(command);
     console.log(` Email sent successfully to ${user.email}`);
+
+    await markUserNotified(user.email, runDate);
+
     return { success: true };
   } catch (err: unknown) {
     const error = err as Error;
@@ -102,10 +135,13 @@ async function sendEmailToUser(
 }
 
 export const handler = async () => {
-  console.log(` Starting alerts lambda (window: ${ALERT_WINDOW_DAYS} days)`);
+  const runDate = getRunDate();
+  console.log(
+    ` Starting alerts lambda (window: ${ALERT_WINDOW_DAYS} days, runDate: ${runDate})`,
+  );
 
   try {
-    const users = await fetchUsersWithDeadlines();
+    const users = await fetchUsersWithDeadlines(runDate);
     console.log(` Found ${users.length} user(s) with upcoming deadlines`);
 
     if (users.length === 0) {
@@ -113,7 +149,9 @@ export const handler = async () => {
       return { ok: true, sent: 0, failed: 0 };
     }
 
-    const results = await Promise.all(users.map(sendEmailToUser));
+    const results = await Promise.all(
+      users.map((user) => sendEmailToUser(user, runDate)),
+    );
 
     const sent = results.filter((r) => r.success).length;
     const failed = results.filter((r) => !r.success).length;

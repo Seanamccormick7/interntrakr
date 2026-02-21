@@ -1,13 +1,19 @@
 import { repositoryFactory } from "../repositories/factory";
 import { UserWithDeadlines } from "../repositories/interfaces";
+import { idempotencyService, IdempotencyService } from "./idempotency.service";
 
 export class NotificationService {
   private get userRepo() {
     return repositoryFactory.getUserRepository();
   }
 
+  constructor(
+    private readonly idempotency: IdempotencyService = idempotencyService,
+  ) {}
+
   async getUsersWithUpcomingDeadlines(
     windowDays: number = 7,
+    runDate?: string,
   ): Promise<UserWithDeadlines[]> {
     if (windowDays < 1 || windowDays > 365) {
       throw new Error("Window days must be between 1 and 365");
@@ -16,7 +22,25 @@ export class NotificationService {
     const users =
       await this.userRepo.findUsersWithUpcomingDeadlines(windowDays);
 
-    return users;
+    if (!runDate) {
+      return users;
+    }
+
+    const results = await Promise.all(
+      users.map(async (user) => {
+        const alreadySent = await this.idempotency.isAlreadySent(
+          user.email,
+          runDate,
+        );
+        return alreadySent ? null : user;
+      }),
+    );
+
+    return results.filter((u): u is UserWithDeadlines => u !== null);
+  }
+
+  async markUserNotified(email: string, runDate: string): Promise<void> {
+    await this.idempotency.markAsSent(email, runDate);
   }
 
   formatDeadlineDate(date: Date): string {
